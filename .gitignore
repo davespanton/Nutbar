@@ -1,5 +1,7 @@
 .classpath
 .project
+local.properties
+build.xml
 .settings/
 target/
 tmp/

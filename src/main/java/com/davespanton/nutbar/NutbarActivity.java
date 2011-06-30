@@ -1,13 +1,21 @@
 package com.davespanton.nutbar;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
+
+import com.davespanton.nutbar.service.GPSListenerService;
+import com.google.inject.Inject;
+
+import android.location.LocationManager;
+import android.location.GpsStatus.Listener;
 import android.os.Bundle;
 import android.util.Log;
 
-public class NutbarActivity extends Activity {
+public class NutbarActivity extends RoboActivity {
 
     private static String TAG = "nutbar";
-
+    
+    @Inject GPSListenerService service;
+    
     /**
      * Called when the activity is first created.
      * @param savedInstanceState If the activity is being re-initialized after 
@@ -20,6 +28,5 @@ public class NutbarActivity extends Activity {
 		Log.i(TAG, "onCreate");
         setContentView(R.layout.main);
     }
-
 }
 
