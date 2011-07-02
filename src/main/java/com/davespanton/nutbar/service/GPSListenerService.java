@@ -21,5 +21,12 @@ public class GPSListenerService extends RoboService implements Listener {
 	public void onGpsStatusChanged(int event) {
 	}
 	
+	public void startListening() {
+		loc.addGpsStatusListener(this);
+	}
 	
+	public void stopListening() {
+		loc.removeGpsStatusListener(this);
+		
+	}
 }

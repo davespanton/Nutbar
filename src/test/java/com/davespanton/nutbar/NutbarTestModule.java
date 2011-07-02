@@ -7,7 +7,7 @@ import android.util.Log;
 public class NutbarTestModule extends AbstractAndroidModule {
 
 	@Override protected void configure() {
-        bind(Ln.BaseConfig.class).toInstance(new NutbarLoggerConfig());
+		bind(Ln.BaseConfig.class).toInstance(new NutbarLoggerConfig());
     }
 
 

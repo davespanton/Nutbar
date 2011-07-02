@@ -1,14 +1,11 @@
 package com.davespanton.nutbar;
 
 import roboguice.activity.RoboActivity;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.davespanton.nutbar.service.GPSListenerService;
 import com.google.inject.Inject;
-
-import android.location.LocationManager;
-import android.location.GpsStatus.Listener;
-import android.os.Bundle;
-import android.util.Log;
 
 public class NutbarActivity extends RoboActivity {
 
