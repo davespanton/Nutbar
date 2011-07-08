@@ -1,5 +1,6 @@
 package com.davespanton.nutbar.service;
 
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
 import junit.framework.Assert;
 
 import org.junit.Before;
@@ -7,22 +8,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.davespanton.nutbar.InjectedTestRunner;
-import com.xtremelabs.robolectric.Robolectric;
-
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
 @RunWith(InjectedTestRunner.class)
 public class GPSListenerServiceTest {
 
 	private GPSListenerService sut;
-	private ShadowNutLocationManager shadow;
+	private ShadowLocationManager shadow;
 	
 	@Before
 	public void setUp() {
-		Robolectric.bindShadowClass(ShadowNutLocationManager.class);
 		sut = new GPSListenerService();
 		sut.onCreate();
-		shadow = (ShadowNutLocationManager) shadowOf(sut.loc);
+		shadow = (ShadowLocationManager) shadowOf(sut.loc);
 	}
 	
 	@Test
