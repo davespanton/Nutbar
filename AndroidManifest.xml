@@ -18,7 +18,11 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <service android:name=".service.GPSListenerService"></service>
+    <service android:name=".service.GPSListenerService">
+      <intent-filter>
+      	<action android:name="com.davespanton.nutbar.START_GPS_LISTENER_SERVICE"/>
+      </intent-filter>
+    </service>
   </application>
 
 </manifest>

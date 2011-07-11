@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.location.GpsStatus.Listener;
 import android.os.IBinder;
+import android.util.Log;
 
 public class GPSListenerService extends RoboService implements Listener, ListenerService {
 
@@ -33,9 +34,9 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		// TODO Auto-generated method stub
-		super.onStart(intent, startId);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.v("GPSListenerService", "onStartCommand called");
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	public void startListening() {

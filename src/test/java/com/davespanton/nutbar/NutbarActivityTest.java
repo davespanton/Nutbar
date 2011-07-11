@@ -24,11 +24,6 @@ public class NutbarActivityTest {
 	}
 	
 	@Test
-	public void shouldHaveGPSListenerService() {
-		assertNotNull(sut.service);
-	}
-	
-	@Test
 	public void shouldStartServiceOnCreate() {
 		ShadowActivity shadow = shadowOf(sut);
 		Intent intent = shadow.peekNextStartedService();
