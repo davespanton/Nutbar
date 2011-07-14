@@ -1,22 +1,21 @@
 package com.davespanton.nutbar.service;
 
-import com.google.inject.Inject;
-
+import roboguice.service.RoboService;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import roboguice.service.RoboService;
 
 public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService {
 
-	@Inject private SensorManager sensorManager; 
+	SensorManager sensorManager; 
 	private Sensor accelorometerSensor;
 	
 	@Override
 	public void onCreate() {
+		sensorManager = (SensorManager) getApplication().getSystemService(SENSOR_SERVICE);
 		accelorometerSensor = sensorManager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER);
 	}
 	
