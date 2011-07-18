@@ -11,7 +11,10 @@ import android.os.IBinder;
 public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService {
 
 	SensorManager sensorManager; 
+	
 	private Sensor accelorometerSensor;
+	
+	private boolean isListening = false;
 	
 	@Override
 	public void onCreate() {
@@ -38,12 +41,18 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 
 	@Override
 	public void startListening() {
-		sensorManager.registerListener(this, accelorometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		isListening = sensorManager.registerListener(this, accelorometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	@Override
 	public void stopListening() {
 		sensorManager.unregisterListener(this, accelorometerSensor);
+		isListening = false;
+	}
+
+	@Override
+	public boolean isListening() {
+		return isListening;
 	}
 
 }

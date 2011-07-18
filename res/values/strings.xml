@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello nutbar!</string>
     <string name="app_name">nutbar</string>
     <string name="start_gps_listener_service">com.davespanton.nutbar.START_GPS_LISTENER_SERVICE</string>
+    <string name="toggle_accelerometer">Toggle Accelerometer</string>
 </resources>

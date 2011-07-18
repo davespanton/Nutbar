@@ -10,12 +10,12 @@ import org.junit.runner.RunWith;
 import android.app.Service;
 import android.hardware.SensorManager;
 
-import com.davespanton.nutbar.InjectedTestRunner;
 import com.davespanton.nutbar.shadows.ShadowSensorManager;
 import com.xtremelabs.robolectric.Robolectric;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.bytecode.ShadowWrangler;
 
-@RunWith(InjectedTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class AccelerometerListenerServiceTest {
 
 	private AccelerometerListenerService sut;
@@ -33,6 +33,7 @@ public class AccelerometerListenerServiceTest {
 	@After
 	public void teardown() {
 		sut = null;
+		shadowSensorManager = null;
 	}
 	
 	@Test
@@ -46,6 +47,26 @@ public class AccelerometerListenerServiceTest {
 		sut.startListening();
 		sut.stopListening();
 		assertFalse(shadowSensorManager.hasListener(sut));
+	}
+	
+	@Test
+	public void shouldReturnIsListeningWhenListening() {
+		sut.startListening();
+		assertTrue(sut.isListening());
+	}
+	
+	@Test
+	public void shouldReturnIsNotListeningWhenNotListening() {
+		sut.startListening();
+		sut.stopListening();
+		assertFalse(sut.isListening());
+	}
+	
+	@Test
+	public void shouldReturnIsNotListeningAfterFailureToStart() {
+		shadowSensorManager.forceListenersToFail = true;
+		sut.startListening();
+		assertFalse(sut.isListening());
 	}
 	
 }

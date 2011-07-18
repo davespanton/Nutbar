@@ -1,7 +1,5 @@
 package com.davespanton.nutbar.service;
 
-import com.google.inject.Inject;
-
 import roboguice.service.RoboService;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -11,7 +9,9 @@ import android.util.Log;
 
 public class GPSListenerService extends RoboService implements Listener, ListenerService {
 
-	@Inject LocationManager loc; 
+	LocationManager loc; 
+	
+	private boolean isListening = false;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -26,6 +26,7 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		loc = (LocationManager) getSystemService(LOCATION_SERVICE);
 	}
 
 	@Override
@@ -40,10 +41,15 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	}
 
 	public void startListening() {
-		loc.addGpsStatusListener(this);
+		isListening = loc.addGpsStatusListener(this);
 	}
 	
 	public void stopListening() {
 		loc.removeGpsStatusListener(this);
+		isListening = false;
+	}
+	
+	public boolean isListening() {
+		return isListening;
 	}
 }

@@ -1,16 +1,16 @@
 package com.davespanton.nutbar.service;
 
 import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import junit.framework.Assert;
+import static junit.framework.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.davespanton.nutbar.InjectedTestRunner;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
-@RunWith(InjectedTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class GPSListenerServiceTest {
 
 	private GPSListenerService sut;
@@ -25,21 +25,34 @@ public class GPSListenerServiceTest {
 	
 	@Test
 	public void shouldHaveLocationManagerInjected() {
-		Assert.assertNotNull(sut.loc);
+		assertNotNull(sut.loc);
 	}
 	
 	@Test
 	public void shouldAddListenerOnStartListening() {
 		sut.startListening();
-		Assert.assertTrue(shadow.hasListener(sut));
+		assertTrue(shadow.hasListener(sut));
 	}
 	
 	@Test
 	public void shouldRemoveListenerOnStopListening() {
 		sut.startListening();
-		Assert.assertTrue(shadow.hasListener(sut));
+		assertTrue(shadow.hasListener(sut));
 		sut.stopListening();
-		Assert.assertFalse(shadow.hasListener(sut));
+		assertFalse(shadow.hasListener(sut));
+	}
+	
+	@Test
+	public void shouldReturnIsListeningWhenListening() {
+		sut.startListening();
+		assertTrue(sut.isListening());
+	}
+	
+	@Test
+	public void shouldReturnIsNotListeningWhenNotListening() {
+		sut.startListening();
+		sut.stopListening();
+		assertFalse(sut.isListening());
 	}
 	
 }
