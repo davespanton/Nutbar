@@ -1,7 +1,6 @@
 package com.davespanton.nutbar;
 
 import roboguice.activity.RoboActivity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,8 +17,6 @@ public class NutbarActivity extends RoboActivity {
         
         Intent intent = new Intent();
         intent.setAction(getString(R.string.start_gps_listener_service));
-        ComponentName serviceName = startService(intent);
-        Log.v(TAG, serviceName.toString());
     }
 }
 
