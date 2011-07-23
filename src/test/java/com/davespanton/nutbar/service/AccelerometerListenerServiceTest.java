@@ -1,6 +1,8 @@
 package com.davespanton.nutbar.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static com.xtremelabs.robolectric.Robolectric.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,12 +10,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.app.Service;
+import android.content.Intent;
 import android.hardware.SensorManager;
+import android.os.IBinder;
 
-import com.davespanton.nutbar.shadows.ShadowSensorManager;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
-import com.xtremelabs.robolectric.bytecode.ShadowWrangler;
+import com.xtremelabs.robolectric.shadows.ShadowSensorManager;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccelerometerListenerServiceTest {
@@ -23,9 +26,9 @@ public class AccelerometerListenerServiceTest {
 	
 	@Before
 	public void setup() {
-		Robolectric.bindShadowClass(ShadowSensorManager.class);
+		
 		SensorManager sensorManager = (SensorManager) Robolectric.application.getSystemService(Service.SENSOR_SERVICE);
-		shadowSensorManager = (ShadowSensorManager) ShadowWrangler.getInstance().shadowOf(sensorManager);
+		shadowSensorManager = (ShadowSensorManager) shadowOf(sensorManager);
 		sut = new AccelerometerListenerService();
 		sut.onCreate();
 	}
@@ -67,6 +70,12 @@ public class AccelerometerListenerServiceTest {
 		shadowSensorManager.forceListenersToFail = true;
 		sut.startListening();
 		assertFalse(sut.isListening());
+	}
+	
+	@Test
+	public void shouldReturnListenerServiceBinderOnBind() {
+		IBinder binder = sut.onBind(new Intent());
+		assertTrue(binder instanceof ListenerServiceBinder);
 	}
 	
 }

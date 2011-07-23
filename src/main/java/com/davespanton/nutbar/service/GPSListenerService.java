@@ -5,17 +5,18 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.location.GpsStatus.Listener;
 import android.os.IBinder;
-import android.util.Log;
 
 public class GPSListenerService extends RoboService implements Listener, ListenerService {
 
-	LocationManager loc; 
+	private ListenerServiceBinder binder = new ListenerServiceBinder(this);
+	
+	private LocationManager loc; 
 	
 	private boolean isListening = false;
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return binder;
 	}
 
 	@Override
@@ -31,13 +32,7 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
-	}
-
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.v("GPSListenerService", "onStartCommand called");
-		return super.onStartCommand(intent, flags, startId);
+		loc = null;
 	}
 
 	public void startListening() {

@@ -10,8 +10,9 @@ import android.os.IBinder;
 
 public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService {
 
-	SensorManager sensorManager; 
+	private ListenerServiceBinder binder = new ListenerServiceBinder(this);
 	
+	private SensorManager sensorManager; 
 	private Sensor accelorometerSensor;
 	
 	private boolean isListening = false;
@@ -24,7 +25,7 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return binder;
 	}
 
 	@Override
