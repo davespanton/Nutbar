@@ -1,9 +1,8 @@
 package com.davespanton.nutbar;
 
-import static com.xtremelabs.robolectric.Robolectric.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,11 +38,30 @@ public class NutbarActivityTest {
 	}
 	
 	@Test
-	public void shouldHaveAccelerometerServiceToggleButtonWithCorrectLabel() {
-		Button accelerometerServiceButton = (Button) sut.findViewById(R.id.accelerometer_button);
-		String expectedLabel = sut.getResources().getString(R.string.toggle_accelerometer);
-		assertEquals(accelerometerServiceButton.getText(), expectedLabel);
+	public void shouldHaveButtonDisabledByDefault() {
+		assertFalse(getAccelerometerButton().isEnabled());
 	}
 	
+	private Button getAccelerometerButton() {
+		return (Button) sut.findViewById(R.id.accelerometer_button);
+	}
 	
+	@Test
+	public void shouldHaveAccelerometerServiceToggleButtonWithCorrectLabel() {
+		String expectedLabel = sut.getResources().getString(R.string.toggle_accelerometer);
+		assertEquals(getAccelerometerButton().getText(), expectedLabel);
+	}
+	
+	@Test 
+	public void shouldEnableButtonOnAccelerometerServiceConnected() {
+		sut.onAccelerometerServiceConnected();
+		assertTrue(getAccelerometerButton().isEnabled());
+	}
+	
+	@Test
+	public void shouldDisableButtonOnAccelerometerServiceDisconnected() {
+		sut.onAccelerometerServiceConnected();
+		sut.onAccelerometerServiceDisconnected();
+		assertFalse(getAccelerometerButton().isEnabled());
+	}
 }
