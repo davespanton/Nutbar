@@ -1,5 +1,7 @@
 package com.davespanton.nutbar.service;
 
+import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+
 import roboguice.service.RoboService;
 import android.content.Intent;
 import android.hardware.Sensor;

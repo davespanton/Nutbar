@@ -3,6 +3,8 @@ package com.davespanton.nutbar;
 import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class NutbarActivity extends RoboActivity {
@@ -15,6 +17,7 @@ public class NutbarActivity extends RoboActivity {
 		setContentView(R.layout.main);
         
         toggleAccelerometer = (Button) findViewById(R.id.accelerometer_button);
+        toggleAccelerometer.setOnClickListener(accelerometerButtonListener);
         
         startGpsService();
     }
@@ -33,6 +36,11 @@ public class NutbarActivity extends RoboActivity {
 		toggleAccelerometer.setEnabled(false);
 	}
     
-    
+    private OnClickListener accelerometerButtonListener = new OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			
+		}
+    };
 }
 

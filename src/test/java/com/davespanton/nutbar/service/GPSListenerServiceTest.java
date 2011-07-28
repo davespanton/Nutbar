@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.IBinder;
 
+import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;

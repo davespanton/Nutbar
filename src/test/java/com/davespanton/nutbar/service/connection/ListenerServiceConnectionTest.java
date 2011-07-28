@@ -59,7 +59,6 @@ public class ListenerServiceConnectionTest {
 
 		@Override
 		public void onAccelerometerServiceDisconnected() {
-			// TODO Auto-generated method stub
 			super.onAccelerometerServiceDisconnected();
 			accelerometerServiceDisconnectedCalled = true;
 		}
