@@ -1,13 +1,14 @@
 package com.davespanton.nutbar.service.binder;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.davespanton.nutbar.NutbarActivity;
+import com.davespanton.nutbar.activity.ListenerServiceView;
 import com.davespanton.nutbar.service.TestListenerService;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -16,11 +17,12 @@ public class AccelerometerListenerServiceBinderTest {
 
 		private AccelerometerListenerServiceBinder sut;
 		private TestListenerService service;
-		private TestNutbarActivity activity;
+		
+		public boolean isConnected = false;
 		
 		@Before
 		public void setup() {
-			activity = new TestNutbarActivity();
+			isConnected = false;
 			service = new TestListenerService();
 			sut = new AccelerometerListenerServiceBinder(service);
 		}
@@ -29,26 +31,24 @@ public class AccelerometerListenerServiceBinderTest {
 		public void tearDown() {
 			sut = null;
 			service = null;
-			activity = null;
+			testView = null;
 		}
 		
 		@Test
 		public void shouldCallAccelerometerConnectedOnBind() {
-			sut.onServiceConnection(activity);
-			assertTrue(activity.isConnected);
+			sut.onServiceConnection(testView);
+			assertTrue(isConnected);
 		}
 		
 		@Test
 		public void shouldCallAccelerometerDisconnectedOnUnbind() {
-			activity.isConnected = true;
-			sut.onServiceDisconnection(activity);
-			assertFalse(activity.isConnected);
+			isConnected = true;
+			sut.onServiceDisconnection(testView);
+			assertFalse(isConnected);
 		}
 		
 		
-		private class TestNutbarActivity extends NutbarActivity {
-
-			public boolean isConnected = false;
+		private ListenerServiceView testView = new ListenerServiceView() {
 			
 			@Override
 			public void onAccelerometerServiceConnected() {
@@ -60,6 +60,15 @@ public class AccelerometerListenerServiceBinderTest {
 			public void onAccelerometerServiceDisconnected() {
 				isConnected = false;
 			}
-			
-		}
+
+			@Override
+			public void onGPSServiceConnected() {
+				//not needed for test
+			}
+
+			@Override
+			public void onGPSServiceDisconnected() {
+				//not needed for test
+			}
+		};
 }

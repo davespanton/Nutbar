@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import android.content.Intent;
 import android.widget.Button;
 
+import com.davespanton.nutbar.activity.NutbarActivity;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 

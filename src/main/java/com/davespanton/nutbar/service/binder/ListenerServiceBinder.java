@@ -1,9 +1,9 @@
 package com.davespanton.nutbar.service.binder;
 
-import com.davespanton.nutbar.NutbarActivity;
-import com.davespanton.nutbar.service.ListenerService;
-
 import android.os.Binder;
+
+import com.davespanton.nutbar.activity.ListenerServiceView;
+import com.davespanton.nutbar.service.ListenerService;
 
 public class ListenerServiceBinder extends Binder {
 	
@@ -17,11 +17,11 @@ public class ListenerServiceBinder extends Binder {
 		return listenerService;
 	}
 	
-	public void onServiceConnection(NutbarActivity activity) {
+	public void onServiceConnection(ListenerServiceView view) {
 		//template
 	}
 
-	public void onServiceDisconnection(NutbarActivity activity) {
+	public void onServiceDisconnection(ListenerServiceView view) {
 		// template
 	}
 }

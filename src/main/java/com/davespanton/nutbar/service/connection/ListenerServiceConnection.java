@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.davespanton.nutbar.NutbarActivity;
+import com.davespanton.nutbar.activity.NutbarActivity;
+import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
 public class ListenerServiceConnection implements ServiceConnection {
 
 	private NutbarActivity activity;
+	private ListenerServiceBinder listenerBinder;
 	
 	public ListenerServiceConnection(NutbarActivity nutbar) {
 		activity = nutbar;
@@ -16,15 +18,13 @@ public class ListenerServiceConnection implements ServiceConnection {
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
-		//TODO switch this to template pattern via binders
-		if(name.getClassName() == "AccelerometerListenerService")
-			activity.onAccelerometerServiceConnected();
+		listenerBinder = (ListenerServiceBinder) binder;
+		listenerBinder.onServiceConnection(activity);
 	}
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		if(name.getClassName() == "AccelerometerListenerService")
-			activity.onAccelerometerServiceDisconnected();
+		listenerBinder.onServiceDisconnection(activity);
 	}
 
 }

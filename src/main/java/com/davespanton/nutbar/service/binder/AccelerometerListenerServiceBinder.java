@@ -1,6 +1,6 @@
 package com.davespanton.nutbar.service.binder;
 
-import com.davespanton.nutbar.NutbarActivity;
+import com.davespanton.nutbar.activity.ListenerServiceView;
 import com.davespanton.nutbar.service.ListenerService;
 
 public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
@@ -10,12 +10,12 @@ public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
 	}
 
 	@Override
-	public void onServiceConnection(NutbarActivity activity) {
-		activity.onAccelerometerServiceConnected();
+	public void onServiceConnection(ListenerServiceView view) {
+		view.onAccelerometerServiceConnected();
 	}
 	
 	@Override
-	public void onServiceDisconnection(NutbarActivity activity) {
-		activity.onAccelerometerServiceDisconnected();
+	public void onServiceDisconnection(ListenerServiceView view) {
+		view.onAccelerometerServiceDisconnected();
 	}
 }

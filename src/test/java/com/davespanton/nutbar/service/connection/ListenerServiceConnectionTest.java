@@ -7,9 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.content.ComponentName;
-import android.os.Binder;
 
-import com.davespanton.nutbar.NutbarActivity;
+import com.davespanton.nutbar.activity.NutbarActivity;
+import com.davespanton.nutbar.service.TestListenerService;
+import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
@@ -29,8 +30,13 @@ public class ListenerServiceConnectionTest {
 	
 	@Test
 	public void testAccelerometerServiceConnectionCallsActivity() {
-		sut.onServiceConnected(getComponentName(accelerometerListenerServiceName), new Binder());
+		makeConnection();
 		assertTrue(nutbar.accelerometerServiceConnectedCalled);
+	}
+	
+	private void makeConnection() {
+		AccelerometerListenerServiceBinder binder = new AccelerometerListenerServiceBinder(new TestListenerService());
+		sut.onServiceConnected(getComponentName(accelerometerListenerServiceName), binder);
 	}
 
 	private ComponentName getComponentName(String className) {
@@ -42,6 +48,8 @@ public class ListenerServiceConnectionTest {
 	
 	@Test
 	public void testAccelerometerServiceDisconnectionCallsActivity() {
+		makeConnection();
+		
 		sut.onServiceDisconnected(getComponentName(accelerometerListenerServiceName));
 		assertTrue(nutbar.accelerometerServiceDisconnectedCalled);
 	}
