@@ -21,7 +21,8 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int start_acc_listener_service=0x7f040002;
         public static final int start_gps_listener_service=0x7f040001;
-        public static final int toggle_accelerometer=0x7f040002;
+        public static final int toggle_accelerometer=0x7f040003;
     }
 }

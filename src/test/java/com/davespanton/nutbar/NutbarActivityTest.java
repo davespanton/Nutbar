@@ -2,7 +2,10 @@ package com.davespanton.nutbar;
 
 import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
 import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +30,17 @@ public class NutbarActivityTest {
 	}
 	
 	@Test
-	public void shouldStartGpsListenerServiceOnCreate() {
-		ShadowActivity shadow = shadowOf(sut);
-		Intent intent = shadow.peekNextStartedService();
+	public void shouldStartListenerServicesOnCreate() {
+		Intent intent = getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
+		
+		intent = getNextStartedService();
+		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
+	}
+	
+	private Intent getNextStartedService() {
+		ShadowActivity shadow = shadowOf(sut);
+		return shadow.getNextStartedService();
 	}
 	
 	@Test

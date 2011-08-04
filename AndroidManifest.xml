@@ -23,6 +23,11 @@
       	<action android:name="com.davespanton.nutbar.START_GPS_LISTENER_SERVICE"/>
       </intent-filter>
     </service>
+    <service android:name=".service.AccelerometerListenerService">
+      <intent-filter>
+    	<action android:name="com.davespanton.nutbar.START_ACC_LISTENER_SERVICE"/>
+      </intent-filter>
+    </service>
   </application>
 
 </manifest>

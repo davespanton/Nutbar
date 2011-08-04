@@ -21,12 +21,13 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         toggleAccelerometer = (Button) findViewById(R.id.accelerometer_button);
         toggleAccelerometer.setOnClickListener(accelerometerButtonListener);
         
-        startGpsService();
+        startListenerService(getString(R.string.start_gps_listener_service));
+        startListenerService(getString(R.string.start_acc_listener_service));
     }
-
-    private void startGpsService() {
+    
+    private void startListenerService(String action) {
     	Intent intent = new Intent();
-        intent.setAction(getString(R.string.start_gps_listener_service));
+        intent.setAction(action);
         startService(intent);
     }
     
@@ -42,12 +43,12 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 
 	@Override
 	public void onGPSServiceConnected() {
-		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onGPSServiceDisconnected() {
-		// TODO Auto-generated method stub
+		
 	}
 	
     private OnClickListener accelerometerButtonListener = new OnClickListener() {
