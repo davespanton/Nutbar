@@ -11,14 +11,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Button;
 
 import com.davespanton.nutbar.activity.NutbarActivity;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class NutbarActivityTest {
 
 	private NutbarActivity sut;
@@ -33,7 +34,7 @@ public class NutbarActivityTest {
 	public void shouldStartListenerServicesOnCreate() {
 		Intent intent = getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
-		
+		getNextStartedService(); // ignore bound service call
 		intent = getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
 	}
@@ -75,4 +76,5 @@ public class NutbarActivityTest {
 		sut.onAccelerometerServiceDisconnected();
 		assertFalse(getAccelerometerButton().isEnabled());
 	}
+	
 }

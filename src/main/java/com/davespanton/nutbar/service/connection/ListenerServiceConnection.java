@@ -10,10 +10,15 @@ import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 public class ListenerServiceConnection implements ServiceConnection {
 
 	private NutbarActivity activity;
+	
 	private ListenerServiceBinder listenerBinder;
 	
-	public ListenerServiceConnection(NutbarActivity nutbar) {
-		activity = nutbar;
+	public ListenerServiceConnection() {
+		
+	}
+	
+	public void setActivity(NutbarActivity nutbarActivity) {
+		activity = nutbarActivity;
 	}
 
 	@Override

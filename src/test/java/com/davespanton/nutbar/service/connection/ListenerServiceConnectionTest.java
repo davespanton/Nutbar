@@ -9,11 +9,11 @@ import org.junit.runner.RunWith;
 import android.content.ComponentName;
 
 import com.davespanton.nutbar.activity.NutbarActivity;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.TestListenerService;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class ListenerServiceConnectionTest {
 	
 	private ListenerServiceConnection sut;
@@ -25,7 +25,8 @@ public class ListenerServiceConnectionTest {
 	public void setup() {
 		nutbar = new TestNutbarActivity();
 		nutbar.onCreate(null);
-		sut = new ListenerServiceConnection(nutbar);
+		sut = new ListenerServiceConnection();
+		sut.setActivity(nutbar);
 	}
 	
 	@Test
