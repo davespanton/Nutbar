@@ -39,6 +39,27 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         bindService(intent, conn, 0);
     }
     
+    @Override
+    public void onDestroy() {
+    	unbindService(accServiceConn);
+    	unbindService(gpsServiceConn);
+    	
+    	if(shouldStopListenerServices())
+    	{
+    		stopListenerService(getString(R.string.start_acc_listener_service));
+    		stopListenerService(getString(R.string.start_gps_listener_service));
+    	}
+    }
+    
+    private boolean shouldStopListenerServices() {
+		return !gpsServiceConn.isListening() && !accServiceConn.isListening();
+	}
+
+	private void stopListenerService(String action) {
+    	Intent intent = new Intent();
+    	intent.setAction(action);
+    	stopService(intent);
+    }
     
     @Override
 	public void onAccelerometerServiceConnected() {

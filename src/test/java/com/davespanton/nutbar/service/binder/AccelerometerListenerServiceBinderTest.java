@@ -9,21 +9,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.davespanton.nutbar.activity.ListenerServiceView;
-import com.davespanton.nutbar.service.TestListenerService;
+import com.davespanton.nutbar.service.StubListenerService;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccelerometerListenerServiceBinderTest {
 
 		private AccelerometerListenerServiceBinder sut;
-		private TestListenerService service;
+		private StubListenerService service;
 		
 		public boolean isConnected = false;
 		
 		@Before
 		public void setup() {
 			isConnected = false;
-			service = new TestListenerService();
+			service = new StubListenerService();
 			sut = new AccelerometerListenerServiceBinder(service);
 		}
 		

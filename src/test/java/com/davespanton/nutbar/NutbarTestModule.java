@@ -12,7 +12,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 	@Override 
 	protected void configure() {
 		bind(Ln.BaseConfig.class).toInstance(new NutbarLoggerConfig());
-		bind(ListenerServiceConnection.class).to(StubListenerServiceConnection.class);
+		bind(ListenerServiceConnection.class).toInstance(new StubListenerServiceConnection());
 	}
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {

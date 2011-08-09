@@ -32,4 +32,11 @@ public class ListenerServiceConnection implements ServiceConnection {
 		listenerBinder.onServiceDisconnection(activity);
 	}
 
+	public boolean isListening() {
+		if(listenerBinder != null) 
+			return listenerBinder.isListening();
+		
+		return false;
+	}
+
 }

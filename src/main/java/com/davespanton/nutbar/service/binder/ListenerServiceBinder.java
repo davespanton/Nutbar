@@ -13,15 +13,15 @@ public class ListenerServiceBinder extends Binder {
 		listenerService = service;
 	}
 	
-	public ListenerService getService() {
-		return listenerService;
-	}
-	
 	public void onServiceConnection(ListenerServiceView view) {
 		//template
 	}
 
 	public void onServiceDisconnection(ListenerServiceView view) {
 		// template
+	}
+
+	public boolean isListening() {
+		return listenerService.isListening();
 	}
 }

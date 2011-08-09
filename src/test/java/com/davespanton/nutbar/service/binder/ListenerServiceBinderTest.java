@@ -1,6 +1,6 @@
 package com.davespanton.nutbar.service.binder;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.davespanton.nutbar.service.ListenerService;
-import com.davespanton.nutbar.service.TestListenerService;
+import com.davespanton.nutbar.service.StubListenerService;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -20,7 +20,7 @@ public class ListenerServiceBinderTest {
 	
 	@Before
 	public void setup() {
-		service = new TestListenerService();
+		service = new StubListenerService();
 		sut = new ListenerServiceBinder(service);
 	}
 	
@@ -31,7 +31,11 @@ public class ListenerServiceBinderTest {
 	}
 	
 	@Test
-	public void shouldReturnCorrectService() {
-		assertEquals(service, sut.getService());
+	public void shouldReflectServicesListeningState() {
+		service.startListening();
+		assertTrue(sut.isListening());
+		service.stopListening();
+		assertFalse(sut.isListening());
 	}
+
 }
