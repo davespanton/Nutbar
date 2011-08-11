@@ -26,6 +26,8 @@
     <service android:name=".service.AccelerometerListenerService">
       <intent-filter>
     	<action android:name="com.davespanton.nutbar.START_ACC_LISTENER_SERVICE"/>
+    	<action android:name="com.davespanton.nutbar.ACC_SERVICE_START_LISTENING"/>
+    	<action android:name="com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING"/>
       </intent-filter>
     </service>
   </application>

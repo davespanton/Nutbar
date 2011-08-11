@@ -1,5 +1,6 @@
 package com.davespanton.nutbar.service;
 
+import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
 import roboguice.service.RoboService;
@@ -25,6 +26,17 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 		accelorometerSensor = sensorManager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER);
 	}
 	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		
+		if(intent.getAction() == getString(R.string.acc_service_start_listening))
+			startListening();
+		else if(intent.getAction() == getString(R.string.acc_service_stop_listening))
+			stopListening();
+		
+		return super.onStartCommand(intent, flags, startId);
+	}
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return binder;

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 
+import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
@@ -46,10 +47,31 @@ public class AccelerometerListenerServiceTest {
 		assertTrue(shadowSensorManager.hasListener(sut));
 	}
 	
+	@Test 
+	public void shouldRegisterListenerOnCorrectStartIntent() {
+		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.acc_service_start_listening));
+		sut.onStartCommand(i, 0, 0);
+		assertTrue(shadowSensorManager.hasListener(sut));
+	}
+	
+	private Intent getIntentWithAction(String action) {
+		Intent intent = new Intent();
+		intent.setAction(action);
+		return intent;
+	}
+	
 	@Test
 	public void shouldRemoveListenerOnStopListening() {
 		sut.startListening();
 		sut.stopListening();
+		assertFalse(shadowSensorManager.hasListener(sut));
+	}
+	
+	@Test
+	public void shouldRemoveListenerOnCorrectStopIntent() {
+		sut.startListening();
+		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.acc_service_stop_listening));
+		sut.onStartCommand(i, 0, 0);
 		assertFalse(shadowSensorManager.hasListener(sut));
 	}
 	
