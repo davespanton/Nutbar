@@ -84,7 +84,14 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     private OnClickListener accelerometerButtonListener = new OnClickListener() {
 		@Override
 		public void onClick(View view) {
+			Intent i = new Intent();
 			
+			if(accServiceConn.isListening())
+				i.setAction(getString(R.string.acc_service_stop_listening));
+			else
+				i.setAction(getString(R.string.acc_service_start_listening));
+			
+			startService(i);
 		}
     };
 }

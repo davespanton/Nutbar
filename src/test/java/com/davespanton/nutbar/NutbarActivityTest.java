@@ -20,6 +20,7 @@ import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
+import com.xtremelabs.robolectric.shadows.ShadowApplication;
 
 @RunWith(InjectedTestRunner.class)
 public class NutbarActivityTest {
@@ -101,5 +102,40 @@ public class NutbarActivityTest {
 		sut.onAccelerometerServiceConnected();
 		sut.onAccelerometerServiceDisconnected();
 		assertFalse(getAccelerometerButton().isEnabled());
+	}
+	
+	@Test
+	public void shouldStartInactiveAccServiceListeningOnAccButtonClick() {
+		sut.onAccelerometerServiceConnected();
+		
+		ShadowActivity shadow = shadowOf(sut);
+		
+		removeStartAndBindServicesFromShadowApplication();
+		
+		getAccelerometerButton().performClick();
+		Intent i = shadow.getNextStartedService();
+		assertEquals(getShadowApplication().getString(R.string.acc_service_start_listening), i.getAction());
+	}
+	
+	private void removeStartAndBindServicesFromShadowApplication() {
+		ShadowApplication shadow = getShadowApplication();
+		shadow.getNextStartedService();
+		shadow.getNextStartedService(); 
+		shadow.getNextStartedService();
+		shadow.getNextStartedService();
+	}
+	
+	@Test
+	public void shouldStopActiveAccServiceListeningOnAccButtonClick() {
+		sut.onAccelerometerServiceConnected();
+		((StubListenerServiceConnection) conn).setIsListening(true);
+		
+		ShadowActivity shadow = shadowOf(sut);
+		
+		removeStartAndBindServicesFromShadowApplication();
+		
+		getAccelerometerButton().performClick();
+		Intent i = shadow.getNextStartedService();
+		assertEquals(getShadowApplication().getString(R.string.acc_service_stop_listening), i.getAction());
 	}
 }
