@@ -1,5 +1,6 @@
 package com.davespanton.nutbar.service;
 
+import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
 import roboguice.service.RoboService;
@@ -35,6 +36,17 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	@Override
 	public void onDestroy() {
 		loc = null;
+	}
+	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		
+		if(intent.getAction() == getString(R.string.gps_service_start_listening))
+			startListening();
+		else if(intent.getAction() == getString(R.string.gps_service_stop_listening))
+			stopListening();
+		
+		return super.onStartCommand(intent, flags, startId);
 	}
 
 	public void startListening() {

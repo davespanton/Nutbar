@@ -5,5 +5,7 @@
     <string name="start_acc_listener_service">com.davespanton.nutbar.START_ACC_LISTENER_SERVICE</string><string name="toggle_accelerometer">Toggle Accelerometer</string>
     <string name="acc_service_start_listening">com.davespanton.nutbar.ACC_SERVICE_START_LISTENING</string>
     <string name="acc_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
+    <string name="gps_service_start_listening">com.davespanton.nutbar.GPS_SERVICE_START_LISTENING</string>
+    <string name="gps_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
     
 </resources>

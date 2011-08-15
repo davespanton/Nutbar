@@ -20,7 +20,6 @@ import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
-import com.xtremelabs.robolectric.shadows.ShadowApplication;
 
 @RunWith(InjectedTestRunner.class)
 public class NutbarActivityTest {
@@ -30,32 +29,30 @@ public class NutbarActivityTest {
 	@Inject
 	private ListenerServiceConnection conn;
 	
+	private ShadowActivity shadow;
+	
 	@Before
 	public void setup() {
 		sut = new NutbarActivity();
 		sut.onCreate(null);
+		shadow = shadowOf(sut);
 	}
 	
 	@Test
 	public void shouldStartListenerServicesOnCreate() {
-		Intent intent = getNextStartedService();
+		Intent intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
-		getNextStartedService(); // ignore bound service call
-		intent = getNextStartedService();
+		shadow.getNextStartedService(); // ignore bound service call
+		intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
-	}
-	
-	private Intent getNextStartedService() {
-		ShadowActivity shadow = shadowOf(sut);
-		return shadow.getNextStartedService();
 	}
 	
 	@Test
 	public void shouldStopListenerServicesIfIdleOnDestroy() {
 		sut.onDestroy();
-		Intent intent = getNextStoppedService();
+		Intent intent = shadow.getNextStoppedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
-		intent = getNextStoppedService();
+		intent = shadow.getNextStoppedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
 	}
 	
@@ -63,12 +60,7 @@ public class NutbarActivityTest {
 	public void shouldNotStopListenerServicesIfListening() {
 		((StubListenerServiceConnection) conn).setIsListening(true);
 		sut.onDestroy();
-		assertTrue(getNextStoppedService() == null);
-	}
-	
-	private Intent getNextStoppedService() {
-		ShadowActivity shadow = shadowOf(sut);
-		return shadow.getNextStoppedService();
+		assertTrue(shadow.getNextStoppedService() == null);
 	}
 	
 	@Test
@@ -108,31 +100,20 @@ public class NutbarActivityTest {
 	public void shouldStartInactiveAccServiceListeningOnAccButtonClick() {
 		sut.onAccelerometerServiceConnected();
 		
-		ShadowActivity shadow = shadowOf(sut);
-		
-		removeStartAndBindServicesFromShadowApplication();
+		shadow.clearStartedServices();
 		
 		getAccelerometerButton().performClick();
 		Intent i = shadow.getNextStartedService();
 		assertEquals(getShadowApplication().getString(R.string.acc_service_start_listening), i.getAction());
 	}
 	
-	private void removeStartAndBindServicesFromShadowApplication() {
-		ShadowApplication shadow = getShadowApplication();
-		shadow.getNextStartedService();
-		shadow.getNextStartedService(); 
-		shadow.getNextStartedService();
-		shadow.getNextStartedService();
-	}
 	
 	@Test
 	public void shouldStopActiveAccServiceListeningOnAccButtonClick() {
 		sut.onAccelerometerServiceConnected();
 		((StubListenerServiceConnection) conn).setIsListening(true);
 		
-		ShadowActivity shadow = shadowOf(sut);
-		
-		removeStartAndBindServicesFromShadowApplication();
+		shadow.clearStartedServices();
 		
 		getAccelerometerButton().performClick();
 		Intent i = shadow.getNextStartedService();
