@@ -42,15 +42,15 @@ public class GPSListenerServiceTest {
 	@Test
 	public void shouldAddListenerOnStartListening() {
 		sut.startListening();
-		assertTrue(shadow.hasListener(sut));
+		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 	@Test
 	public void shouldRemoveListenerOnStopListening() {
 		sut.startListening();
-		assertTrue(shadow.hasListener(sut));
+		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
 		sut.stopListening();
-		assertFalse(shadow.hasListener(sut));
+		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class GPSListenerServiceTest {
 		
 		sut.onStartCommand(i, 0, 0);
 		
-		assertTrue(shadow.hasListener(sut));
+		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 	@Test
@@ -90,7 +90,7 @@ public class GPSListenerServiceTest {
 		sut.startListening();
 		sut.onStartCommand(i, 0, 0);
 		
-		assertFalse(shadow.hasListener(sut));
+		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 }

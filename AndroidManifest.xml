@@ -6,13 +6,14 @@
 	android:versionName="0.0.1-SNAPSHOT">
     
   <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10"></uses-sdk>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
 
   <application 
   		android:icon="@drawable/icon" 
   		android:label="@string/app_name"
   		android:name=".application.NutbarApplication"
   		>
-    <activity android:name="activity.NutbarActivity">
+    <activity android:name=".activity.NutbarActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

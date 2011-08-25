@@ -28,6 +28,9 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         toggleAccelerometer = (Button) findViewById(R.id.accelerometer_button);
         toggleAccelerometer.setOnClickListener(accelerometerButtonListener);
         
+        gpsServiceConn.setActivity(this);
+        accServiceConn.setActivity(this);
+        
         startBindListenerService(getString(R.string.start_gps_listener_service), gpsServiceConn);
         startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
     }
@@ -49,6 +52,8 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     		stopListenerService(getString(R.string.start_acc_listener_service));
     		stopListenerService(getString(R.string.start_gps_listener_service));
     	}
+    	
+    	super.onDestroy();
     }
     
     private boolean shouldStopListenerServices() {

@@ -1,19 +1,21 @@
 package com.davespanton.nutbar.service;
 
-import com.davespanton.nutbar.R;
-import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
-
-import roboguice.service.RoboService;
+import android.app.Service;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 
-public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService {
+import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
+import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
-	private ListenerServiceBinder binder = new ListenerServiceBinder(this);
+public class AccelerometerListenerService extends Service implements SensorEventListener, ListenerService {
+
+	private ListenerServiceBinder binder = new AccelerometerListenerServiceBinder(this);
 	
 	private SensorManager sensorManager; 
 	private Sensor accelorometerSensor;
@@ -29,12 +31,17 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		if(intent.getAction() == getString(R.string.acc_service_start_listening))
+		if(intent.getAction().equals(getString(R.string.acc_service_start_listening)))
 			startListening();
-		else if(intent.getAction() == getString(R.string.acc_service_stop_listening))
+		else if(intent.getAction().equals(getString(R.string.acc_service_stop_listening)))
 			stopListening();
 		
 		return super.onStartCommand(intent, flags, startId);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		
 	}
 
 	@Override
@@ -44,25 +51,39 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		// TODO Auto-generated method stub
-		
+//		Log.d("ACC", "sensor changed " + 
+//				Double.toString(Math.floor(event.values[0])) + " " + 
+//				Double.toString(Math.floor(event.values[1])) + " " + 
+//				Double.toString(Math.floor(event.values[2])) );
+		Intent i = new Intent();
+		i.setAction(getString(R.string.gps_service_start_listening));
+		startService(i);
 	}
 
 	@Override
 	public void startListening() {
+		if(isListening)
+			return;
+		
 		isListening = sensorManager.registerListener(this, accelorometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
 	}
 
 	@Override
 	public void stopListening() {
 		sensorManager.unregisterListener(this, accelorometerSensor);
+		stopLocationListening();
 		isListening = false;
+	}
+	
+	private void stopLocationListening() {
+		Intent i = new Intent();
+		i.setAction(getString(R.string.gps_service_stop_listening));
+		startService(i);
 	}
 
 	@Override

@@ -1,15 +1,18 @@
 package com.davespanton.nutbar.service;
 
+import android.app.Service;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.IBinder;
+
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
-import roboguice.service.RoboService;
-import android.content.Intent;
-import android.location.LocationManager;
-import android.location.GpsStatus.Listener;
-import android.os.IBinder;
-
-public class GPSListenerService extends RoboService implements Listener, ListenerService {
+public class GPSListenerService extends Service implements LocationListener, ListenerService {
 
 	private ListenerServiceBinder binder = new ListenerServiceBinder(this);
 	
@@ -20,11 +23,6 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	@Override
 	public IBinder onBind(Intent intent) {
 		return binder;
-	}
-
-	@Override
-	public void onGpsStatusChanged(int event) {
-	
 	}
 	
 	@Override
@@ -40,25 +38,54 @@ public class GPSListenerService extends RoboService implements Listener, Listene
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
-		if(intent.getAction() == getString(R.string.gps_service_start_listening))
+		 
+		if(intent.getAction().equals(getString(R.string.gps_service_start_listening)))
 			startListening();
-		else if(intent.getAction() == getString(R.string.gps_service_stop_listening))
+		else if(intent.getAction().equals(getString(R.string.gps_service_stop_listening)))
 			stopListening();
 		
 		return super.onStartCommand(intent, flags, startId);
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		
+	}
+
 	public void startListening() {
-		isListening = loc.addGpsStatusListener(this);
+		if(isListening)
+			return;
+		
+		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+		isListening = true;
 	}
 	
 	public void stopListening() {
-		loc.removeGpsStatusListener(this);
+		loc.removeUpdates(this);
 		isListening = false;
 	}
 	
 	public boolean isListening() {
 		return isListening;
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		
 	}
 }

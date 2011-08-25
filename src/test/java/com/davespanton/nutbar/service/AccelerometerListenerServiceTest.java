@@ -1,8 +1,10 @@
 package com.davespanton.nutbar.service;
 
+import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static com.xtremelabs.robolectric.Robolectric.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +30,6 @@ public class AccelerometerListenerServiceTest {
 	
 	@Before
 	public void setup() {
-		
 		SensorManager sensorManager = (SensorManager) Robolectric.application.getSystemService(Service.SENSOR_SERVICE);
 		shadowSensorManager = (ShadowSensorManager) shadowOf(sensorManager);
 		sut = new AccelerometerListenerService();
@@ -99,6 +100,20 @@ public class AccelerometerListenerServiceTest {
 	public void shouldReturnListenerServiceBinderOnBind() {
 		IBinder binder = sut.onBind(new Intent());
 		assertTrue(binder instanceof ListenerServiceBinder);
+	}
+	
+	@Test
+	public void shouldSendStartGPSListeningIntentOnActivation() {
+		sut.onSensorChanged(null);
+		String expectedAction = getShadowApplication().getNextStartedService().getAction();
+		assertEquals(expectedAction, getShadowApplication().getString(R.string.gps_service_start_listening)); 
+	}
+	
+	@Test
+	public void shouldSendStopGPSListenerServiceOnStopListening() {
+		sut.stopListening();
+		String expectedAction = getShadowApplication().getNextStartedService().getAction();
+		assertEquals(expectedAction, getShadowApplication().getString(R.string.gps_service_stop_listening));
 	}
 	
 }
