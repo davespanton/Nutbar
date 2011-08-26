@@ -2,7 +2,6 @@ package com.davespanton.nutbar.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -22,6 +21,8 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	
 	private boolean isListening = false;
 	
+	private boolean hasBeenTripped = false;
+	
 	@Override
 	public void onCreate() {
 		sensorManager = (SensorManager) getApplication().getSystemService(SENSOR_SERVICE);
@@ -35,15 +36,10 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 			startListening();
 		else if(intent.getAction().equals(getString(R.string.acc_service_stop_listening)))
 			stopListening();
-		
-		return super.onStartCommand(intent, flags, startId);
+	
+		return START_STICKY;
 	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		
-	}
-
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		return binder;
@@ -56,13 +52,12 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-//		Log.d("ACC", "sensor changed " + 
-//				Double.toString(Math.floor(event.values[0])) + " " + 
-//				Double.toString(Math.floor(event.values[1])) + " " + 
-//				Double.toString(Math.floor(event.values[2])) );
-		Intent i = new Intent();
-		i.setAction(getString(R.string.gps_service_start_listening));
-		startService(i);
+		if(!hasBeenTripped) {
+			Intent i = new Intent();
+			i.setAction(getString(R.string.gps_service_start_listening));
+			startService(i);
+			hasBeenTripped = true;
+		}
 	}
 
 	@Override
@@ -76,16 +71,16 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	@Override
 	public void stopListening() {
 		sensorManager.unregisterListener(this, accelorometerSensor);
-		stopLocationListening();
-		isListening = false;
+		requestLocationListenerStop();
+		isListening = hasBeenTripped = false;
 	}
 	
-	private void stopLocationListening() {
+	private void requestLocationListenerStop() {
 		Intent i = new Intent();
 		i.setAction(getString(R.string.gps_service_stop_listening));
 		startService(i);
 	}
-
+	
 	@Override
 	public boolean isListening() {
 		return isListening;

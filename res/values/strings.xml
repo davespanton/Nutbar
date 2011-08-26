@@ -6,6 +6,6 @@
     <string name="acc_service_start_listening">com.davespanton.nutbar.ACC_SERVICE_START_LISTENING</string>
     <string name="acc_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
     <string name="gps_service_start_listening">com.davespanton.nutbar.GPS_SERVICE_START_LISTENING</string>
-    <string name="gps_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
+    <string name="gps_service_stop_listening">com.davespanton.nutbar.GPS_SERVICE_STOP_LISTENING</string>
     
 </resources>

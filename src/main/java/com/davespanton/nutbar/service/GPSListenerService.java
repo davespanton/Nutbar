@@ -38,13 +38,13 @@ public class GPSListenerService extends Service implements LocationListener, Lis
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		 
+		
 		if(intent.getAction().equals(getString(R.string.gps_service_start_listening)))
 			startListening();
 		else if(intent.getAction().equals(getString(R.string.gps_service_stop_listening)))
 			stopListening();
 		
-		return super.onStartCommand(intent, flags, startId);
+		return START_STICKY;
 	}
 
 	@Override
