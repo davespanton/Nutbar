@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
@@ -52,6 +53,15 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
+		if(event != null)
+		{
+			Log.v("ACC", 
+					Float.toString(event.values[0]) + " : " +
+					Float.toString(event.values[1]) + " : " +
+					Float.toString(event.values[2]) + " : "
+			);
+		}
+		
 		if(!hasBeenTripped) {
 			Intent i = new Intent();
 			i.setAction(getString(R.string.gps_service_start_listening));

@@ -17,6 +17,7 @@ public class SensorChangeMonitorTest {
 	private StubMonitorListener listener;
 	
 	private float threshold;
+	private float[] baseValues = {5f, 5f, 5f};
 	
 	@Before
 	public void setup() {
@@ -33,21 +34,45 @@ public class SensorChangeMonitorTest {
 	}
 	
 	@Test
-	public void shouldNotifyWhenSensorChangeExceedsThreshold() {
-		float testValue = threshold + 3.0f;
-		float[] values = {threshold, testValue, threshold};
+	public void shouldNotNotifyOnFirstSensorChange() {
+		sut.onSensorChanged(baseValues);
 		
-		sut.onSensorChanged(values);
+		assertFalse(listener.hasSensorMonitorChanged());
+	}
+	
+	@Test
+	public void shouldNotifyWhenSensorChangeExceedsThreshold() {
+		sut.onSensorChanged(baseValues);
+		
+		float testValue = threshold + 1f;
+		sut.onSensorChanged(getTweakedValuesFromBase(testValue));
 		
 		assertTrue(listener.hasSensorMonitorChanged());
 	}
 	
+	private float[] getTweakedValuesFromBase(float tweakBy) {
+		float[] copy = baseValues.clone();
+		copy[1] += tweakBy;
+		return copy;
+	}
+	
 	@Test
 	public void shouldNotNotifyWhenSensorChangeIsWithinThreshold() {
-		float testValue = threshold - 1.0f;
-		float[] values = {testValue, testValue, testValue};
+		sut.onSensorChanged(baseValues);
 		
-		sut.onSensorChanged(values);
+		float testValue = 1f;
+		sut.onSensorChanged(getTweakedValuesFromBase(testValue));
+		
+		assertFalse(listener.hasSensorMonitorChanged());
+	}
+	
+	@Test
+	public void shouldNotNotifyWhenMultipleSensorChangesAreWithinThreshold() {
+		sut.onSensorChanged(baseValues);
+		
+		for( float i = 1f; i < 10f; i++) {
+			sut.onSensorChanged(getTweakedValuesFromBase(i));
+		}
 		
 		assertFalse(listener.hasSensorMonitorChanged());
 	}

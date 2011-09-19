@@ -7,15 +7,25 @@ public class SensorChangeMonitor {
 	
 	private float threshold = 2.0f;
 	
+	private float[] baseValues;
+	
 	public SensorChangeMonitor(SensorMonitorListener monitorListener) {
 		listener = monitorListener;
 	}
 	
 	public void onSensorChanged(float[] values) {
-		for(float f : values) {
-			if( f > threshold)
+		if(baseValues == null) {
+			baseValues = values;
+			return;
+		}
+		
+		for(int i = 0; i < values.length; i++) {
+			float difference = Math.abs(baseValues[i] - values[i]);
+			if(difference > threshold)
 				listener.sensorMonitorTripped();
 		}
+		
+		baseValues = values;
 	}
 	
 	public float getThreshold() {
