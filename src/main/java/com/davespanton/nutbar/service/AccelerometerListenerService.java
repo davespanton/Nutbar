@@ -1,24 +1,29 @@
 package com.davespanton.nutbar.service;
 
-import android.app.Service;
+import roboguice.service.RoboService;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+import com.davespanton.nutbar.service.sensor.SensorChangeListener;
+import com.davespanton.nutbar.service.sensor.SensorMonitorListener;
+import com.google.inject.Inject;
 
-public class AccelerometerListenerService extends Service implements SensorEventListener, ListenerService {
+public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService, SensorMonitorListener {
 
 	private ListenerServiceBinder binder = new AccelerometerListenerServiceBinder(this);
 	
 	private SensorManager sensorManager; 
 	private Sensor accelorometerSensor;
+	
+	@Inject 
+	private SensorChangeListener sensorChangeMonitor;
 	
 	private boolean isListening = false;
 	
@@ -26,8 +31,12 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	
 	@Override
 	public void onCreate() {
+		super.onCreate();
+		
 		sensorManager = (SensorManager) getApplication().getSystemService(SENSOR_SERVICE);
 		accelorometerSensor = sensorManager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER);
+		
+		sensorChangeMonitor.setSensorChangeListener(this);
 	}
 	
 	@Override
@@ -53,21 +62,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		if(event != null)
-		{
-			Log.v("ACC", 
-					Float.toString(event.values[0]) + " : " +
-					Float.toString(event.values[1]) + " : " +
-					Float.toString(event.values[2]) + " : "
-			);
-		}
-		
-		if(!hasBeenTripped) {
-			Intent i = new Intent();
-			i.setAction(getString(R.string.gps_service_start_listening));
-			startService(i);
-			hasBeenTripped = true;
-		}
+		sensorChangeMonitor.onSensorChanged(event.values);
 	}
 
 	@Override
@@ -83,6 +78,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 		sensorManager.unregisterListener(this, accelorometerSensor);
 		requestLocationListenerStop();
 		isListening = hasBeenTripped = false;
+		sensorChangeMonitor.reset();
 	}
 	
 	private void requestLocationListenerStop() {
@@ -94,6 +90,16 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	@Override
 	public boolean isListening() {
 		return isListening;
+	}
+
+	@Override
+	public void sensorMonitorTripped() {
+		if(!hasBeenTripped) {
+			Intent i = new Intent();
+			i.setAction(getString(R.string.gps_service_start_listening));
+			startService(i);
+			hasBeenTripped = true;
+		}	
 	}
 
 }

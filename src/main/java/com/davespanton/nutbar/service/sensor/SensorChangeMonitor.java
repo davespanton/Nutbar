@@ -1,7 +1,7 @@
 package com.davespanton.nutbar.service.sensor;
 
 
-public class SensorChangeMonitor {
+public class SensorChangeMonitor implements SensorChangeListener {
 
 	private SensorMonitorListener listener;
 	
@@ -9,7 +9,7 @@ public class SensorChangeMonitor {
 	
 	private float[] baseValues;
 	
-	public SensorChangeMonitor(SensorMonitorListener monitorListener) {
+	public void setSensorChangeListener(SensorMonitorListener monitorListener) {
 		listener = monitorListener;
 	}
 	
@@ -21,14 +21,20 @@ public class SensorChangeMonitor {
 		
 		for(int i = 0; i < values.length; i++) {
 			float difference = Math.abs(baseValues[i] - values[i]);
+			
 			if(difference > threshold)
 				listener.sensorMonitorTripped();
 		}
 		
-		baseValues = values;
+		baseValues = values.clone();
 	}
 	
 	public float getThreshold() {
 		return threshold;
+	}
+
+	@Override
+	public void reset() {
+		baseValues = null;
 	}
 }

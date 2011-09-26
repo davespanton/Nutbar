@@ -22,7 +22,8 @@ public class SensorChangeMonitorTest {
 	@Before
 	public void setup() {
 		listener = new StubMonitorListener();
-		sut = new SensorChangeMonitor(listener);
+		sut = new SensorChangeMonitor();
+		sut.setSensorChangeListener(listener);
 		
 		threshold = sut.getThreshold();
 	}

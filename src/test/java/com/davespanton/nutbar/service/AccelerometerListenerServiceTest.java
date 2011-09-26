@@ -17,16 +17,22 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+import com.davespanton.nutbar.service.sensor.SensorChangeListener;
+import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
+import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowSensorManager;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class AccelerometerListenerServiceTest {
 
 	private AccelerometerListenerService sut;
 	private ShadowSensorManager shadowSensorManager;
+	
+	@Inject
+	private SensorChangeListener sensorChangeListener;
 	
 	@Before
 	public void setup() {
@@ -63,9 +69,19 @@ public class AccelerometerListenerServiceTest {
 	
 	@Test
 	public void shouldRemoveListenerOnStopListening() {
+		startStopListener();
+		assertFalse(shadowSensorManager.hasListener(sut));
+	}
+	
+	private void startStopListener() {
 		sut.startListening();
 		sut.stopListening();
-		assertFalse(shadowSensorManager.hasListener(sut));
+	}
+	
+	@Test
+	public void shouldResetMonitorOnStopListening() {
+		startStopListener();
+		assertTrue( ((StubSensorChangeMonitor) sensorChangeListener).hasBeenReset() );
 	}
 	
 	@Test
@@ -84,8 +100,7 @@ public class AccelerometerListenerServiceTest {
 	
 	@Test
 	public void shouldReturnIsNotListeningWhenNotListening() {
-		sut.startListening();
-		sut.stopListening();
+		startStopListener();
 		assertFalse(sut.isListening());
 	}
 	
@@ -104,7 +119,7 @@ public class AccelerometerListenerServiceTest {
 	
 	@Test
 	public void shouldSendStartGPSListeningIntentOnActivation() {
-		sut.onSensorChanged(null);
+		sut.sensorMonitorTripped();
 		String expectedAction = getShadowApplication().getNextStartedService().getAction();
 		assertEquals(expectedAction, getShadowApplication().getString(R.string.gps_service_start_listening)); 
 	}
@@ -115,5 +130,4 @@ public class AccelerometerListenerServiceTest {
 		String expectedAction = getShadowApplication().getNextStartedService().getAction();
 		assertEquals(expectedAction, getShadowApplication().getString(R.string.gps_service_stop_listening));
 	}
-	
 }
