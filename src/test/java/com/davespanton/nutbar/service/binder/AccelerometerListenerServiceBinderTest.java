@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.davespanton.nutbar.activity.ListenerServiceView;
+import com.davespanton.nutbar.StubListenerServiceView;
 import com.davespanton.nutbar.service.StubListenerService;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
@@ -17,13 +17,12 @@ public class AccelerometerListenerServiceBinderTest {
 
 		private AccelerometerListenerServiceBinder sut;
 		private StubListenerService service;
-		
-		public boolean isConnected = false;
+		private StubListenerServiceView testView;
 		
 		@Before
 		public void setup() {
-			isConnected = false;
 			service = new StubListenerService();
+			testView = new StubListenerServiceView();
 			sut = new AccelerometerListenerServiceBinder(service);
 		}
 		
@@ -37,38 +36,13 @@ public class AccelerometerListenerServiceBinderTest {
 		@Test
 		public void shouldCallAccelerometerConnectedOnBind() {
 			sut.onServiceConnection(testView);
-			assertTrue(isConnected);
+			assertTrue(testView.isAccelerometerServiceConnected());
 		}
 		
 		@Test
 		public void shouldCallAccelerometerDisconnectedOnUnbind() {
-			isConnected = true;
 			sut.onServiceDisconnection(testView);
-			assertFalse(isConnected);
+			assertFalse(testView.isAccelerometerServiceConnected());
 		}
-		
-		
-		private ListenerServiceView testView = new ListenerServiceView() {
-			
-			@Override
-			public void onAccelerometerServiceConnected() {
-				isConnected = true;
-				
-			}
 
-			@Override
-			public void onAccelerometerServiceDisconnected() {
-				isConnected = false;
-			}
-
-			@Override
-			public void onGPSServiceConnected() {
-				//not needed for test
-			}
-
-			@Override
-			public void onGPSServiceDisconnected() {
-				//not needed for test
-			}
-		};
 }

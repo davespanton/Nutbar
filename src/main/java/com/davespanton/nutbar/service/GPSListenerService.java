@@ -10,11 +10,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.service.binder.GPSListenerServiceBinder;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
 public class GPSListenerService extends Service implements LocationListener, ListenerService {
 
-	private ListenerServiceBinder binder = new ListenerServiceBinder(this);
+	private ListenerServiceBinder binder = new GPSListenerServiceBinder(this);
 	
 	private LocationManager loc; 
 	

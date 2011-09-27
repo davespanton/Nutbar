@@ -3,6 +3,7 @@ package com.davespanton.nutbar.activity;
 import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -78,12 +79,12 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 
 	@Override
 	public void onGPSServiceConnected() {
-		
+		Log.v("VIEW", "GPS connected");
 	}
 
 	@Override
 	public void onGPSServiceDisconnected() {
-		
+		Log.v("VIEW", "GPS disconnected");
 	}
 	
     private OnClickListener accelerometerButtonListener = new OnClickListener() {

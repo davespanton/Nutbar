@@ -13,10 +13,6 @@ public class ListenerServiceConnection implements ServiceConnection {
 	
 	private ListenerServiceBinder listenerBinder;
 	
-	public ListenerServiceConnection() {
-		
-	}
-	
 	public void setActivity(NutbarActivity nutbarActivity) {
 		activity = nutbarActivity;
 	}
