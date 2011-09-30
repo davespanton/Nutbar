@@ -2,7 +2,6 @@ package com.davespanton.nutbar.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,11 +10,10 @@ import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.GPSListenerServiceBinder;
-import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
 public class GPSListenerService extends Service implements LocationListener, ListenerService {
 
-	private ListenerServiceBinder binder = new GPSListenerServiceBinder(this);
+	private GPSListenerServiceBinder binder = new GPSListenerServiceBinder(this);
 	
 	private LocationManager loc; 
 	
@@ -46,11 +44,6 @@ public class GPSListenerService extends Service implements LocationListener, Lis
 			stopListening();
 		
 		return START_STICKY;
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		
 	}
 
 	public void startListening() {

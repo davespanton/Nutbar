@@ -44,5 +44,19 @@ public class AccelerometerListenerServiceBinderTest {
 			sut.onServiceDisconnection(testView);
 			assertFalse(testView.isAccelerometerServiceConnected());
 		}
+		
+		@Test
+		public void shouldUpdateViewWhenServiceStartsListening() {
+			sut.onServiceConnection(testView);
+			sut.onArmed();
+			assertTrue(testView.isArmed());
+		}
+		
+		@Test
+		public void shouldUpdateViewWhenServiceStopsListening() {
+			sut.onServiceConnection(testView);
+			sut.onDisarmed();
+			assertTrue(testView.isDisarmed());
+		}
 
 }

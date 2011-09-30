@@ -1,7 +1,6 @@
 package com.davespanton.nutbar.service.binder;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,14 +33,9 @@ public class GPSListenerServiceBinderTest {
 	}
 	
 	@Test
-	public void shouldCallAccelerometerConnectedOnBind() {
+	public void shouldCallViewWhenServiceIsTripped() {
 		sut.onServiceConnection(testView);
-		assertTrue(testView.isGPSServiceConnected());
-	}
-	
-	@Test
-	public void shouldCallAccelerometerDisconnectedOnUnbind() {
-		sut.onServiceDisconnection(testView);
-		assertFalse(testView.isGPSServiceConnected());
+		sut.onTripped();
+		assertTrue(testView.isTripped());
 	}
 }

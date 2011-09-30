@@ -4,9 +4,10 @@ import com.davespanton.nutbar.activity.ListenerServiceView;
 
 public class StubListenerServiceView implements ListenerServiceView {
 	
-	private boolean isAccConnected = false;
+	private enum States { armed, disarmed, tripped };
 	
-	private boolean isGPSConnected = false;
+	private boolean isAccConnected = false;
+	private States state;
 	
 	@Override
 	public void onAccelerometerServiceConnected() {
@@ -17,22 +18,35 @@ public class StubListenerServiceView implements ListenerServiceView {
 	public void onAccelerometerServiceDisconnected() {
 		isAccConnected = false;
 	}
-
-	@Override
-	public void onGPSServiceConnected() {
-		isGPSConnected = true;
-	}
-
-	@Override
-	public void onGPSServiceDisconnected() {
-		isGPSConnected = false;
-	}
 	
 	public boolean isAccelerometerServiceConnected() {
 		return isAccConnected;
 	}
+
+	@Override
+	public void onArmed() {
+		state = States.armed;
+	}
+
+	@Override
+	public void onDisarmed() {
+		state = States.disarmed;
+	}
+
+	@Override
+	public void onTripped() {
+		state = States.tripped;	
+	}
 	
-	public boolean isGPSServiceConnected() {
-		return isGPSConnected;
+	public boolean isArmed() {
+		return state == States.armed;
+	}
+	
+	public boolean isDisarmed() {
+		return state == States.disarmed;
+	}
+	
+	public boolean isTripped() {
+		return state == States.tripped;
 	}
 }

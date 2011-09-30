@@ -5,6 +5,8 @@ import com.davespanton.nutbar.service.ListenerService;
 
 public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
 
+	private ListenerServiceView listenerServiceView;
+	
 	public AccelerometerListenerServiceBinder(ListenerService service) {
 		super(service);
 	}
@@ -12,10 +14,20 @@ public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
 	@Override
 	public void onServiceConnection(ListenerServiceView view) {
 		view.onAccelerometerServiceConnected();
+		listenerServiceView = view;
 	}
 	
 	@Override
 	public void onServiceDisconnection(ListenerServiceView view) {
 		view.onAccelerometerServiceDisconnected();
+		listenerServiceView = null;
+	}
+	
+	public void onArmed() {
+		listenerServiceView.onArmed();
+	}
+	
+	public void onDisarmed() {
+		listenerServiceView.onDisarmed();
 	}
 }

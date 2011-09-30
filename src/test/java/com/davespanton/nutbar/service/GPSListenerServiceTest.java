@@ -93,4 +93,9 @@ public class GPSListenerServiceTest {
 		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
+	@Test
+	public void shouldCallBinderWhenStartingToListen() {
+		
+	}
+	
 }

@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.davespanton.nutbar.activity.NutbarActivity;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
@@ -42,7 +43,7 @@ public class NutbarActivityTest {
 	public void shouldStartListenerServicesOnCreate() {
 		Intent intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
-		shadow.getNextStartedService(); // ignore bound service call
+		shadow.getNextStartedService(); // ignore bound service call for this test
 		intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
 	}
@@ -66,6 +67,21 @@ public class NutbarActivityTest {
 	@Test
 	public void shouldHaveAccelerometerServiceToggleButton() {
 		assertNotNull(sut.findViewById(R.id.accelerometer_button));
+	}
+	
+	@Test
+	public void shouldHaveStatusTextField() {
+		assertNotNull(sut.findViewById(R.id.status_text));
+	}
+	
+	@Test
+	public void shouldHaveDisarmedStatusTextByDefault() {
+		String disarmedText = getShadowApplication().getString(R.string.disarmed);
+		assertEquals(disarmedText, getStatusText());
+	}
+	
+	private String getStatusText() {
+		return ((TextView) sut.findViewById(R.id.status_text)).getText().toString();
 	}
 	
 	@Test
@@ -118,5 +134,24 @@ public class NutbarActivityTest {
 		getAccelerometerButton().performClick();
 		Intent i = shadow.getNextStartedService();
 		assertEquals(getShadowApplication().getString(R.string.acc_service_stop_listening), i.getAction());
+	}
+
+	@Test
+	public void shouldUpdateTextFieldOnArmed() {
+		sut.onArmed();
+		assertEquals(getShadowApplication().getString(R.string.armed), getStatusText());
+	}
+	
+	@Test
+	public void shouldUpdateTextFieldOnTripped() {
+		sut.onTripped();
+		assertEquals(getShadowApplication().getString(R.string.tripped), getStatusText());
+	}
+	
+	@Test
+	public void shouldUpdateTextFieldOnDisarmed() {
+		sut.onArmed();
+		sut.onDisarmed();
+		assertEquals(getShadowApplication().getString(R.string.disarmed), getStatusText());
 	}
 }

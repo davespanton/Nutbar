@@ -3,10 +3,10 @@ package com.davespanton.nutbar.activity;
 import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
@@ -78,13 +78,18 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 	}
 
 	@Override
-	public void onGPSServiceConnected() {
-		Log.v("VIEW", "GPS connected");
+	public void onArmed() {
+		((TextView) findViewById(R.id.status_text)).setText(R.string.armed); 
 	}
-
+	
 	@Override
-	public void onGPSServiceDisconnected() {
-		Log.v("VIEW", "GPS disconnected");
+	public void onDisarmed() {
+		((TextView) findViewById(R.id.status_text)).setText(R.string.disarmed);
+	}
+	
+	@Override
+	public void onTripped() {
+		((TextView) findViewById(R.id.status_text)).setText(R.string.tripped);
 	}
 	
     private OnClickListener accelerometerButtonListener = new OnClickListener() {
