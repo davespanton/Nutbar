@@ -1,8 +1,9 @@
 package com.davespanton.nutbar.service;
 
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
 import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
-import static junit.framework.Assert.*;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,12 +16,13 @@ import android.location.LocationManager;
 import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+import com.davespanton.nutbar.service.binder.StubGPSListenerServiceBinder;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class GPSListenerServiceTest {
 
 	private GPSListenerService sut;
@@ -74,18 +76,22 @@ public class GPSListenerServiceTest {
 	
 	@Test
 	public void shouldRegisterListeningOnCorrectIntent() {
-		Intent i = new Intent();
-		i.setAction(getShadowApplication().getString(R.string.gps_service_start_listening));
+		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.gps_service_start_listening));
 		
 		sut.onStartCommand(i, 0, 0);
 		
 		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
+	private Intent getIntentWithAction(String action) {
+		Intent i = new Intent();
+		i.setAction(action);
+		return i;
+	}
+	
 	@Test
 	public void shouldUnregisterListenerOnCorrectIntent() {
-		Intent i = new Intent();
-		i.setAction(getShadowApplication().getString(R.string.gps_service_stop_listening));
+		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.gps_service_stop_listening));
 		
 		sut.startListening();
 		sut.onStartCommand(i, 0, 0);
@@ -93,8 +99,14 @@ public class GPSListenerServiceTest {
 		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
-	/*@Test
+	@Test
 	public void shouldCallBinderWhenStartingToListen() {
+		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.gps_service_start_listening));
+		StubGPSListenerServiceBinder binder = (StubGPSListenerServiceBinder) sut.onBind(i);
 		
-	}*/
+		sut.onStartCommand(i, 0, 0);
+		
+		assertTrue(binder.isTripped());
+		
+	}
 }

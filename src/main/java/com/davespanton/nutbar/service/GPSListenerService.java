@@ -60,6 +60,7 @@ public class GPSListenerService extends RoboService implements LocationListener,
 		
 		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 		isListening = true;
+		binder.onTripped();
 	}
 	
 	public void stopListening() {

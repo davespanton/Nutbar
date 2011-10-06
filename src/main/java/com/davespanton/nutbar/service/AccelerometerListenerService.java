@@ -9,15 +9,18 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
-import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.SensorMonitorListener;
 import com.google.inject.Inject;
 
 public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService, SensorMonitorListener {
 
-	private ListenerServiceBinder binder = new AccelerometerListenerServiceBinder(this);
+	@Inject
+	private AccelerometerBinderBuilder binderBuilder;
+	
+	private AccelerometerListenerServiceBinder binder;
 	
 	private SensorManager sensorManager; 
 	private Sensor accelorometerSensor;
@@ -32,6 +35,8 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
+		binder = binderBuilder.build(this);
 		
 		sensorManager = (SensorManager) getApplication().getSystemService(SENSOR_SERVICE);
 		accelorometerSensor = sensorManager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER);

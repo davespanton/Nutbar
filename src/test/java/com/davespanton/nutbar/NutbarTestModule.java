@@ -1,5 +1,7 @@
 package com.davespanton.nutbar;
 
+import com.davespanton.nutbar.service.binder.GPSBinderBuilder;
+import com.davespanton.nutbar.service.binder.StubGPSBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
@@ -16,6 +18,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(Ln.BaseConfig.class).toInstance(new NutbarLoggerConfig());
 		bind(ListenerServiceConnection.class).toInstance(new StubListenerServiceConnection());
 		bind(SensorChangeListener.class).toInstance(new StubSensorChangeMonitor());
+		bind(GPSBinderBuilder.class).to(StubGPSBinderBuilder.class);
 	}
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {
