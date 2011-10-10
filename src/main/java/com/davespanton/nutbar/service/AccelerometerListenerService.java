@@ -76,6 +76,9 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 			return;
 		
 		isListening = sensorManager.registerListener(this, accelorometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+		
+		if(isListening)
+			binder.onArmed();
 	}
 
 	@Override
@@ -84,6 +87,7 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 		requestLocationListenerStop();
 		isListening = hasBeenTripped = false;
 		sensorChangeMonitor.reset();
+		binder.onDisarmed();
 	}
 	
 	private void requestLocationListenerStop() {

@@ -18,7 +18,8 @@ import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
-import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
+import com.davespanton.nutbar.service.binder.StubAccelerometerListenerServiceBinder;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
 import com.google.inject.Inject;
@@ -112,9 +113,24 @@ public class AccelerometerListenerServiceTest {
 	}
 	
 	@Test
-	public void shouldReturnListenerServiceBinderOnBind() {
+	public void shouldReturnAccelerometerListenerServiceBinderOnBind() {
 		IBinder binder = sut.onBind(new Intent());
-		assertTrue(binder instanceof ListenerServiceBinder);
+		assertTrue(binder instanceof AccelerometerListenerServiceBinder);
+	}
+	
+	@Test
+	public void shouldTellBinderWhenStartingToListen() {
+		sut.startListening();
+		StubAccelerometerListenerServiceBinder binder = (StubAccelerometerListenerServiceBinder) sut.onBind(new Intent());
+		assertTrue(binder.isArmed());
+	}
+	
+	@Test
+	public void shouldTellBinderWhenNoLongerListening() {
+		sut.startListening();
+		sut.stopListening();
+		StubAccelerometerListenerServiceBinder binder = (StubAccelerometerListenerServiceBinder) sut.onBind(new Intent());
+		assertFalse(binder.isArmed());
 	}
 	
 	@Test

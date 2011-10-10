@@ -1,5 +1,6 @@
 package com.davespanton.nutbar.application;
 
+import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.binder.GPSBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
@@ -15,6 +16,7 @@ public class NutbarModule extends AbstractAndroidModule {
 		bind(ListenerServiceConnection.class);
 		bind(SensorChangeListener.class).to(SensorChangeMonitor.class);
 		bind(GPSBinderBuilder.class);
+		bind(AccelerometerBinderBuilder.class);
 	}
 
 }
