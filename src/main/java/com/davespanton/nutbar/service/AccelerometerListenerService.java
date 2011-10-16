@@ -104,11 +104,25 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	@Override
 	public void sensorMonitorTripped() {
 		if(!hasBeenTripped) {
-			Intent i = new Intent();
-			i.setAction(getString(R.string.gps_service_start_listening));
-			startService(i);
+			startLocationService();
+			binder.onTripped();
 			hasBeenTripped = true;
 		}	
+	}
+	
+	private void startLocationService() {
+		Intent i = new Intent();
+		i.setAction(getString(R.string.gps_service_start_listening));
+		startService(i);
+	}
+
+	public void updateBinder() {
+		if(hasBeenTripped)
+			binder.onTripped();
+		else if(isListening)
+			binder.onArmed();
+		else
+			binder.onDisarmed();
 	}
 
 }

@@ -18,7 +18,6 @@ import android.os.IBinder;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
-import com.davespanton.nutbar.service.binder.StubGPSListenerServiceBinder;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 
@@ -97,16 +96,5 @@ public class GPSListenerServiceTest {
 		sut.onStartCommand(i, 0, 0);
 		
 		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
-	}
-	
-	@Test
-	public void shouldCallBinderWhenStartingToListen() {
-		Intent i = getIntentWithAction(getShadowApplication().getString(R.string.gps_service_start_listening));
-		StubGPSListenerServiceBinder binder = (StubGPSListenerServiceBinder) sut.onBind(i);
-		
-		sut.onStartCommand(i, 0, 0);
-		
-		assertTrue(binder.isTripped());
-		
 	}
 }

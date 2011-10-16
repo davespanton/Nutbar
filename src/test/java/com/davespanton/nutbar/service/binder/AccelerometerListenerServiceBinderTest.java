@@ -9,19 +9,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.davespanton.nutbar.StubListenerServiceView;
-import com.davespanton.nutbar.service.StubListenerService;
+import com.davespanton.nutbar.service.StubAccelerometerListenerService;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
 public class AccelerometerListenerServiceBinderTest {
 
 		private AccelerometerListenerServiceBinder sut;
-		private StubListenerService service;
+		private StubAccelerometerListenerService service;
 		private StubListenerServiceView testView;
 		
 		@Before
 		public void setup() {
-			service = new StubListenerService();
+			service = new StubAccelerometerListenerService();
+			service.setBinder(sut);
 			testView = new StubListenerServiceView();
 			sut = new AccelerometerListenerServiceBinder(service);
 		}
@@ -38,7 +39,7 @@ public class AccelerometerListenerServiceBinderTest {
 			sut.onServiceConnection(testView);
 			assertTrue(testView.isAccelerometerServiceConnected());
 		}
-		
+			
 		@Test
 		public void shouldCallAccelerometerDisconnectedOnUnbind() {
 			sut.onServiceDisconnection(testView);
@@ -57,6 +58,13 @@ public class AccelerometerListenerServiceBinderTest {
 			sut.onServiceConnection(testView);
 			sut.onDisarmed();
 			assertTrue(testView.isDisarmed());
+		}
+		
+		@Test
+		public void shouldUpdateViewWhenTripped() {
+			sut.onServiceConnection(testView);
+			sut.onTripped();
+			assertTrue(testView.isTripped());
 		}
 
 }

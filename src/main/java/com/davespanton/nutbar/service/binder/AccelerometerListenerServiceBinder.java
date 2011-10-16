@@ -1,20 +1,23 @@
 package com.davespanton.nutbar.service.binder;
 
 import com.davespanton.nutbar.activity.ListenerServiceView;
-import com.davespanton.nutbar.service.ListenerService;
+import com.davespanton.nutbar.service.AccelerometerListenerService;
 
 public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
 
 	private ListenerServiceView listenerServiceView;
+	private AccelerometerListenerService accelerometerListenerService;
 	
-	public AccelerometerListenerServiceBinder(ListenerService service) {
+	public AccelerometerListenerServiceBinder(AccelerometerListenerService service) {
 		super(service);
+		accelerometerListenerService = service;
 	}
 
 	@Override
 	public void onServiceConnection(ListenerServiceView view) {
 		view.onAccelerometerServiceConnected();
 		listenerServiceView = view;
+		accelerometerListenerService.updateBinder();
 	}
 	
 	@Override
@@ -29,5 +32,9 @@ public class AccelerometerListenerServiceBinder extends ListenerServiceBinder {
 	
 	public void onDisarmed() {
 		listenerServiceView.onDisarmed();
+	}
+	
+	public void onTripped() {
+		listenerServiceView.onTripped();
 	}
 }

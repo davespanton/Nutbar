@@ -8,18 +8,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.davespanton.nutbar.injected.InjectedTestRunner;
-import com.davespanton.nutbar.service.StubListenerService;
+import com.davespanton.nutbar.service.AccelerometerListenerService;
 
 @RunWith(InjectedTestRunner.class)
 public class AccelerometerBinderBuilderTest {
 
 	private AccelerometerBinderBuilder sut;
-	private StubListenerService service;
+	private AccelerometerListenerService service;
 	
 	@Before
 	public void setup() {
 		sut = new AccelerometerBinderBuilder();
-		service = new StubListenerService();
+		service = new AccelerometerListenerService();
 	}
 	
 	@After

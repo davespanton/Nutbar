@@ -1,6 +1,6 @@
 package com.davespanton.nutbar.service;
 
-import roboguice.service.RoboService;
+import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,16 +9,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.davespanton.nutbar.R;
-import com.davespanton.nutbar.service.binder.GPSBinderBuilder;
-import com.davespanton.nutbar.service.binder.GPSListenerServiceBinder;
-import com.google.inject.Inject;
+import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 
-public class GPSListenerService extends RoboService implements LocationListener, ListenerService {
+public class GPSListenerService extends Service implements LocationListener, ListenerService {
 
-	@Inject
-	private GPSBinderBuilder binderBuilder;
-	
-	private GPSListenerServiceBinder binder;
+	private ListenerServiceBinder binder;
 	
 	private LocationManager loc; 
 
@@ -33,14 +28,13 @@ public class GPSListenerService extends RoboService implements LocationListener,
 	public void onCreate() {
 		super.onCreate();
 		loc = (LocationManager) getSystemService(LOCATION_SERVICE);
-		binder = binderBuilder.build(this);
+		binder = new ListenerServiceBinder(this);
 	}
 
 	@Override
 	public void onDestroy() {
 		loc = null;
 		binder = null;
-		binderBuilder = null;
 	}
 	
 	@Override
@@ -60,7 +54,6 @@ public class GPSListenerService extends RoboService implements LocationListener,
 		
 		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 		isListening = true;
-		binder.onTripped();
 	}
 	
 	public void stopListening() {

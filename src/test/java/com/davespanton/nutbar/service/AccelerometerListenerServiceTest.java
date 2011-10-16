@@ -42,7 +42,7 @@ public class AccelerometerListenerServiceTest {
 		sut = new AccelerometerListenerService();
 		sut.onCreate();
 	}
-	
+	 
 	@After
 	public void teardown() {
 		sut = null;
@@ -134,6 +134,13 @@ public class AccelerometerListenerServiceTest {
 	}
 	
 	@Test
+	public void shouldTellBinderWhenTripped() {
+		sut.sensorMonitorTripped();
+		StubAccelerometerListenerServiceBinder binder = (StubAccelerometerListenerServiceBinder) sut.onBind(new Intent());
+		assertTrue(binder.isTripped());
+	}
+	
+	@Test
 	public void shouldSendStartGPSListeningIntentOnActivation() {
 		sut.sensorMonitorTripped();
 		String expectedAction = getShadowApplication().getNextStartedService().getAction();
@@ -145,5 +152,20 @@ public class AccelerometerListenerServiceTest {
 		sut.stopListening();
 		String expectedAction = getShadowApplication().getNextStartedService().getAction();
 		assertEquals(expectedAction, getShadowApplication().getString(R.string.gps_service_stop_listening));
+	}
+	
+	@Test
+	public void shouldUpdateBinderWhenRequested() {
+		StubAccelerometerListenerServiceBinder binder = (StubAccelerometerListenerServiceBinder) sut.onBind(new Intent());
+		
+		sut.startListening();
+		binder.onDisarmed();
+		sut.updateBinder();
+		assertTrue(binder.isArmed());
+		
+		sut.sensorMonitorTripped();
+		binder.onDisarmed();
+		sut.updateBinder();
+		assertTrue(binder.isTripped());
 	}
 }
