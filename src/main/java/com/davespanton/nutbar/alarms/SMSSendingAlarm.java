@@ -3,9 +3,10 @@ package com.davespanton.nutbar.alarms;
 import android.telephony.SmsManager;
 
 public class SMSSendingAlarm {
-
-	private static final String destinationAddress = "";
-	private static final String bodyText = "Your thingy is on the move";
+	
+	//TODO move to prefs
+	private String destinationAddress = "0";
+	private String bodyText = "Your thingy is on the move";
 	
 	private SmsManager smsManager = SmsManager.getDefault();
 	
