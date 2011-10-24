@@ -5,7 +5,7 @@ import android.telephony.SmsManager;
 public class SMSSendingAlarm {
 	
 	//TODO move to prefs
-	private String destinationAddress = "0";
+	private String destinationAddress = "+447871800784";
 	private String bodyText = "Your thingy is on the move";
 	
 	private SmsManager smsManager = SmsManager.getDefault();

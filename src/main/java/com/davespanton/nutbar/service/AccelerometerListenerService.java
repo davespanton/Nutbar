@@ -45,6 +45,25 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	}
 	
 	@Override
+	public void onDestroy() {
+		binder = null;
+		binderBuilder = null;
+		sensorManager = null;
+		accelorometerSensor = null;
+		sensorChangeMonitor = null;
+		
+		stopAlarmService();
+		
+		super.onDestroy();
+	}
+	
+	private void stopAlarmService() {
+		Intent intent = new Intent();
+		intent.setAction(getString(R.string.alarm_service_trip));
+		stopService(intent);
+	}
+	
+	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		if(intent.getAction().equals(getString(R.string.acc_service_start_listening)))
@@ -105,6 +124,7 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	public void sensorMonitorTripped() {
 		if(!hasBeenTripped) {
 			startLocationService();
+			startAlarmService();
 			binder.onTripped();
 			hasBeenTripped = true;
 		}	
@@ -113,6 +133,12 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	private void startLocationService() {
 		Intent i = new Intent();
 		i.setAction(getString(R.string.gps_service_start_listening));
+		startService(i);
+	}
+	
+	private void startAlarmService() {
+		Intent i = new Intent();
+		i.setAction(getString(R.string.alarm_service_trip));
 		startService(i);
 	}
 
