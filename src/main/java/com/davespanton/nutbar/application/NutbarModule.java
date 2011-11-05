@@ -2,6 +2,7 @@ package com.davespanton.nutbar.application;
 
 import roboguice.config.AbstractAndroidModule;
 
+import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
@@ -17,6 +18,7 @@ public class NutbarModule extends AbstractAndroidModule {
 		bind(SensorChangeListener.class).to(SensorChangeMonitor.class);
 		bind(AccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class);
+		bind(OptionsMenuDelegate.class);
 	}
 
 }

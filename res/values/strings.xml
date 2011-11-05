@@ -10,6 +10,10 @@
     <string name="disarmed">Disarmed</string>
     <string name="armed">Armed</string>
     <string name="tripped">Tripped</string>
+    <string name="pref_sms_alarm_number">PREF_SMS_ALARM_NUMBER</string>
+    <string name="sms_alarm_number">SMS Alarm Number</string>
+    <string name="settings">Settings</string>
+    <string name="start_preference_activity">com.davespanton.nutbar.START_PREFERENCE_ACTIVITY</string>
     
     
 </resources>

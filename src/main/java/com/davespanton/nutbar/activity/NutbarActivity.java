@@ -3,12 +3,15 @@ package com.davespanton.nutbar.activity;
 import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.google.inject.Inject;
 
@@ -20,6 +23,9 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     private ListenerServiceConnection gpsServiceConn;
     @Inject
     private ListenerServiceConnection accServiceConn;
+    
+    @Inject
+    private OptionsMenuDelegate optionsMenuDelegate;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,7 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
     }
     
-    private void startBindListenerService(String action, ListenerServiceConnection conn) {
+	private void startBindListenerService(String action, ListenerServiceConnection conn) {
     	Intent intent = new Intent();
         intent.setAction(action);
         startService(intent);
@@ -66,7 +72,19 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     	intent.setAction(action);
     	stopService(intent);
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		return optionsMenuDelegate.populateOptionsMenu(this, menu);
+	}
     
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		optionsMenuDelegate.onOptionsItemSelected(item);
+		return true;
+	}
+	
     @Override
 	public void onAccelerometerServiceConnected() {
 		toggleAccelerometer.setEnabled(true);

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.davespanton.nutbar.StubListenerServiceView;
+import com.davespanton.nutbar.activity.StubListenerServiceView;
 import com.davespanton.nutbar.service.StubAccelerometerListenerService;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 

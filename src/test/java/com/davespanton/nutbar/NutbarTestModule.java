@@ -4,6 +4,8 @@ import roboguice.config.AbstractAndroidModule;
 import roboguice.util.Ln;
 import android.util.Log;
 
+import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
+import com.davespanton.nutbar.activity.menu.StubOptionsMenuDelegate;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.alarms.StubSmsSendingAlarm;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
@@ -22,6 +24,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(SensorChangeListener.class).toInstance(new StubSensorChangeMonitor());
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm());
+		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
 	}
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {
