@@ -1,5 +1,6 @@
 package com.davespanton.nutbar;
 
+import com.xtremelabs.robolectric.Robolectric;
 import roboguice.config.AbstractAndroidModule;
 import roboguice.util.Ln;
 import android.util.Log;
@@ -23,7 +24,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(ListenerServiceConnection.class).toInstance(new StubListenerServiceConnection());
 		bind(SensorChangeListener.class).toInstance(new StubSensorChangeMonitor());
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
-		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm());
+		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm(Robolectric.application.getApplicationContext()));
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
 	}
 

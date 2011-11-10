@@ -33,8 +33,7 @@ public class OptionsMenuDelegate {
 	}
 
 	private void launchSettingsActivity() {
-		Intent i = new Intent();
-		i.setAction(activity.getString(R.string.start_preference_activity));
+		Intent i = new Intent(activity.getString(R.string.start_preference_activity));
 		activity.startActivity(i);
 	}
 }

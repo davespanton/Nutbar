@@ -1,10 +1,16 @@
 package com.davespanton.nutbar.alarms;
 
+import android.content.Context;
+
 public class StubSmsSendingAlarm extends SMSSendingAlarm {
 
 	private int tripCount = 0;
-	
-	@Override
+
+    public StubSmsSendingAlarm(Context context) {
+        super(context);
+    }
+
+    @Override
 	public void tripAlarm() {
 		tripCount++;
 	}

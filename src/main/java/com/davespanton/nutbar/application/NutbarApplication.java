@@ -1,20 +1,16 @@
 package com.davespanton.nutbar.application;
 
-import java.util.List;
-
-import android.util.Log;
-
 import com.google.inject.Module;
-
 import roboguice.application.RoboApplication;
+
+import java.util.List;
 
 public class NutbarApplication extends RoboApplication {
 
-	private Module module = new NutbarModule();
+	private Module module = new NutbarModule(this);
 	
 	@Override
 	protected void addApplicationModules(List<Module> modules) {
-		Log.v("APP", "adding modules");
 		modules.add(module);
 	}
 	

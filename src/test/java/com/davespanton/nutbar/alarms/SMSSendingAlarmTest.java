@@ -1,5 +1,9 @@
 package com.davespanton.nutbar.alarms;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.preference.PreferenceManager;
+import com.davespanton.nutbar.R;
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -18,24 +22,39 @@ public class SMSSendingAlarmTest {
 
 	private SMSSendingAlarm sut;
 	
-	private ShadowSmsManager shadoSmsManager;
+	private ShadowSmsManager shadowSmsManager;
+
+    private SharedPreferences sharedPreferences;
+
+    private final String testDestinationAddress = "01234567";
 	
 	@Before
 	public void setup() {
-		sut = new SMSSendingAlarm();
-		shadoSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
-	}
+		sut = new SMSSendingAlarm(Robolectric.getShadowApplication().getApplicationContext());
+		shadowSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
+        setupTestPreferences();
+    }
 
-	@After
+    private void setupTestPreferences() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Robolectric.getShadowApplication().getString(R.string.pref_sms_alarm_number), testDestinationAddress);
+        editor.commit();
+    }
+
+    @After
 	public void tearDown() {
 		sut = null;
-		shadoSmsManager = null;
+		shadowSmsManager = null;
 	}
 	
 	@Test
 	public void shouldSendSMSOnTrip() {
 		sut.tripAlarm();
-		
-		Assert.assertNotNull(shadoSmsManager.getLastSentTextMessageParams());
+
+        ShadowSmsManager.TextSmsParams sentTextParams = shadowSmsManager.getLastSentTextMessageParams();
+
+        Assert.assertEquals(testDestinationAddress, sentTextParams.getDestinationAddress());
+        Assert.assertEquals(Robolectric.application.getString(R.string.sms_alarm_body), sentTextParams.getText());
 	}
 }

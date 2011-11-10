@@ -18,7 +18,7 @@ import com.google.inject.Inject;
 public class NutbarActivity extends RoboActivity implements ListenerServiceView {
 
     private Button toggleAccelerometer;
-    
+     
     @Inject
     private ListenerServiceConnection gpsServiceConn;
     @Inject

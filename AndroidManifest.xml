@@ -19,8 +19,9 @@
       </intent-filter>
     </activity>
     <activity android:name=".activity.NutbarPreferenceActivity">
-    	<intent-filter>	
+      <intent-filter>
     	<action android:name="com.davespanton.nutbar.START_PREFERENCE_ACTIVITY" />
+        <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
     <service android:name=".service.GPSListenerService">

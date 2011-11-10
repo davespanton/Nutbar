@@ -5,3 +5,7 @@ build.xml
 .settings/
 target/
 tmp/
+.idea*
+.idea/
+nutbar.iml
+bin/
