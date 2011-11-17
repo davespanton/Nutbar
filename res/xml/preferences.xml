@@ -6,7 +6,11 @@
 
 	<EditTextPreference 
 		android:title="@string/sms_alarm_number"
-		android:key="@string/pref_sms_alarm_number"
-	/>
+		android:key="sms_alarm_key"
+        android:summary="@string/sms_alarm_no_number"
+        android:inputType="number"
+    />
+
+    
 	
 </PreferenceScreen>

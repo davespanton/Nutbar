@@ -1,19 +1,18 @@
 package com.davespanton.nutbar.service;
 
-import roboguice.service.RoboService;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.SensorMonitorListener;
 import com.google.inject.Inject;
+import roboguice.service.RoboService;
 
 public class AccelerometerListenerService extends RoboService implements SensorEventListener, ListenerService, SensorMonitorListener {
 
@@ -103,16 +102,9 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	@Override
 	public void stopListening() {
 		sensorManager.unregisterListener(this, accelorometerSensor);
-		requestLocationListenerStop();
 		isListening = hasBeenTripped = false;
 		sensorChangeMonitor.reset();
 		binder.onDisarmed();
-	}
-	
-	private void requestLocationListenerStop() {
-		Intent i = new Intent();
-		i.setAction(getString(R.string.gps_service_stop_listening));
-		startService(i);
 	}
 	
 	@Override
@@ -123,17 +115,10 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	@Override
 	public void sensorMonitorTripped() {
 		if(!hasBeenTripped) {
-			startLocationService();
 			startAlarmService();
 			binder.onTripped();
 			hasBeenTripped = true;
 		}	
-	}
-	
-	private void startLocationService() {
-		Intent i = new Intent();
-		i.setAction(getString(R.string.gps_service_start_listening));
-		startService(i);
 	}
 	
 	private void startAlarmService() {

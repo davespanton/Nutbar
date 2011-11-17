@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">nutbar</string>
+    <string name="app_name">Le Nutbar</string>
+
     <string name="start_gps_listener_service">com.davespanton.nutbar.START_GPS_LISTENER_SERVICE</string>
-    <string name="start_acc_listener_service">com.davespanton.nutbar.START_ACC_LISTENER_SERVICE</string><string name="toggle_accelerometer">Toggle Accelerometer</string><string name="alarm_service_trip">com.davespanton.nutbar.ALARM_SERVICE_TRIP</string>
+    <string name="start_acc_listener_service">com.davespanton.nutbar.START_ACC_LISTENER_SERVICE</string>
+    <string name="alarm_service_trip">com.davespanton.nutbar.ALARM_SERVICE_TRIP</string>
+    <string name="start_preference_activity">com.davespanton.nutbar.START_PREFERENCE_ACTIVITY</string>
+
     <string name="acc_service_start_listening">com.davespanton.nutbar.ACC_SERVICE_START_LISTENING</string>
     <string name="acc_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
     <string name="gps_service_start_listening">com.davespanton.nutbar.GPS_SERVICE_START_LISTENING</string>
     <string name="gps_service_stop_listening">com.davespanton.nutbar.GPS_SERVICE_STOP_LISTENING</string>
+
+    <string name="disarm">Disarm</string>
     <string name="disarmed">Disarmed</string>
+    <string name="arm">Arm</string>
     <string name="armed">Armed</string>
+    <string name="reset">Reset</string>
     <string name="tripped">Tripped</string>
-    <string name="pref_sms_alarm_number">PREF_SMS_ALARM_NUMBER</string>
-    <string name="sms_alarm_number">SMS Alarm Number</string>
+    <string name="current_status">Current status:</string>
     <string name="settings">Settings</string>
-    <string name="start_preference_activity">com.davespanton.nutbar.START_PREFERENCE_ACTIVITY</string>
+    <string name="sms_alarm_number">SMS Alarm Number</string>
+    <string name="sms_alarm_no_number">No number set</string>
     <string name="sms_alarm_body">Your thingy is going walkabout!</string>
-    
+
 </resources>

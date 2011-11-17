@@ -82,6 +82,11 @@ public class NutbarActivityTest {
 	public void shouldHaveStatusTextField() {
 		assertNotNull(sut.findViewById(R.id.status_text));
 	}
+
+    @Test
+    public void shouldHaveStatusTitleTextField() {
+        assertNotNull(sut.findViewById(R.id.status_text_title));
+    }
 	
 	@Test
 	public void shouldHaveDisarmedStatusTextByDefault() {
@@ -91,6 +96,16 @@ public class NutbarActivityTest {
 	
 	private String getStatusText() {
 		return ((TextView) sut.findViewById(R.id.status_text)).getText().toString();
+	}
+
+    @Test
+    public void shouldHaveCorrectStatusTitleText() {
+        String statusTitle = getShadowApplication().getString(R.string.current_status);
+        assertEquals(statusTitle, getStatusTitleText());
+    }
+
+    private String getStatusTitleText() {
+		return ((TextView) sut.findViewById(R.id.status_text_title)).getText().toString();
 	}
 	
 	@Test
@@ -104,8 +119,8 @@ public class NutbarActivityTest {
 	
 	@Test
 	public void shouldHaveAccelerometerServiceToggleButtonWithCorrectLabel() {
-		String expectedLabel = sut.getResources().getString(R.string.toggle_accelerometer);
-		assertEquals(getAccelerometerButton().getText(), expectedLabel);
+		String expectedLabel = sut.getResources().getString(R.string.arm);
+		assertEquals(expectedLabel, getAccelerometerButton().getText());
 	}
 	
 	@Test 
@@ -163,8 +178,31 @@ public class NutbarActivityTest {
 		sut.onDisarmed();
 		assertEquals(getShadowApplication().getString(R.string.disarmed), getStatusText());
 	}
-	
-	@Test
+
+    @Test
+    public void shouldUpdateButtonTextOnArmed() {
+        sut.onArmed();
+        assertEquals(getShadowApplication().getString(R.string.disarm), getButtonText());
+    }
+
+    private String getButtonText() {
+        return ((Button) sut.findViewById(R.id.accelerometer_button)).getText().toString();
+    }
+
+    @Test
+    public void shouldUpdateButtonTextOnDisarmed() {
+        sut.onArmed();
+        sut.onDisarmed();
+        assertEquals(getShadowApplication().getString(R.string.arm), getButtonText());
+    }
+
+    @Test
+    public void shouldUpdateButtonTextOnTripped() {
+        sut.onTripped();
+        assertEquals(getShadowApplication().getString(R.string.reset), getButtonText());
+    }
+
+    @Test
 	public void shouldCallDelegateToCreateOptionsMenu() {
 		sut.onCreateOptionsMenu(new TestMenu(Robolectric.application));
 		assertTrue(((StubOptionsMenuDelegate) optionsMenuDelegate).hasBeenPopulated());

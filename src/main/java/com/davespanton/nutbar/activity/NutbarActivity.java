@@ -97,17 +97,20 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 
 	@Override
 	public void onArmed() {
-		((TextView) findViewById(R.id.status_text)).setText(R.string.armed); 
+		((TextView) findViewById(R.id.status_text)).setText(R.string.armed);
+        ((Button) findViewById(R.id.accelerometer_button)).setText(R.string.disarm);
 	}
 	
 	@Override
 	public void onDisarmed() {
 		((TextView) findViewById(R.id.status_text)).setText(R.string.disarmed);
+        ((Button) findViewById(R.id.accelerometer_button)).setText(R.string.arm);
 	}
 	
 	@Override
 	public void onTripped() {
 		((TextView) findViewById(R.id.status_text)).setText(R.string.tripped);
+        ((Button) findViewById(R.id.accelerometer_button)).setText(R.string.reset);
 	}
 	
     private OnClickListener accelerometerButtonListener = new OnClickListener() {

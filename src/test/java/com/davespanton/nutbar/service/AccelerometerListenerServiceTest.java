@@ -139,27 +139,12 @@ public class AccelerometerListenerServiceTest {
 		StubAccelerometerListenerServiceBinder binder = (StubAccelerometerListenerServiceBinder) sut.onBind(new Intent());
 		assertTrue(binder.isTripped());
 	}
-	
-	@Test
-	public void shouldSendStartGPSListeningIntentOnActivation() {
-		sut.sensorMonitorTripped();
-		String lastAction = getShadowApplication().getNextStartedService().getAction();
-		assertEquals(getShadowApplication().getString(R.string.gps_service_start_listening), lastAction); 
-	}
-	
+
 	@Test
 	public void shouldSendAlarmServiceTripOnActivation() {
 		sut.sensorMonitorTripped();
-		getShadowApplication().getNextStartedService(); //consume gps intent first
 		String lastAction = getShadowApplication().getNextStartedService().getAction();
 		assertEquals(getShadowApplication().getString(R.string.alarm_service_trip), lastAction);
-	}
-	
-	@Test
-	public void shouldSendStopGPSListenerServiceOnStopListening() {
-		sut.stopListening();
-		String lastAction = getShadowApplication().getNextStartedService().getAction();
-		assertEquals(lastAction, getShadowApplication().getString(R.string.gps_service_stop_listening), lastAction);
 	}
 	
 	@Test

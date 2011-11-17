@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -38,7 +39,7 @@ public class SMSSendingAlarmTest {
 
     private void setupTestPreferences() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Robolectric.getShadowApplication().getString(R.string.pref_sms_alarm_number), testDestinationAddress);
+        editor.putString(NutbarPreferenceActivity.SMS_ALARM_KEY, testDestinationAddress);
         editor.commit();
     }
 
