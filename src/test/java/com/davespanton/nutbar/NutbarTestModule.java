@@ -1,5 +1,6 @@
 package com.davespanton.nutbar;
 
+import android.location.LocationManager;
 import com.xtremelabs.robolectric.Robolectric;
 import roboguice.config.AbstractAndroidModule;
 import roboguice.util.Ln;
@@ -26,7 +27,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm(Robolectric.application.getApplicationContext()));
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
-	}
+    }
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {
         public NutbarLoggerConfig() {

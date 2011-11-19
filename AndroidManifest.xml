@@ -24,13 +24,6 @@
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
-    <service android:name=".service.GPSListenerService">
-      <intent-filter>
-      	<action android:name="com.davespanton.nutbar.START_GPS_LISTENER_SERVICE"/>
-      	<action android:name="com.davespanton.nutbar.GPS_SERVICE_START_LISTENING"/>
-    	<action android:name="com.davespanton.nutbar.GPS_SERVICE_STOP_LISTENING"/>
-      </intent-filter>
-    </service>
     <service android:name=".service.AccelerometerListenerService">
       <intent-filter>
     	<action android:name="com.davespanton.nutbar.START_ACC_LISTENER_SERVICE"/>

@@ -2,20 +2,16 @@ package com.davespanton.nutbar.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import com.davespanton.nutbar.R;
-import com.xtremelabs.robolectric.tester.android.content.TestSharedPreferences;
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import android.preference.Preference;
-
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowPreferenceScreen;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith(RobolectricTestRunner.class)
 public class NutbarPreferenceActivityTest {

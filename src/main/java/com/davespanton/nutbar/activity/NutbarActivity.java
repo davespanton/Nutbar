@@ -18,9 +18,7 @@ import com.google.inject.Inject;
 public class NutbarActivity extends RoboActivity implements ListenerServiceView {
 
     private Button toggleAccelerometer;
-     
-    @Inject
-    private ListenerServiceConnection gpsServiceConn;
+
     @Inject
     private ListenerServiceConnection accServiceConn;
     
@@ -34,11 +32,9 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         
         toggleAccelerometer = (Button) findViewById(R.id.accelerometer_button);
         toggleAccelerometer.setOnClickListener(accelerometerButtonListener);
-        
-        gpsServiceConn.setActivity(this);
+
         accServiceConn.setActivity(this);
         
-        startBindListenerService(getString(R.string.start_gps_listener_service), gpsServiceConn);
         startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
     }
     
@@ -52,21 +48,13 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     @Override
     public void onDestroy() {
     	unbindService(accServiceConn);
-    	unbindService(gpsServiceConn);
-    	
-    	if(shouldStopListenerServices())
-    	{
+
+    	if(accServiceConn.isListening() == false)
     		stopListenerService(getString(R.string.start_acc_listener_service));
-    		stopListenerService(getString(R.string.start_gps_listener_service));
-    	}
     	
     	super.onDestroy();
     }
     
-    private boolean shouldStopListenerServices() {
-		return !gpsServiceConn.isListening() && !accServiceConn.isListening();
-	}
-
 	private void stopListenerService(String action) {
     	Intent intent = new Intent();
     	intent.setAction(action);

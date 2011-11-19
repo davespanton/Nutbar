@@ -51,8 +51,6 @@ public class NutbarActivityTest {
 	@Test
 	public void shouldStartListenerServicesOnCreate() {
 		Intent intent = shadow.getNextStartedService();
-		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
-		shadow.getNextStartedService(); // ignore bound service call for this test
 		intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
 	}
@@ -62,8 +60,6 @@ public class NutbarActivityTest {
 		sut.onDestroy();
 		Intent intent = shadow.getNextStoppedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
-		intent = shadow.getNextStoppedService();
-		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_gps_listener_service));
 	}
 	
 	@Test
