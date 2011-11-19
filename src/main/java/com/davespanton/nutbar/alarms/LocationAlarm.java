@@ -13,7 +13,7 @@ public class LocationAlarm implements LocationListener {
 
 	private boolean isListening = false;
 	
-	public void startListening() {
+	public void tripAlarm() {
 		if(isListening)
 			return;
 		
@@ -21,7 +21,7 @@ public class LocationAlarm implements LocationListener {
 		isListening = true;
 	}
 	
-	public void stopListening() {
+	public void resetAlarm() {
 		loc.removeUpdates(this);
 		isListening = false;
 	}

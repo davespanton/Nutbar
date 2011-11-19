@@ -4,7 +4,6 @@ import static com.xtremelabs.robolectric.Robolectric.shadowOf;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.google.inject.Inject;
 import org.junit.After;
 import org.junit.Before;
@@ -38,29 +37,29 @@ public class LocationAlarmTest {
 	}
 	
 	@Test
-	public void shouldAddListenerOnStartListening() {
-		sut.startListening();
+	public void shouldAddListenerOnTripAlarm() {
+		sut.tripAlarm();
 		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 	@Test
-	public void shouldRemoveListenerOnStopListening() {
-		sut.startListening();
+	public void shouldRemoveListenerOnResetAlarm() {
+		sut.tripAlarm();
 		assertTrue(shadow.getRequestLocationUpdateListeners().contains(sut));
-		sut.stopListening();
+		sut.resetAlarm();
 		assertFalse(shadow.getRequestLocationUpdateListeners().contains(sut));
 	}
 	
 	@Test
 	public void shouldReturnIsListeningWhenListening() {
-		sut.startListening();
+		sut.tripAlarm();
 		assertTrue(sut.isListening());
 	}
 	
 	@Test
 	public void shouldReturnIsNotListeningWhenNotListening() {
-		sut.startListening();
-		sut.stopListening();
+		sut.tripAlarm();
+		sut.resetAlarm();
 		assertFalse(sut.isListening());
 	}
 }

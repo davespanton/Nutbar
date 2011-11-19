@@ -50,7 +50,7 @@ public class NutbarActivityTest {
 	
 	@Test
 	public void shouldStartListenerServicesOnCreate() {
-		Intent intent = shadow.getNextStartedService();
+		Intent intent = shadow.getNextStartedService(); //consume binding intent
 		intent = shadow.getNextStartedService();
 		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
 	}
