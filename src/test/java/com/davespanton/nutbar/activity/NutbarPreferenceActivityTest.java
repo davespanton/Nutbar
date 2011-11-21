@@ -5,26 +5,37 @@ import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
+import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowPreferenceScreen;
 import junit.framework.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class NutbarPreferenceActivityTest {
 
     private static final String TEST_SMS_ALARM_VALUE = "test_sms_alarm_key";
 
+    @Inject
 	private NutbarPreferenceActivity preferencesActivity;
-	
-	@Before
-	public void setup() {
-		preferencesActivity = new NutbarPreferenceActivity();
-	}
-	
+
+    private SharedPreferences sharedPreferences;
+
+    @Before
+    public void setup() {
+        sharedPreferences = preferencesActivity.getSharedPreferences(preferencesActivity.getSharedPreferenceName(), Context.MODE_PRIVATE);
+    }
+
+    @After
+    public void tearDown() {
+        preferencesActivity = null;
+        sharedPreferences = null;
+    }
+    
 	@Test
 	public void shouldHaveEditTextForSmsAlarmNumber() {
 		preferencesActivity.onCreate(null);
@@ -50,8 +61,7 @@ public class NutbarPreferenceActivityTest {
     }
 
     private void updateSharedPreference(String key, String value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(key, value);
         editor.commit();
@@ -72,8 +82,7 @@ public class NutbarPreferenceActivityTest {
         Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
         updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
-        preferencesActivity.onSharedPreferenceChanged(prefs, NutbarPreferenceActivity.SMS_ALARM_KEY);
+        preferencesActivity.onSharedPreferenceChanged(sharedPreferences, NutbarPreferenceActivity.SMS_ALARM_KEY);
 
         Assert.assertEquals(TEST_SMS_ALARM_VALUE, smsAlarmNumber.getSummary());
     }
@@ -88,6 +97,5 @@ public class NutbarPreferenceActivityTest {
         preferencesActivity.onSharedPreferenceChanged(prefs, NutbarPreferenceActivity.SMS_ALARM_KEY);
 
         Assert.assertEquals(preferencesActivity.getString(R.string.sms_alarm_no_number), smsAlarmNumber.getSummary());
-
     }
 }

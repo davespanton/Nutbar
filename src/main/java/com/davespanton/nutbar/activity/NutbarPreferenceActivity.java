@@ -1,36 +1,38 @@
 package com.davespanton.nutbar.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
-
-import android.preference.PreferenceManager;
 import com.davespanton.nutbar.R;
+import roboguice.activity.RoboPreferenceActivity;
 
-public class NutbarPreferenceActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class NutbarPreferenceActivity extends RoboPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String SMS_ALARM_KEY = "sms_alarm_key";
+
+    private SharedPreferences sharedPreferences = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
+        sharedPreferences = getSharedPreferences(getSharedPreferenceName(), Context.MODE_PRIVATE);
+
 		addPreferencesFromResource(R.xml.preferences);
 
         updateSummaryToStoredSmsAlarmNumber();
 
         registerOnPreferenceChangeListener();
-	}
+    }
 
     private void registerOnPreferenceChangeListener() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.registerOnSharedPreferenceChangeListener(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
     }
 
     private void updateSummaryToStoredSmsAlarmNumber() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String currentValue = preferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
+        String currentValue = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
         Preference pref = getPreferenceScreen().findPreference(SMS_ALARM_KEY);
 
         if(currentValue.equals("")) {
@@ -54,7 +56,11 @@ public class NutbarPreferenceActivity extends PreferenceActivity implements Shar
 
     @Override
     public void onDestroy() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        preferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    public String getSharedPreferenceName() {
+        return getPackageName() + "_preferences";
     }
 }

@@ -1,6 +1,9 @@
 package com.davespanton.nutbar;
 
-import android.location.LocationManager;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import com.google.inject.spi.Element;
+import com.google.inject.spi.Elements;
 import com.xtremelabs.robolectric.Robolectric;
 import roboguice.config.AbstractAndroidModule;
 import roboguice.util.Ln;
@@ -16,6 +19,8 @@ import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
+
+import java.util.List;
 
 public class NutbarTestModule extends AbstractAndroidModule {
 

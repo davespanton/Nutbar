@@ -45,7 +45,7 @@
     <dependency>
         <groupId>org.roboguice</groupId>
         <artifactId>roboguice</artifactId>
-        <version>1.1</version>
+        <version>1.1.1</version>
     </dependency>
     <dependency>
         <groupId>com.google.inject</groupId>
@@ -68,7 +68,6 @@
           <sdk>
             <platform>10</platform>
           </sdk>
-          <deleteConflictingFiles>true</deleteConflictingFiles>
           <undeployBeforeDeploy>true</undeployBeforeDeploy>
         </configuration>
         <version>3.0.0-alpha-13</version>
