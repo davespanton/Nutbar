@@ -2,9 +2,11 @@ package com.davespanton.nutbar;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
 import com.google.inject.spi.Element;
 import com.google.inject.spi.Elements;
 import com.xtremelabs.robolectric.Robolectric;
+import org.jivesoftware.smack.XMPPConnection;
 import roboguice.config.AbstractAndroidModule;
 import roboguice.util.Ln;
 import android.util.Log;
@@ -32,6 +34,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm(Robolectric.application.getApplicationContext()));
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
+        bind(XMPPConnection.class).toProvider(XmppConnectionProvider.class);
     }
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {

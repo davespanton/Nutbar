@@ -1,7 +1,10 @@
 package com.davespanton.nutbar.application;
 
 import android.app.Application;
+import com.davespanton.nutbar.service.xmpp.XmppCommunication;
+import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
 import com.google.inject.Provides;
+import org.jivesoftware.smack.XMPPConnection;
 import roboguice.config.AbstractAndroidModule;
 
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
@@ -26,6 +29,7 @@ public class NutbarModule extends AbstractAndroidModule {
 		bind(SensorChangeListener.class).to(SensorChangeMonitor.class);
 		bind(AccelerometerBinderBuilder.class);
 		bind(OptionsMenuDelegate.class);
+        bind(XMPPConnection.class).toProvider(XmppConnectionProvider.class);
 	}
 
     @Provides
