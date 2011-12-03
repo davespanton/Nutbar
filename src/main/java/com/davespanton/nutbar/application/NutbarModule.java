@@ -1,18 +1,16 @@
 package com.davespanton.nutbar.application;
 
 import android.app.Application;
-import com.davespanton.nutbar.service.xmpp.XmppCommunication;
-import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
-import com.google.inject.Provides;
-import org.jivesoftware.smack.XMPPConnection;
-import roboguice.config.AbstractAndroidModule;
-
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.SensorChangeMonitor;
+import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
+import com.google.inject.Provides;
+import org.jivesoftware.smack.XMPPConnection;
+import roboguice.config.AbstractAndroidModule;
 
 
 public class NutbarModule extends AbstractAndroidModule {

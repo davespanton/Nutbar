@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import com.davespanton.nutbar.R;
 
 public class OptionsMenuDelegate {

@@ -3,7 +3,6 @@ package com.davespanton.nutbar.service.connection;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-
 import com.davespanton.nutbar.activity.NutbarActivity;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
 

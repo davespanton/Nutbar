@@ -1,7 +1,5 @@
 package com.davespanton.nutbar.activity;
 
-import com.davespanton.nutbar.activity.ListenerServiceView;
-
 public class StubListenerServiceView implements ListenerServiceView {
 	
 	private enum States { armed, disarmed, tripped };

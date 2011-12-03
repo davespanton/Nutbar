@@ -1,14 +1,6 @@
 package com.davespanton.nutbar.service.connection;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import android.content.ComponentName;
-
 import com.davespanton.nutbar.activity.NutbarActivity;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.ListenerService;
@@ -16,6 +8,12 @@ import com.davespanton.nutbar.service.StubAccelerometerListenerService;
 import com.davespanton.nutbar.service.StubListenerService;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
 import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(InjectedTestRunner.class)
 public class ListenerServiceConnectionTest {

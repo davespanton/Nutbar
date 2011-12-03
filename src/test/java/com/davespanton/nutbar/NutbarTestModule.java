@@ -1,16 +1,6 @@
 package com.davespanton.nutbar;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
-import com.google.inject.spi.Element;
-import com.google.inject.spi.Elements;
-import com.xtremelabs.robolectric.Robolectric;
-import org.jivesoftware.smack.XMPPConnection;
-import roboguice.config.AbstractAndroidModule;
-import roboguice.util.Ln;
 import android.util.Log;
-
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.activity.menu.StubOptionsMenuDelegate;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
@@ -21,8 +11,12 @@ import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
-
-import java.util.List;
+import com.davespanton.nutbar.service.xmpp.StubXmppConnectionProvider;
+import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
+import com.xtremelabs.robolectric.Robolectric;
+import org.jivesoftware.smack.XMPPConnection;
+import roboguice.config.AbstractAndroidModule;
+import roboguice.util.Ln;
 
 public class NutbarTestModule extends AbstractAndroidModule {
 
@@ -34,7 +28,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm(Robolectric.application.getApplicationContext()));
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
-        bind(XMPPConnection.class).toProvider(XmppConnectionProvider.class);
+        bind(XMPPConnection.class).toProvider(StubXmppConnectionProvider.class);
     }
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {

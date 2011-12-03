@@ -1,6 +1,5 @@
 package com.davespanton.nutbar.activity;
 
-import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,11 +8,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.google.inject.Inject;
+import roboguice.activity.RoboActivity;
 
 public class NutbarActivity extends RoboActivity implements ListenerServiceView {
 

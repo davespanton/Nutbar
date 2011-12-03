@@ -21,4 +21,7 @@
     <string name="sms_alarm_no_number">No number set</string>
     <string name="sms_alarm_body">Your thingy is going walkabout!</string>
 
+    <string name="settings_username">Username</string>
+    <string name="settings_password">Password</string>
+
 </resources>

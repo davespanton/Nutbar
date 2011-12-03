@@ -1,21 +1,9 @@
 package com.davespanton.nutbar.activity;
 
-import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import android.content.Intent;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.activity.menu.StubOptionsMenuDelegate;
@@ -27,6 +15,13 @@ import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowActivity;
 import com.xtremelabs.robolectric.tester.android.view.TestMenu;
 import com.xtremelabs.robolectric.tester.android.view.TestMenuItem;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static org.junit.Assert.*;
 
 @RunWith(InjectedTestRunner.class)
 public class NutbarActivityTest {

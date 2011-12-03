@@ -11,6 +11,15 @@
         android:inputType="number"
     />
 
-    
+    <EditTextPreference
+        android:title="@string/settings_username"
+        android:key="username_key"
+    />
+
+    <EditTextPreference
+        android:title="@string/settings_password"
+        android:key="password_key"
+        android:password="true"
+    />
 	
 </PreferenceScreen>

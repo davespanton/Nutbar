@@ -1,15 +1,13 @@
 package com.davespanton.nutbar.injected;
 
-import org.junit.runners.model.InitializationError;
-
-import roboguice.inject.ContextScope;
 import android.app.Application;
-
 import com.davespanton.nutbar.NutbarTestModule;
 import com.davespanton.nutbar.application.NutbarApplication;
 import com.google.inject.Injector;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
+import org.junit.runners.model.InitializationError;
+import roboguice.inject.ContextScope;
 
 public class InjectedTestRunner extends RobolectricTestRunner {
     

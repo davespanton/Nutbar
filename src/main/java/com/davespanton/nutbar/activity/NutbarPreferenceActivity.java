@@ -10,6 +10,8 @@ import roboguice.activity.RoboPreferenceActivity;
 public class NutbarPreferenceActivity extends RoboPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String SMS_ALARM_KEY = "sms_alarm_key";
+    public static final String USERNAME_KEY = "username_key";
+    public static final String PASSWORD_KEY = "password_key";
 
     private SharedPreferences sharedPreferences = null;
 

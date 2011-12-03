@@ -1,14 +1,13 @@
 package com.davespanton.nutbar.service.sensor;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.assertFalse;
-
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.xtremelabs.robolectric.RobolectricTestRunner;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class SensorChangeMonitorTest {

@@ -40,23 +40,32 @@ public class NutbarPreferenceActivityTest {
 	public void shouldHaveEditTextForSmsAlarmNumber() {
 		preferencesActivity.onCreate(null);
 
-        Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
+        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
 		
 		Assert.assertNotNull(smsAlarmNumber);
 	}
 
-    private Preference getSmsAlarmPreferenceFromActivity() {
+    private Preference getPreferenceFromActivity(String preferenceKey) {
         ShadowPreferenceScreen prefScreen = Robolectric.shadowOf(preferencesActivity.getPreferenceScreen());
-        return prefScreen.findPreference(NutbarPreferenceActivity.SMS_ALARM_KEY);
+        return prefScreen.findPreference(preferenceKey);
     }
 
+    @Test
+    public void shouldHaveUsernameEditText() {
+        preferencesActivity.onCreate(null);
+
+        Preference username = getPreferenceFromActivity(NutbarPreferenceActivity.USERNAME_KEY);
+
+        Assert.assertNotNull(username);
+    }
+    
     @Test
     public void shouldSetSmsAlarmSummaryToExistingSharedPreference() {
         updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
 
         preferencesActivity.onCreate(null);
 
-        Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
+        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
         Assert.assertTrue(smsAlarmNumber.getSummary().equals(TEST_SMS_ALARM_VALUE));
     }
 
@@ -71,7 +80,7 @@ public class NutbarPreferenceActivityTest {
     public void shouldLeaveSmsAlarmSummaryWhenNoSharedPreference() {
         preferencesActivity.onCreate(null);
 
-        Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
+        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
         Context context = Robolectric.getShadowApplication().getApplicationContext();
         Assert.assertTrue(smsAlarmNumber.getSummary().equals(context.getString(R.string.sms_alarm_no_number)));
     }
@@ -79,7 +88,7 @@ public class NutbarPreferenceActivityTest {
     @Test
     public void shouldUpdateSmsAlarmSummaryOnPreferenceChange() {
         preferencesActivity.onCreate(null);
-        Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
+        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
         updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
 
         preferencesActivity.onSharedPreferenceChanged(sharedPreferences, NutbarPreferenceActivity.SMS_ALARM_KEY);
@@ -90,7 +99,7 @@ public class NutbarPreferenceActivityTest {
     @Test
     public void shouldReturnSmsAlarmSummaryToDefaultWhenSetToNothing() {
         preferencesActivity.onCreate(null);
-        Preference smsAlarmNumber = getSmsAlarmPreferenceFromActivity();
+        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
         updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());

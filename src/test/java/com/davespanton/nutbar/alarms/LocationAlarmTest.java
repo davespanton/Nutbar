@@ -1,21 +1,19 @@
 package com.davespanton.nutbar.alarms;
 
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-
+import android.app.Application;
+import android.location.LocationManager;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
+import com.xtremelabs.robolectric.Robolectric;
+import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.app.Application;
-import android.location.LocationManager;
-
-import com.davespanton.nutbar.injected.InjectedTestRunner;
-import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.shadows.ShadowLocationManager;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(InjectedTestRunner.class)
 public class LocationAlarmTest {

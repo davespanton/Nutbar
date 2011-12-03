@@ -1,21 +1,9 @@
 package com.davespanton.nutbar.service;
 
-import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.service.binder.AccelerometerListenerServiceBinder;
@@ -25,6 +13,14 @@ import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowSensorManager;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static com.xtremelabs.robolectric.Robolectric.getShadowApplication;
+import static com.xtremelabs.robolectric.Robolectric.shadowOf;
+import static org.junit.Assert.*;
 
 @RunWith(InjectedTestRunner.class)
 public class AccelerometerListenerServiceTest {

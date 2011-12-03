@@ -1,7 +1,6 @@
 package com.davespanton.nutbar.service.binder;
 
 import android.os.Binder;
-
 import com.davespanton.nutbar.activity.ListenerServiceView;
 import com.davespanton.nutbar.service.ListenerService;
 

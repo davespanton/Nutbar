@@ -1,16 +1,15 @@
 package com.davespanton.nutbar.service.binder;
 
-import static junit.framework.Assert.*;
-
+import com.davespanton.nutbar.service.ListenerService;
+import com.davespanton.nutbar.service.StubListenerService;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.davespanton.nutbar.service.ListenerService;
-import com.davespanton.nutbar.service.StubListenerService;
-import com.davespanton.nutbar.service.binder.ListenerServiceBinder;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class ListenerServiceBinderTest {
