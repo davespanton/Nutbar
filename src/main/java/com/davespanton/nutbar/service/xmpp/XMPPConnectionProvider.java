@@ -3,7 +3,7 @@ package com.davespanton.nutbar.service.xmpp;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.XMPPConnection;
 
-public class XmppConnectionProvider implements Provider<XMPPConnection> {
+public class XMPPConnectionProvider implements Provider<XMPPConnection> {
 
     public static final String SERVER = "talk.google.com";
 

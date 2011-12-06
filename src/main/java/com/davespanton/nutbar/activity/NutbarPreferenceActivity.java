@@ -34,28 +34,24 @@ public class NutbarPreferenceActivity extends RoboPreferenceActivity implements 
     }
 
     private void updateSummaryToStoredSmsAlarmNumber() {
-        String currentValue = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
+        String newValue = sharedPreferences.getString(SMS_ALARM_KEY, getString(R.string.sms_alarm_no_number));
         Preference pref = getPreferenceScreen().findPreference(SMS_ALARM_KEY);
 
-        if(currentValue.equals("")) {
+        if(newValue.equals("")) {
             pref.setSummary(getString(R.string.sms_alarm_no_number));
             return;
         }
 
-        pref.setSummary(currentValue);
+        pref.setSummary(newValue);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(SMS_ALARM_KEY)) {
-            Preference pref = getPreferenceScreen().findPreference(SMS_ALARM_KEY);
-            String newValue = sharedPreferences.getString(key, getString(R.string.sms_alarm_no_number));
-            if(newValue.equals(""))
-                newValue = getString(R.string.sms_alarm_no_number);
-            pref.setSummary(newValue);
-        }
-    }
+        if(key.equals(SMS_ALARM_KEY))
+            updateSummaryToStoredSmsAlarmNumber();
 
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();

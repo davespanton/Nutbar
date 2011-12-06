@@ -39,11 +39,13 @@ public class NutbarPreferenceActivityTest {
 	@Test
 	public void shouldHaveEditTextForSmsAlarmNumber() {
 		preferencesActivity.onCreate(null);
-
-        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
-		
-		Assert.assertNotNull(smsAlarmNumber);
+        assertPreferenceIsNotNull(NutbarPreferenceActivity.SMS_ALARM_KEY);
 	}
+
+    private void assertPreferenceIsNotNull(String preferenceKey) {
+        Preference preference = getPreferenceFromActivity(preferenceKey);
+        Assert.assertNotNull(preference);
+    }
 
     private Preference getPreferenceFromActivity(String preferenceKey) {
         ShadowPreferenceScreen prefScreen = Robolectric.shadowOf(preferencesActivity.getPreferenceScreen());
@@ -53,10 +55,13 @@ public class NutbarPreferenceActivityTest {
     @Test
     public void shouldHaveUsernameEditText() {
         preferencesActivity.onCreate(null);
+        assertPreferenceIsNotNull(NutbarPreferenceActivity.USERNAME_KEY);
+    }
 
-        Preference username = getPreferenceFromActivity(NutbarPreferenceActivity.USERNAME_KEY);
-
-        Assert.assertNotNull(username);
+    @Test
+    public void shouldHavePasswordEditTest() {
+        preferencesActivity.onCreate(null);
+        assertPreferenceIsNotNull(NutbarPreferenceActivity.PASSWORD_KEY);
     }
     
     @Test
@@ -77,7 +82,7 @@ public class NutbarPreferenceActivityTest {
     }
 
     @Test
-    public void shouldLeaveSmsAlarmSummaryWhenNoSharedPreference() {
+    public void shouldLeaveSmsAlarmSummaryDefaultWhenNoSharedPreference() {
         preferencesActivity.onCreate(null);
 
         Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);

@@ -11,8 +11,7 @@ import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.davespanton.nutbar.service.connection.StubListenerServiceConnection;
 import com.davespanton.nutbar.service.sensor.SensorChangeListener;
 import com.davespanton.nutbar.service.sensor.StubSensorChangeMonitor;
-import com.davespanton.nutbar.service.xmpp.StubXmppConnectionProvider;
-import com.davespanton.nutbar.service.xmpp.XmppConnectionProvider;
+import com.davespanton.nutbar.service.xmpp.StubXMPPConnectionProvider;
 import com.xtremelabs.robolectric.Robolectric;
 import org.jivesoftware.smack.XMPPConnection;
 import roboguice.config.AbstractAndroidModule;
@@ -28,7 +27,7 @@ public class NutbarTestModule extends AbstractAndroidModule {
 		bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
 		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm(Robolectric.application.getApplicationContext()));
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
-        bind(XMPPConnection.class).toProvider(StubXmppConnectionProvider.class);
+        bind(XMPPConnection.class).toProvider(StubXMPPConnectionProvider.class);
     }
 
     static class NutbarLoggerConfig extends Ln.BaseConfig {

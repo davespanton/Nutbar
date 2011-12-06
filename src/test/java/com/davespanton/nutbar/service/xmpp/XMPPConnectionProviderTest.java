@@ -8,10 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(InjectedTestRunner.class)
-public class XmppConnectionProviderTest {
+public class XMPPConnectionProviderTest {
 
     @Inject
-    private XmppConnectionProvider provider;
+    private XMPPConnectionProvider provider;
 
     @Test
     public void shouldReturnXmppConnection() {
@@ -21,6 +21,6 @@ public class XmppConnectionProviderTest {
     @Test
     public void shouldReturnXmppConnectionWithExpectedServer() {
         XMPPConnection conn = provider.get();
-        Assert.assertEquals(XmppConnectionProvider.SERVER, conn.getServiceName());
+        Assert.assertEquals(XMPPConnectionProvider.SERVER, conn.getServiceName());
     }
 }
