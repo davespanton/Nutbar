@@ -35,6 +35,8 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         accServiceConn.setActivity(this);
         
         startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
+
+        startService(new Intent(getString(R.string.start_xmpp_service)));
     }
     
 	private void startBindListenerService(String action, ListenerServiceConnection conn) {
@@ -48,18 +50,14 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     public void onDestroy() {
     	unbindService(accServiceConn);
 
-    	if(accServiceConn.isListening() == false)
-    		stopListenerService(getString(R.string.start_acc_listener_service));
-    	
+    	if(!accServiceConn.isListening()) {
+    		stopService(new Intent(getString(R.string.start_acc_listener_service)));
+            stopService(new Intent(getString(R.string.start_xmpp_service)));
+        }
+
     	super.onDestroy();
     }
     
-	private void stopListenerService(String action) {
-    	Intent intent = new Intent();
-    	intent.setAction(action);
-    	stopService(intent);
-    }
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);

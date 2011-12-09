@@ -43,19 +43,37 @@ public class NutbarActivityTest {
 		shadow = shadowOf(sut);
 	}
 	
-	@Test
-	public void shouldStartListenerServicesOnCreate() {
+	@SuppressWarnings({"UnusedAssignment"})
+    @Test
+	public void shouldStartAccelerometerListenerServiceOnCreate() {
 		Intent intent = shadow.getNextStartedService(); //consume binding intent
 		intent = shadow.getNextStartedService();
-		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
+		assertEquals(getShadowApplication().getString(R.string.start_acc_listener_service), intent.getAction());
 	}
 	
 	@Test
-	public void shouldStopListenerServicesIfIdleOnDestroy() {
+	public void shouldStopAccelerometerListenerServiceIfIdleOnDestroy() {
 		sut.onDestroy();
 		Intent intent = shadow.getNextStoppedService();
-		assertEquals(intent.getAction(), getShadowApplication().getString(R.string.start_acc_listener_service));
+		assertEquals(getShadowApplication().getString(R.string.start_acc_listener_service), intent.getAction());
 	}
+
+    @SuppressWarnings({"UnusedAssignment"})
+    @Test
+    public void shouldStartXMPPServiceOnCreate() {
+        Intent intent = shadow.getNextStartedService(); //consume start accelerometer start
+        intent = shadow.getNextStartedService(); //consume start accelerometer bind
+        intent = shadow.getNextStartedService();
+        assertEquals(getShadowApplication().getString(R.string.start_xmpp_service), intent.getAction());
+    }
+
+    @Test
+    public void shouldStopXMPPServiceIfIdleOnDestroy() {
+        sut.onDestroy();
+        Intent intent = shadow.getNextStoppedService(); //consume stop accelerometer service.
+        intent = shadow.getNextStoppedService();
+        assertEquals(getShadowApplication().getString(R.string.start_xmpp_service), intent.getAction());
+    }
 	
 	@Test
 	public void shouldNotStopListenerServicesIfListening() {

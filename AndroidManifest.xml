@@ -8,6 +8,7 @@
   <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="10"></uses-sdk>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
   <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+  <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
   <application 
   		android:icon="@drawable/icon" 
@@ -34,6 +35,11 @@
     <service android:name=".service.AlarmService">
       <intent-filter>
     	<action android:name="com.davespanton.nutbar.ALARM_SERVICE_TRIP"/>
+      </intent-filter>
+    </service>
+    <service android:name=".service.xmpp.XMPPService">
+      <intent-filter>
+        <action android:name="com.davespanton.nutbar.START_XMPP_SERVICE"/>
       </intent-filter>
     </service>
   </application>

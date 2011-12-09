@@ -11,9 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.*;
 
 @RunWith(InjectedTestRunner.class)
 public class XMPPCommunicationTest {
@@ -56,6 +54,13 @@ public class XMPPCommunicationTest {
         editor.putString(NutbarPreferenceActivity.USERNAME_KEY, USERNAME);
         editor.putString(NutbarPreferenceActivity.PASSWORD_KEY, PASSWORD);
         editor.commit();
+    }
+
+    @Test
+    public void shouldDisconnectFromXMPPConnection() {
+        xmppCommunication.connect();
+        xmppCommunication.disconnect();
+        assertFalse(xmppConnection.isConnected());
     }
 
 

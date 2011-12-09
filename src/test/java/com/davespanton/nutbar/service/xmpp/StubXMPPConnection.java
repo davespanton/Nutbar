@@ -20,6 +20,11 @@ public class StubXMPPConnection extends XMPPConnection {
     }
 
     @Override
+    public void disconnect() {
+        isConnected = false;
+    }
+
+    @Override
     public boolean isConnected() {
         return isConnected;
     }

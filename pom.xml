@@ -52,15 +52,10 @@
         <artifactId>guice</artifactId>
         <version>2.0-no_aop</version>
     </dependency>
-    <dependency>
-        <groupId>org.jivesoftware</groupId>
-        <artifactId>smack</artifactId>
-        <version>3.2.1</version>
-    </dependency>
-    <dependency>
-        <groupId>org.jivesoftware</groupId>
-        <artifactId>smackx</artifactId>
-        <version>3.2.1</version>
+    <dependency> <!-- local dependency - d/l from http://www.beem-project.com/projects/beem/files -->
+        <groupId>com.beem-project</groupId>
+        <artifactId>asmack</artifactId>
+        <version>7</version>
     </dependency>
   </dependencies>
 

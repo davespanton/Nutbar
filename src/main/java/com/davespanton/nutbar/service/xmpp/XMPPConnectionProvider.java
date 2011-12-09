@@ -1,14 +1,18 @@
 package com.davespanton.nutbar.service.xmpp;
 
 import com.google.inject.Provider;
+import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
+
+import java.net.ServerSocket;
 
 public class XMPPConnectionProvider implements Provider<XMPPConnection> {
 
-    public static final String SERVER = "talk.google.com";
+    public static final String SERVER = "jabber.org";
 
+    private static final ConnectionConfiguration config = new ConnectionConfiguration(SERVER, 5222);
     @Override
     public XMPPConnection get() {
-        return new XMPPConnection(SERVER);
+        return new XMPPConnection(config);
     }
 }
