@@ -45,7 +45,15 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         startService(intent);
         bindService(intent, conn, 0);
     }
-    
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(!accServiceConn.isListening())
+            finish();
+    }
+
     @Override
     public void onDestroy() {
     	unbindService(accServiceConn);

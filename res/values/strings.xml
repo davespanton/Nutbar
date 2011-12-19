@@ -27,4 +27,6 @@
     <string name="settings_username">Username</string>
     <string name="settings_password">Password</string>
 
+    <string name="shared_preferences_package">com.davespanton.nutbar_preferences</string>
+
 </resources>

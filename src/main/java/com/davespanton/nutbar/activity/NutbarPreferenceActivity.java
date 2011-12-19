@@ -19,7 +19,7 @@ public class NutbarPreferenceActivity extends RoboPreferenceActivity implements 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        sharedPreferences = getSharedPreferences(getSharedPreferenceName(), Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.shared_preferences_package), Context.MODE_PRIVATE);
 
 		addPreferencesFromResource(R.xml.preferences);
 
@@ -56,9 +56,5 @@ public class NutbarPreferenceActivity extends RoboPreferenceActivity implements 
     public void onDestroy() {
         super.onDestroy();
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    public String getSharedPreferenceName() {
-        return getPackageName() + "_preferences";
     }
 }

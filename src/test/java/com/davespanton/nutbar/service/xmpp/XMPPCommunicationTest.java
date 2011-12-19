@@ -1,11 +1,8 @@
 package com.davespanton.nutbar.service.xmpp;
 
-import android.content.SharedPreferences;
-import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import org.h2.engine.User;
 import org.jivesoftware.smack.XMPPConnection;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +20,6 @@ public class XMPPCommunicationTest {
     private XMPPCommunication xmppCommunication;
 
     @Inject
-    private SharedPreferences sharedPreferences;
-
-    @Inject
     private Provider<XMPPConnection> provider;
 
     private StubXMPPConnection xmppConnection;
@@ -33,32 +27,22 @@ public class XMPPCommunicationTest {
     @Before
     public void setup() {
         xmppConnection = (StubXMPPConnection) provider.get();
+        xmppCommunication.connect(USERNAME, PASSWORD);
     }
 
     @Test
     public void shouldConnectToXmppServer() {
-        xmppCommunication.connect();
         assertTrue(xmppConnection.isConnected());
     }
 
     @Test
     public void shouldLoginOnConnectionWhenCredentialsAreFound() {
-        setupSharedPreferencesWithLoginInfo();
-        xmppCommunication.connect();
         assertEquals(USERNAME, xmppConnection.getUsername());
         assertEquals(PASSWORD, xmppConnection.getPassword());
     }
 
-    private void setupSharedPreferencesWithLoginInfo() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(NutbarPreferenceActivity.USERNAME_KEY, USERNAME);
-        editor.putString(NutbarPreferenceActivity.PASSWORD_KEY, PASSWORD);
-        editor.commit();
-    }
-
     @Test
     public void shouldDisconnectFromXMPPConnection() {
-        xmppCommunication.connect();
         xmppCommunication.disconnect();
         assertFalse(xmppConnection.isConnected());
     }

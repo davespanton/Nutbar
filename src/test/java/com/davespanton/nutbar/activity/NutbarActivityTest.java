@@ -219,10 +219,23 @@ public class NutbarActivityTest {
 	
 	@Test
 	public void shouldCallDelegateOnOptionSelected() {
-		MenuItem testItem = new TestMenuItem(); 
+		MenuItem testItem = new TestMenuItem();     
 		sut.onOptionsItemSelected(testItem);
 		
 		MenuItem actual = ((StubOptionsMenuDelegate) optionsMenuDelegate).getLastSelectedItem();
 		assertEquals(testItem, actual);
 	}
+
+    @Test
+    public void shouldDestroyWhenStoppedIfIdle() {
+        sut.onStop();
+        assertTrue(sut.isFinishing());
+    }
+
+    @Test
+    public void shouldNotDestroyWhenStoppedIfAccServiceIsListening() {
+        ((StubListenerServiceConnection) conn).setIsListening(true);
+        sut.onStop();
+        assertFalse(sut.isFinishing());
+    }
 }

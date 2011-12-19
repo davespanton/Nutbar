@@ -27,7 +27,7 @@ public class NutbarPreferenceActivityTest {
 
     @Before
     public void setup() {
-        sharedPreferences = preferencesActivity.getSharedPreferences(preferencesActivity.getSharedPreferenceName(), Context.MODE_PRIVATE);
+        sharedPreferences = preferencesActivity.getSharedPreferences(preferencesActivity.getString(R.string.shared_preferences_package), Context.MODE_PRIVATE);
     }
 
     @After
