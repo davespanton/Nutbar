@@ -23,33 +23,34 @@ public class NutbarPreferenceActivity extends RoboPreferenceActivity implements 
 
 		addPreferencesFromResource(R.xml.preferences);
 
-        updateSummaryToStoredSmsAlarmNumber();
+        updatePreferenceSummaryToValueWithDefault(SMS_ALARM_KEY, getString(R.string.sms_alarm_no_number));
+        updatePreferenceSummaryToValueWithDefault(USERNAME_KEY, getString(R.string.username_not_set));
 
         registerOnPreferenceChangeListener();
     }
 
-    private void registerOnPreferenceChangeListener() {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-
-    }
-
-    private void updateSummaryToStoredSmsAlarmNumber() {
-        String newValue = sharedPreferences.getString(SMS_ALARM_KEY, getString(R.string.sms_alarm_no_number));
-        Preference pref = getPreferenceScreen().findPreference(SMS_ALARM_KEY);
+    private void updatePreferenceSummaryToValueWithDefault(String prefKey, String defaultValue) {
+        String newValue = sharedPreferences.getString(prefKey, defaultValue);
+        Preference pref = getPreferenceScreen().findPreference(prefKey);
 
         if(newValue.equals("")) {
-            pref.setSummary(getString(R.string.sms_alarm_no_number));
+            pref.setSummary(defaultValue);
             return;
         }
 
         pref.setSummary(newValue);
     }
 
+    private void registerOnPreferenceChangeListener() {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+    
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(SMS_ALARM_KEY))
-            updateSummaryToStoredSmsAlarmNumber();
-
+            updatePreferenceSummaryToValueWithDefault(SMS_ALARM_KEY, getString(R.string.sms_alarm_no_number));
+        else if(key.equals(USERNAME_KEY))
+            updatePreferenceSummaryToValueWithDefault(USERNAME_KEY, getString(R.string.username_not_set));
     }
     
     @Override

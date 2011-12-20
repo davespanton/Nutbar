@@ -2,8 +2,8 @@ package com.davespanton.nutbar.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
@@ -19,26 +19,30 @@ import org.junit.runner.RunWith;
 public class NutbarPreferenceActivityTest {
 
     private static final String TEST_SMS_ALARM_VALUE = "test_sms_alarm_key";
+    private static final String TEST_USERNAME = "test_user";
 
     @Inject
 	private NutbarPreferenceActivity preferencesActivity;
 
     private SharedPreferences sharedPreferences;
+    private Bundle createBundle;
 
     @Before
     public void setup() {
         sharedPreferences = preferencesActivity.getSharedPreferences(preferencesActivity.getString(R.string.shared_preferences_package), Context.MODE_PRIVATE);
+        createBundle = new Bundle();
     }
 
     @After
     public void tearDown() {
         preferencesActivity = null;
         sharedPreferences = null;
+        createBundle = null;
     }
     
 	@Test
 	public void shouldHaveEditTextForSmsAlarmNumber() {
-		preferencesActivity.onCreate(null);
+		preferencesActivity.onCreate(createBundle);
         assertPreferenceIsNotNull(NutbarPreferenceActivity.SMS_ALARM_KEY);
 	}
 
@@ -54,24 +58,19 @@ public class NutbarPreferenceActivityTest {
 
     @Test
     public void shouldHaveUsernameEditText() {
-        preferencesActivity.onCreate(null);
+        preferencesActivity.onCreate(createBundle);
         assertPreferenceIsNotNull(NutbarPreferenceActivity.USERNAME_KEY);
     }
 
     @Test
     public void shouldHavePasswordEditTest() {
-        preferencesActivity.onCreate(null);
+        preferencesActivity.onCreate(createBundle);
         assertPreferenceIsNotNull(NutbarPreferenceActivity.PASSWORD_KEY);
     }
     
     @Test
     public void shouldSetSmsAlarmSummaryToExistingSharedPreference() {
-        updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
-
-        preferencesActivity.onCreate(null);
-
-        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
-        Assert.assertTrue(smsAlarmNumber.getSummary().equals(TEST_SMS_ALARM_VALUE));
+        assertPrefSummaryIsSetToExistingSharedPref(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
     }
 
     private void updateSharedPreference(String key, String value) {
@@ -81,9 +80,22 @@ public class NutbarPreferenceActivityTest {
         editor.commit();
     }
 
+    private void assertPrefSummaryIsSetToExistingSharedPref(String prefKey, String expected) {
+        updateSharedPreference(prefKey, expected);
+        preferencesActivity.onCreate(createBundle);
+
+        Preference pref = getPreferenceFromActivity(prefKey);
+        Assert.assertTrue(pref.getSummary().equals(expected));
+    }
+
+    @Test
+    public void shouldUpdateXMPPUsernameToExistingSharedPreference() {
+        assertPrefSummaryIsSetToExistingSharedPref(NutbarPreferenceActivity.USERNAME_KEY, TEST_USERNAME);
+    }
+
     @Test
     public void shouldLeaveSmsAlarmSummaryDefaultWhenNoSharedPreference() {
-        preferencesActivity.onCreate(null);
+        preferencesActivity.onCreate(createBundle);
 
         Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
         Context context = Robolectric.getShadowApplication().getApplicationContext();
@@ -92,24 +104,32 @@ public class NutbarPreferenceActivityTest {
 
     @Test
     public void shouldUpdateSmsAlarmSummaryOnPreferenceChange() {
-        preferencesActivity.onCreate(null);
-        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
-        updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE);
+        preferencesActivity.onCreate(createBundle);
+        assertPrefSummaryUpdatesWhenPrefChanges(NutbarPreferenceActivity.SMS_ALARM_KEY, TEST_SMS_ALARM_VALUE, TEST_SMS_ALARM_VALUE);
+    }
 
-        preferencesActivity.onSharedPreferenceChanged(sharedPreferences, NutbarPreferenceActivity.SMS_ALARM_KEY);
+    @Test
+    public void shouldUpdateXMPPUsernameOnPreferenceChange() {
+        preferencesActivity.onCreate(createBundle);
+        assertPrefSummaryUpdatesWhenPrefChanges(NutbarPreferenceActivity.USERNAME_KEY, TEST_USERNAME, TEST_USERNAME);
+    }
 
-        Assert.assertEquals(TEST_SMS_ALARM_VALUE, smsAlarmNumber.getSummary());
+    private void assertPrefSummaryUpdatesWhenPrefChanges(String prefKey, String value, String expected) {
+        Preference pref = getPreferenceFromActivity(prefKey);
+        updateSharedPreference(prefKey, value);
+        preferencesActivity.onSharedPreferenceChanged(sharedPreferences, prefKey);
+        Assert.assertEquals(expected, pref.getSummary());
     }
 
     @Test
     public void shouldReturnSmsAlarmSummaryToDefaultWhenSetToNothing() {
-        preferencesActivity.onCreate(null);
-        Preference smsAlarmNumber = getPreferenceFromActivity(NutbarPreferenceActivity.SMS_ALARM_KEY);
-        updateSharedPreference(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
+        preferencesActivity.onCreate(createBundle);
+        assertPrefSummaryUpdatesWhenPrefChanges(NutbarPreferenceActivity.SMS_ALARM_KEY, "", preferencesActivity.getString(R.string.sms_alarm_no_number));
+    }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
-        preferencesActivity.onSharedPreferenceChanged(prefs, NutbarPreferenceActivity.SMS_ALARM_KEY);
-
-        Assert.assertEquals(preferencesActivity.getString(R.string.sms_alarm_no_number), smsAlarmNumber.getSummary());
+    @Test
+    public void shouldReturnUsernameSummaryToDefaultWhenSetToNothing() {
+        preferencesActivity.onCreate(createBundle);
+        assertPrefSummaryUpdatesWhenPrefChanges(NutbarPreferenceActivity.USERNAME_KEY, "", preferencesActivity.getString(R.string.username_not_set));
     }
 }

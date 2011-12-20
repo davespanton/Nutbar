@@ -8,7 +8,6 @@ import android.os.IBinder;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
-import org.jivesoftware.smack.XMPPConnection;
 import roboguice.service.RoboService;
 
 public class XMPPService extends RoboService {
