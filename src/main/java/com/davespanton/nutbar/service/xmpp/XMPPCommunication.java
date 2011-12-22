@@ -5,8 +5,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.packet.Message;
 
 public class XMPPCommunication {
+
+    public static final String XMPP_RECIPIENT = "davespanton@gmail.com"; //TODO for test only
 
     @Inject
     private Provider<XMPPConnection> provider;
@@ -25,7 +28,8 @@ public class XMPPCommunication {
         try {
             xmppConn.connect();
         } catch (XMPPException e) {
-            Log.e("NBAR", "Error connecting :S");
+            Log.e("NBAR", "Error connecting to xmpp server.");
+            return;
         }
 
         login();
@@ -33,18 +37,31 @@ public class XMPPCommunication {
 
     private void login() {
 
-        if(!xmppConn.isConnected()) {
+        if(!xmppConn.isConnected())
             return;
-        }
 
         try {
             xmppConn.login(username, password);
         } catch (XMPPException e) {
-            Log.e("NBAR", "Error logging in :S");
+            Log.e("NBAR", "Error logging in to xmpp server.");
         }
     }
 
+
+
     public void disconnect() {
         xmppConn.disconnect();
+    }
+
+    public void sendMessage(String message) {
+
+        if(!xmppConn.isConnected()) {
+            Log.w("NBAR", "Not connected to xmpp server");
+            return;
+        }
+
+        Message xmppMessage = new Message(XMPP_RECIPIENT);
+        xmppMessage.setBody(message);
+        xmppConn.sendPacket(xmppMessage);
     }
 }

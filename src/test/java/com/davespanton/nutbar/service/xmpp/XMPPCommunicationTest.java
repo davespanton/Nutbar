@@ -4,6 +4,7 @@ import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.packet.Message;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,7 @@ public class XMPPCommunicationTest {
     @Before
     public void setup() {
         xmppConnection = (StubXMPPConnection) provider.get();
+        xmppConnection.clearSentPackets();
         xmppCommunication.connect(USERNAME, PASSWORD);
     }
 
@@ -47,5 +49,20 @@ public class XMPPCommunicationTest {
         assertFalse(xmppConnection.isConnected());
     }
 
+    @Test
+    public void shouldSendAMessageWhenConnected() {
+        String message = "something";
+        xmppCommunication.sendMessage(message);
+        Message sentMessage = (Message) xmppConnection.getLastSentPacket();
+        assertEquals(message, sentMessage.getBody());
+        assertEquals(XMPPCommunication.XMPP_RECIPIENT, sentMessage.getTo());
+    }
 
+    @Test
+    public void shouldNotSendAMessageWhenNotConnected() {
+        xmppCommunication.disconnect();
+        xmppCommunication.sendMessage("message");
+        Message sentMessage = (Message) xmppConnection.getLastSentPacket();
+        assertNull(sentMessage);
+    }
 }

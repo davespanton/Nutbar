@@ -11,6 +11,7 @@ public class XMPPConnectionProvider implements Provider<XMPPConnection> {
     public static final String SERVER = "jabber.org";
 
     private static final ConnectionConfiguration config = new ConnectionConfiguration(SERVER, 5222);
+
     @Override
     public XMPPConnection get() {
         return new XMPPConnection(config);
