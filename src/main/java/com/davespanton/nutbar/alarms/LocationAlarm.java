@@ -12,6 +12,8 @@ public class LocationAlarm implements LocationListener {
     private LocationManager loc;
 
 	private boolean isListening = false;
+
+    private LocationAlarmListener locationAlarmListener;
 	
 	public void tripAlarm() {
 		if(isListening)
@@ -32,7 +34,8 @@ public class LocationAlarm implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		
+        if(locationAlarmListener != null)
+	        locationAlarmListener.onLocationChanged(location);
 	}
 
 	@Override
@@ -49,4 +52,9 @@ public class LocationAlarm implements LocationListener {
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		
 	}
+
+
+    public void setOnLocationChangeListener(LocationAlarmListener listener) {
+        locationAlarmListener = listener;
+    }
 }

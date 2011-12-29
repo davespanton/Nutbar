@@ -15,12 +15,9 @@ public class SMSSendingAlarm {
 
     private String bodyText;
 
-    private Context context;
-
     public SMSSendingAlarm(Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         bodyText = context.getString(R.string.sms_alarm_body);
-        this.context = context;
     }
 	
 	public void tripAlarm() {
