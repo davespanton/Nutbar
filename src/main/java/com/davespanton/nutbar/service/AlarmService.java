@@ -34,10 +34,21 @@ public class AlarmService extends RoboService {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		if(intent.getAction().equals(getString(R.string.alarm_service_trip)))
-			smsAlarm.tripAlarm();
+			tripAlarms();
+        else if(intent.getAction().equals(getString(R.string.alarm_service_reset)))
+            resetAlarms();
 		
 		return START_STICKY;
 	}
+
+    private void tripAlarms() {
+        smsAlarm.tripAlarm();
+        locationAlarm.tripAlarm();
+    }
+
+    private void resetAlarms() {
+        locationAlarm.resetAlarm();
+    }
 
     private LocationAlarmListener locationAlarmListener = new LocationAlarmListener() {
         @Override

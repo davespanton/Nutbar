@@ -111,10 +111,12 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 		public void onClick(View view) {
 			Intent i = new Intent();
 			
-			if(accServiceConn.isListening())
+			if(accServiceConn.isListening()) {
 				i.setAction(getString(R.string.acc_service_stop_listening));
-			else
+            }
+			else {
 				i.setAction(getString(R.string.acc_service_start_listening));
+            }
 			
 			startService(i);
 		}

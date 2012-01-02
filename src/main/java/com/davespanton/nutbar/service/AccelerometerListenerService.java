@@ -104,6 +104,7 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 		sensorManager.unregisterListener(this, accelorometerSensor);
 		isListening = hasBeenTripped = false;
 		sensorChangeMonitor.reset();
+        resetAlarmService();
 		binder.onDisarmed();
 	}
 	
@@ -122,10 +123,14 @@ public class AccelerometerListenerService extends RoboService implements SensorE
 	}
 	
 	private void startAlarmService() {
-		Intent i = new Intent();
-		i.setAction(getString(R.string.alarm_service_trip));
+		Intent i = new Intent(getString(R.string.alarm_service_trip));
 		startService(i);
 	}
+
+    private void resetAlarmService() {
+        Intent i = new Intent(getString(R.string.alarm_service_reset));
+        startService(i);
+    }
 
 	public void updateBinder() {
 		if(hasBeenTripped)

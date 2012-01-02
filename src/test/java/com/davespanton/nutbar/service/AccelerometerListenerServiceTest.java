@@ -149,6 +149,13 @@ public class AccelerometerListenerServiceTest {
 		String lastStopAction = getShadowApplication().getNextStoppedService().getAction();
 		assertEquals(lastStopAction, getShadowApplication().getString(R.string.alarm_service_trip));
 	}
+
+    @Test
+    public void shouldResetAlarmServiceWhenReset() {
+        sut.stopListening();
+        String lastAction = getShadowApplication().getNextStartedService().getAction();
+        assertEquals(getShadowApplication().getString(R.string.alarm_service_reset), lastAction);
+    }
 	
 	@Test
 	public void shouldUpdateBinderWhenRequested() {

@@ -44,16 +44,33 @@ public class AlarmServiceTest {
 	
 	@Test
 	public void shouldTripSmsSendingAlarmOnCorrectStartCommand() {
-		Intent intent = new Intent();
-		intent.setAction(Robolectric.application.getString(R.string.alarm_service_trip));
-		alarmService.onStartCommand(intent, 0, 0);
-		
+		startServiceWithAlarmTripAction();
 		assertEquals(EXPECTED_TRIP_COUNT, ((StubSmsSendingAlarm) smsAlarm).getTripCount());
 	}
+
+    private void startServiceWithAlarmTripAction() {
+        Intent i = new Intent(Robolectric.application.getString(R.string.alarm_service_trip));
+		alarmService.onStartCommand(i, 0, 0);
+    }
+
+    @Test
+    public void shouldResetLocationAlarmOnCorrectStartCommand() {
+        startServiceWithAlarmTripAction();
+
+        Intent i = new Intent(Robolectric.application.getString(R.string.alarm_service_reset));
+        alarmService.onStartCommand(i, 0, 0);
+        assertFalse(locationAlarm.isListening());
+    }
 
     @Test
     public void shouldAddListenerToLocationAlarmOnCreate() {
         alarmService.onCreate();
         assertNotNull(((StubLocationAlarm) locationAlarm).getOnLocationChangeLocationListener());
+    }
+
+    @Test
+    public void shouldTripLocationsAlarmOnCorrectStartCommand() {
+        startServiceWithAlarmTripAction();
+        assertEquals(EXPECTED_TRIP_COUNT, ((StubLocationAlarm) locationAlarm).getTripCount());
     }
 }

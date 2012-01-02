@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.security.Provider;
 import java.util.ArrayList;
 
 import static com.xtremelabs.robolectric.Robolectric.shadowOf;
@@ -78,6 +77,7 @@ public class LocationAlarmTest {
         assertTrue(locations.contains(loc));
     }
 
+    @SuppressWarnings({"NullableProblems"})
     @Test
     public void shouldNotNotifyOnLocationUpdatesWithNoListenerSet() {
         sut.setOnLocationChangeListener(null);
