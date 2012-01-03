@@ -22,6 +22,8 @@ public class SMSSendingAlarm {
 	
 	public void tripAlarm() {
         String destinationAddress = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
-		smsManager.sendTextMessage(destinationAddress, null, bodyText, null, null);
+
+        if(!destinationAddress.isEmpty())
+            smsManager.sendTextMessage(destinationAddress, null, bodyText, null, null);
 	}
 }

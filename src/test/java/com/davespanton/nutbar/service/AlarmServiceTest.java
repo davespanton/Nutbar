@@ -63,6 +63,14 @@ public class AlarmServiceTest {
     }
 
     @Test
+    public void shouldResetLocationAlarmOnDestroy() {
+        startServiceWithAlarmTripAction();
+
+        alarmService.onDestroy();
+        assertFalse(locationAlarm.isListening());
+    }
+
+    @Test
     public void shouldAddListenerToLocationAlarmOnCreate() {
         alarmService.onCreate();
         assertNotNull(((StubLocationAlarm) locationAlarm).getOnLocationChangeLocationListener());
@@ -72,5 +80,10 @@ public class AlarmServiceTest {
     public void shouldTripLocationsAlarmOnCorrectStartCommand() {
         startServiceWithAlarmTripAction();
         assertEquals(EXPECTED_TRIP_COUNT, ((StubLocationAlarm) locationAlarm).getTripCount());
+    }
+
+    @Test
+    public void shouldBroadcastLocationUpdates() {
+        
     }
 }

@@ -29,13 +29,14 @@ public class SMSSendingAlarmTest {
 	public void setup() {
 		sut = new SMSSendingAlarm(Robolectric.getShadowApplication().getApplicationContext());
 		shadowSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
+        shadowSmsManager.clearLastSentTextMessageParams();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
-        setupTestPreferences();
+        setupTestDestinationAddress(testDestinationAddress);
     }
 
-    private void setupTestPreferences() {
+    private void setupTestDestinationAddress(String address) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(NutbarPreferenceActivity.SMS_ALARM_KEY, testDestinationAddress);
+        editor.putString(NutbarPreferenceActivity.SMS_ALARM_KEY, address);
         editor.commit();
     }
 
@@ -54,4 +55,12 @@ public class SMSSendingAlarmTest {
         Assert.assertEquals(testDestinationAddress, sentTextParams.getDestinationAddress());
         Assert.assertEquals(Robolectric.application.getString(R.string.sms_alarm_body), sentTextParams.getText());
 	}
+
+    @Test
+    public void shouldNotSendSMSWhenNoDestinationIsSet() {
+        setupTestDestinationAddress("");
+        sut.tripAlarm();
+        
+        Assert.assertNull(shadowSmsManager.getLastSentTextMessageParams());
+    }
 }

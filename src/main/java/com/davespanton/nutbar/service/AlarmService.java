@@ -3,6 +3,7 @@ package com.davespanton.nutbar.service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
+import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.LocationAlarmListener;
@@ -31,6 +32,13 @@ public class AlarmService extends RoboService {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        resetAlarms();
+    }
+
+    @Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		if(intent.getAction().equals(getString(R.string.alarm_service_trip)))
@@ -53,6 +61,7 @@ public class AlarmService extends RoboService {
     private LocationAlarmListener locationAlarmListener = new LocationAlarmListener() {
         @Override
         public void onLocationChanged(Location location) {
+            Log.d("NBAR", "Loc update " + location.getProvider());
 
         }
     };
