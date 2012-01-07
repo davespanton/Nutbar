@@ -32,6 +32,7 @@ public class XMPPServiceTest {
     @After
     public void tearDown() {
         xmppService = null;
+        ((StubXMPPConnection) xmppConnection).clearSentPackets();
         xmppConnection = null;
         xmppConnectionProvider = null;
     }
@@ -42,6 +43,29 @@ public class XMPPServiceTest {
 
         Assert.assertTrue(xmppConnection.isConnected());
     }
+
+
+    private void sendXmppMessageViaIntent(String message) {
+        Intent intent = new Intent(xmppService.getString(R.string.send_xmpp));
+        intent.putExtra(xmppService.getString(R.string.send_xmpp_extra), message);
+        xmppService.onStartCommand(intent, 0, 0);
+    }
+
+    @Test
+    public void shouldSendXMPPMessageWithCorrectIntent() {
+        startService();
+
+        String expected = "message";
+        sendXmppMessageViaIntent(expected);
+
+        Assert.assertNotNull(((StubXMPPConnection) xmppConnection).getLastSentPacket());
+    }
+
+    @Test
+    public void shouldNotSendXmppMessageWithCorrectIntentIfNotConnected() {
+        sendXmppMessageViaIntent("");
+        Assert.assertNull(((StubXMPPConnection) xmppConnection).getLastSentPacket());
+    };
 
     private void startService() {
         Intent intent = new Intent(xmppService.getString(R.string.start_xmpp_service));
@@ -55,4 +79,6 @@ public class XMPPServiceTest {
 
         Assert.assertFalse(xmppConnection.isConnected());
     }
+
+    
 }

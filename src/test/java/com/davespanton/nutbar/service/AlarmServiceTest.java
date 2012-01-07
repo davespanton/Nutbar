@@ -1,6 +1,8 @@
 package com.davespanton.nutbar.service;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
@@ -84,6 +86,11 @@ public class AlarmServiceTest {
 
     @Test
     public void shouldBroadcastLocationUpdates() {
-        
+        Location loc = new Location(LocationManager.GPS_PROVIDER);
+        locationAlarm.onLocationChanged(loc);
+
+        Intent i = Robolectric.shadowOf(alarmService).peekNextStartedService();
+
+        assertNotNull(i.getExtras().getString(alarmService.getString(R.string.send_xmpp_extra)));
     }
 }

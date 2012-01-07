@@ -41,6 +41,7 @@
     <service android:name=".service.xmpp.XMPPService">
       <intent-filter>
         <action android:name="com.davespanton.nutbar.START_XMPP_SERVICE"/>
+        <action android:name="com.davespanton.nutbar.SEND_XMPP"/>
       </intent-filter>
     </service>
   </application>

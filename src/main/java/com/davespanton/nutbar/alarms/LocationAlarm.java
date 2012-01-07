@@ -20,7 +20,6 @@ public class LocationAlarm implements LocationListener {
 		if(isListening)
 			return;
 
-        Log.d("NBAR", "TRIPPED!");
 		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         loc.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
@@ -49,7 +48,7 @@ public class LocationAlarm implements LocationListener {
 
 	@Override
 	public void onProviderEnabled(String provider) {
-        Log.d("NBAR", provider + " was enabled");
+
 	}
 
 	@Override

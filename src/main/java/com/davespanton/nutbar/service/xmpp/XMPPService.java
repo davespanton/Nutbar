@@ -25,6 +25,8 @@ public class XMPPService extends RoboService {
 
         if(intent.getAction().equals(getString(R.string.start_xmpp_service)))
             connectToXmppServer();
+        else if(intent.getAction().equals(getString(R.string.send_xmpp)))
+            sendXmppMessage(intent);
 
         return START_STICKY;
     }
@@ -35,7 +37,13 @@ public class XMPPService extends RoboService {
         xmppCommunication.disconnect();
     }
 
+    private void sendXmppMessage(Intent intent) {
+        String message = intent.getStringExtra(getString(R.string.send_xmpp_extra));
+        xmppCommunication.sendMessage(message);
+    }
+
     private void connectToXmppServer() {
+
         XMPPConnectionTask connectionTask = new XMPPConnectionTask();
         connectionTask.execute(xmppCommunication);
     }

@@ -55,7 +55,7 @@ public class XMPPCommunication {
 
     public void sendMessage(String message) {
 
-        if(!xmppConn.isConnected()) {
+        if(xmppConn == null || !xmppConn.isConnected()) {
             Log.w("NBAR", "Not connected to xmpp server");
             return;
         }
@@ -63,5 +63,10 @@ public class XMPPCommunication {
         Message xmppMessage = new Message(XMPP_RECIPIENT);
         xmppMessage.setBody(message);
         xmppConn.sendPacket(xmppMessage);
+    }
+
+
+    public boolean isConnected() {
+        return xmppConn.isConnected();
     }
 }

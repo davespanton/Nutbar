@@ -2,6 +2,7 @@ package com.davespanton.nutbar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,13 +34,17 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         toggleAccelerometer.setOnClickListener(accelerometerButtonListener);
 
         accServiceConn.setActivity(this);
-        
-        startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
         startService(new Intent(getString(R.string.start_xmpp_service)));
     }
-    
-	private void startBindListenerService(String action, ListenerServiceConnection conn) {
+
+    private void startBindListenerService(String action, ListenerServiceConnection conn) {
     	Intent intent = new Intent();
         intent.setAction(action);
         startService(intent);
@@ -50,22 +55,21 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     protected void onStop() {
         super.onStop();
 
-        if(!accServiceConn.isListening())
-            finish();
+        if(!accServiceConn.isListening()) {
+            Log.v("NBAR", "Finishing main activity");
+            destroyServices();
+        }
     }
 
-    @Override
-    public void onDestroy() {
-    	unbindService(accServiceConn);
+    private void destroyServices() {
+        unbindService(accServiceConn);
 
     	if(!accServiceConn.isListening()) {
     		stopService(new Intent(getString(R.string.start_acc_listener_service)));
             stopService(new Intent(getString(R.string.start_xmpp_service)));
         }
-
-    	super.onDestroy();
     }
-    
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);

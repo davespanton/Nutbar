@@ -4,6 +4,7 @@ import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,5 +65,11 @@ public class XMPPCommunicationTest {
         xmppCommunication.sendMessage("message");
         Message sentMessage = (Message) xmppConnection.getLastSentPacket();
         assertNull(sentMessage);
+    }
+
+    @Test
+    public void shouldReturnIsConnectedWhenConnected() throws XMPPException {
+        xmppConnection.connect();
+        assertTrue(xmppCommunication.isConnected());
     }
 }
