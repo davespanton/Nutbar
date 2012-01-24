@@ -9,7 +9,7 @@ import org.jivesoftware.smack.packet.Message;
 
 public class XMPPCommunication {
 
-    public static final String XMPP_RECIPIENT = "davespanton@gmail.com"; //TODO for test only
+    public static final String XMPP_RECIPIENT = "ds-test-xmpp@appspot.com";
 
     @Inject
     private Provider<XMPPConnection> provider;

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
@@ -33,8 +34,10 @@ public class XMPPService extends RoboService {
 
     @Override
     public void onDestroy() {
+        Log.v("NBAR", "destroying xmpp");
         super.onDestroy();
         xmppCommunication.disconnect();
+        xmppCommunication = null;
     }
 
     private void sendXmppMessage(Intent intent) {

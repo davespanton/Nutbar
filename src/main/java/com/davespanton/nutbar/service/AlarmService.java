@@ -61,7 +61,12 @@ public class AlarmService extends RoboService {
         @Override
         public void onLocationChanged(Location location) {
             Intent i = new Intent();
-            i.putExtra(getString(R.string.send_xmpp_extra), Double.toString(location.getLatitude()) + ":" + Double.toString(location.getLongitude()));
+            i.putExtra(getString(R.string.send_xmpp_extra),
+                    getString(R.string.send_xmpp_command) + " " +
+                    Double.toString(location.getLatitude()) + "," +
+                    Double.toString(location.getLongitude()) + "," +
+                    location.getProvider());
+
             i.setAction(getString(R.string.send_xmpp));
 
             startService(i);

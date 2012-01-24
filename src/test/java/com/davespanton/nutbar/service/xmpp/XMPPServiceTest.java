@@ -65,7 +65,7 @@ public class XMPPServiceTest {
     public void shouldNotSendXmppMessageWithCorrectIntentIfNotConnected() {
         sendXmppMessageViaIntent("");
         Assert.assertNull(((StubXMPPConnection) xmppConnection).getLastSentPacket());
-    };
+    }
 
     private void startService() {
         Intent intent = new Intent(xmppService.getString(R.string.start_xmpp_service));

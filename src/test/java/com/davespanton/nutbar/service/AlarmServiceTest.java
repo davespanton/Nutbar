@@ -85,12 +85,31 @@ public class AlarmServiceTest {
     }
 
     @Test
-    public void shouldBroadcastLocationUpdates() {
-        Location loc = new Location(LocationManager.GPS_PROVIDER);
-        locationAlarm.onLocationChanged(loc);
+    public void shouldBroadcastLocationUpdatesInExpectedFormat() {
+        String provider = LocationManager.GPS_PROVIDER;
+        Double lat = 50d;
+        Double lng = 0d;
+        changeLocation(provider, lat, lng);
 
         Intent i = Robolectric.shadowOf(alarmService).peekNextStartedService();
 
-        assertNotNull(i.getExtras().getString(alarmService.getString(R.string.send_xmpp_extra)));
+        String[] xmppBodyElements = parseXmppMessageFromIntentWithExtra(i);
+
+        assertEquals(Double.toString(lat), xmppBodyElements[0]);
+        assertEquals(Double.toString(lng), xmppBodyElements[1]);
+        assertEquals(provider, xmppBodyElements[2]);
+    }
+
+    private void changeLocation(String provider, Double lat, Double lng) {
+        Location loc = new Location(provider);
+        loc.setLatitude(lat);
+        loc.setLongitude(lng);
+        locationAlarm.onLocationChanged(loc);
+    }
+
+    private String[] parseXmppMessageFromIntentWithExtra(Intent broadcast) {
+        String xmppMessage = broadcast.getExtras().getString(alarmService.getString(R.string.send_xmpp_extra));
+        String xmppBody = xmppMessage.split(" ")[1];
+        return xmppBody.split(",");
     }
 }

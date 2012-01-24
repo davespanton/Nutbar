@@ -14,6 +14,7 @@
     <string name="start_xmpp_service">com.davespanton.nutbar.START_XMPP_SERVICE</string>
     <string name="send_xmpp">com.davespanton.nutbar.SEND_XMPP</string>
     <string name="send_xmpp_extra">com.davespanton.nutbar.LOCATION_EXTRA</string>
+    <string name="send_xmpp_command">/location</string>
 
     <string name="disarm">Disarm</string>
     <string name="disarmed">Disarmed</string>
@@ -35,6 +36,4 @@
     <string name="settings_password">Password</string>
 
     <string name="shared_preferences_package">com.davespanton.nutbar_preferences</string>
-
-
 </resources>
