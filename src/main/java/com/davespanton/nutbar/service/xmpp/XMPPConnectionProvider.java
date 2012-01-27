@@ -4,8 +4,6 @@ import com.google.inject.Provider;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 
-import java.net.ServerSocket;
-
 public class XMPPConnectionProvider implements Provider<XMPPConnection> {
 
     public static final String SERVER = "jabber.org";

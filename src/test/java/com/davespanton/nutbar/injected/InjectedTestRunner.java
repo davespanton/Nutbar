@@ -3,16 +3,21 @@ package com.davespanton.nutbar.injected;
 import android.app.Application;
 import com.davespanton.nutbar.NutbarTestModule;
 import com.davespanton.nutbar.application.NutbarApplication;
+import org.jivesoftware.smack.ShadowChatManager;
 import com.google.inject.Injector;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.runners.model.InitializationError;
 import roboguice.inject.ContextScope;
 
+import java.lang.reflect.Method;
+
 public class InjectedTestRunner extends RobolectricTestRunner {
     
 	public InjectedTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
+
+        addClassOrPackageToInstrument("org.jivesoftware.smack.ChatManager");
     }
 
     @Override protected Application createApplication() {
@@ -30,5 +35,12 @@ public class InjectedTestRunner extends RobolectricTestRunner {
         scope.enter(application);
 
         injector.injectMembers(test);
+    }
+
+    @Override
+    public void beforeTest(Method method) {
+        Robolectric.bindShadowClass(ShadowChatManager.class);
+
+        super.beforeTest(method);
     }
 }

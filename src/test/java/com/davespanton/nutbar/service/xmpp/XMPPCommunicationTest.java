@@ -3,6 +3,9 @@ package com.davespanton.nutbar.service.xmpp;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.xtremelabs.robolectric.Robolectric;
+import org.jivesoftware.smack.ChatManager;
+import org.jivesoftware.smack.ShadowChatManager;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
@@ -26,8 +29,11 @@ public class XMPPCommunicationTest {
 
     private StubXMPPConnection xmppConnection;
 
+
+
     @Before
     public void setup() {
+        Robolectric.bindShadowClass(ShadowChatManager.class);
         xmppConnection = (StubXMPPConnection) provider.get();
         xmppConnection.clearSentPackets();
         xmppCommunication.connect(USERNAME, PASSWORD);
@@ -48,6 +54,17 @@ public class XMPPCommunicationTest {
     public void shouldDisconnectFromXMPPConnection() {
         xmppCommunication.disconnect();
         assertFalse(xmppConnection.isConnected());
+    }
+
+    @Test
+    public void shouldInitiateChatOnLogin() {
+        
+        ChatManager chatManager = xmppConnection.getChatManager();
+        ShadowChatManager shadowChatManager = Robolectric.shadowOf_(chatManager);
+
+        //TODO test that a chat was created. implement checkable list in shadow.
+
+        assertTrue(true);
     }
 
     @Test

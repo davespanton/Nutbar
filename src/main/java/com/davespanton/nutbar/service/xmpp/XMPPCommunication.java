@@ -62,6 +62,7 @@ public class XMPPCommunication {
 
         Message xmppMessage = new Message(XMPP_RECIPIENT);
         xmppMessage.setBody(message);
+        Log.v("NBAR", message);
         xmppConn.sendPacket(xmppMessage);
     }
 

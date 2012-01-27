@@ -9,6 +9,8 @@ import com.google.inject.Inject;
 
 public class LocationAlarm implements LocationListener {
 
+    private static final long MIN_LOCATION_UPDATE_INTERVAL = 10000;
+
 	@Inject
     private LocationManager loc;
 
@@ -20,8 +22,8 @@ public class LocationAlarm implements LocationListener {
 		if(isListening)
 			return;
 
-		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        loc.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+		loc.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_LOCATION_UPDATE_INTERVAL, 0, this);
+        loc.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_LOCATION_UPDATE_INTERVAL, 0, this);
 
 		isListening = true;
 	}

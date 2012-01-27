@@ -3,6 +3,7 @@ package com.davespanton.nutbar.service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
+import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.LocationAlarmListener;
@@ -61,16 +62,19 @@ public class AlarmService extends RoboService {
         @Override
         public void onLocationChanged(Location location) {
             Intent i = new Intent();
-            i.putExtra(getString(R.string.send_xmpp_extra),
-                    getString(R.string.send_xmpp_command) + " " +
+
+            String message = getString(R.string.send_xmpp_command) + " " +
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude()) + "," +
-                    location.getProvider());
+                    location.getProvider();
+
+            Log.v("NBAR", message);
+
+            i.putExtra(getString(R.string.send_xmpp_extra), message);
 
             i.setAction(getString(R.string.send_xmpp));
 
             startService(i);
         }
     };
-
 }

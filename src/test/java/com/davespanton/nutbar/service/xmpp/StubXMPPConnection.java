@@ -1,5 +1,7 @@
 package com.davespanton.nutbar.service.xmpp;
 
+import com.xtremelabs.robolectric.Robolectric;
+import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Packet;
@@ -38,6 +40,11 @@ public class StubXMPPConnection extends XMPPConnection {
     public void login(String username, String password) throws XMPPException {
         this.username = username;
         this.password = password;
+    }
+
+    @Override
+    public ChatManager getChatManager() {
+        return super.getChatManager();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.xtremelabs.robolectric.Robolectric;
 import junit.framework.Assert;
 import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
