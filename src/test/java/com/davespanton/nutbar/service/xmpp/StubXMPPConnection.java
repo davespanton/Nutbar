@@ -15,10 +15,11 @@ public class StubXMPPConnection extends XMPPConnection {
     private String username = "";
     private String password = "";
 
-    private ArrayList<Packet> sentPackets = new ArrayList<Packet>();
+    private String service;
 
     public StubXMPPConnection(String serviceName) {
         super(serviceName);
+        service = serviceName;
     }
 
     @Override
@@ -48,8 +49,8 @@ public class StubXMPPConnection extends XMPPConnection {
     }
 
     @Override
-    public void sendPacket(Packet packet) {
-        sentPackets.add(packet);
+    public String getServiceName() {
+        return service;
     }
 
     public String getUsername() {
@@ -58,16 +59,5 @@ public class StubXMPPConnection extends XMPPConnection {
 
     public String getPassword() {
         return password;
-    }
-    
-    public Packet getLastSentPacket() {
-        if(sentPackets.size() == 0)
-            return null;
-        else
-            return sentPackets.get(sentPackets.size() - 1);
-    }
-
-    public void clearSentPackets() {
-        sentPackets.clear();
     }
 }

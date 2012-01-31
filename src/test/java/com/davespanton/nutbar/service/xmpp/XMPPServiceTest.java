@@ -3,10 +3,13 @@ package com.davespanton.nutbar.service.xmpp;
 import android.content.Intent;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
+import com.davespanton.nutbar.shadows.ShadowChat;
+import com.davespanton.nutbar.shadows.ShadowChatManager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import static junit.framework.Assert.*;
+
 import com.xtremelabs.robolectric.Robolectric;
-import junit.framework.Assert;
 import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +18,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(InjectedTestRunner.class)
 public class XMPPServiceTest {
+
+    private static final String TEST_MESSAGE = "message";
 
     @Inject
     private XMPPService xmppService;
@@ -28,12 +33,12 @@ public class XMPPServiceTest {
     public void setup() {
         xmppService.onCreate();
         xmppConnection = xmppConnectionProvider.get();
+        getShadowChatManager().clearAllChats();
     }
 
     @After
     public void tearDown() {
         xmppService = null;
-        ((StubXMPPConnection) xmppConnection).clearSentPackets();
         xmppConnection = null;
         xmppConnectionProvider = null;
     }
@@ -41,8 +46,7 @@ public class XMPPServiceTest {
     @Test
     public void shouldConnectXMPPOnStartWithCorrectIntent() {
         startService();
-
-        Assert.assertTrue(xmppConnection.isConnected());
+        assertTrue(xmppConnection.isConnected());
     }
 
 
@@ -56,16 +60,24 @@ public class XMPPServiceTest {
     public void shouldSendXMPPMessageWithCorrectIntent() {
         startService();
 
-        String expected = "message";
-        sendXmppMessageViaIntent(expected);
+        sendXmppMessageViaIntent(TEST_MESSAGE);
 
-        Assert.assertNotNull(((StubXMPPConnection) xmppConnection).getLastSentPacket());
+        assertTrue(getShadowChatForXmppRecipient().hasSentMessage(TEST_MESSAGE));
+    }
+
+    private ShadowChat getShadowChatForXmppRecipient() {
+        ShadowChatManager shadowChatManager = getShadowChatManager();
+        return Robolectric.shadowOf_(shadowChatManager.getChatForRecipient(XMPPCommunication.XMPP_RECIPIENT));
+    }
+
+    private ShadowChatManager getShadowChatManager() {
+        return Robolectric.shadowOf_(xmppConnection.getChatManager());
     }
 
     @Test
     public void shouldNotSendXmppMessageWithCorrectIntentIfNotConnected() {
         sendXmppMessageViaIntent("");
-        Assert.assertNull(((StubXMPPConnection) xmppConnection).getLastSentPacket());
+        assertFalse(getShadowChatManager().hasCreatedChatForRecipient(XMPPCommunication.XMPP_RECIPIENT  ));
     }
 
     private void startService() {
@@ -78,8 +90,6 @@ public class XMPPServiceTest {
         startService();
         xmppService.onDestroy();
 
-        Assert.assertFalse(xmppConnection.isConnected());
+        assertFalse(xmppConnection.isConnected());
     }
-
-    
 }

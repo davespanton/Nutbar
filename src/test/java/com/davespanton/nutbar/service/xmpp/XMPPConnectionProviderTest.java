@@ -2,6 +2,7 @@ package com.davespanton.nutbar.service.xmpp;
 
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import junit.framework.Assert;
 import org.jivesoftware.smack.XMPPConnection;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.junit.runner.RunWith;
 public class XMPPConnectionProviderTest {
 
     @Inject
-    private XMPPConnectionProvider provider;
+    private Provider<XMPPConnection> provider;
 
     @Test
     public void shouldReturnXmppConnection() {
