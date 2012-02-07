@@ -31,6 +31,8 @@ public class XMPPCommunication {
         } catch (XMPPException e) {
             Log.e("NBAR", "Error connecting to xmpp server.");
             return;
+        } catch (Exception e) {
+            Log.e("NBAR", "Error connecting to xmpp server " + e.getStackTrace()[0]);
         }
 
         login();
@@ -45,7 +47,10 @@ public class XMPPCommunication {
             xmppConn.login(username, password);
         } catch (XMPPException e) {
             Log.e("NBAR", "Error logging in to xmpp server.");
+            Log.e("NBAR", "xmppConn.isConnected:" + Boolean.toString(xmppConn.isConnected()));
             return;
+        } catch (Exception e) {
+            Log.e("NBAR", "Error logging in to xmpp server: " + e.getStackTrace()[0]);
         }
 
         createChat();
@@ -79,6 +84,8 @@ public class XMPPCommunication {
             chatSession.sendMessage(message);
         } catch (XMPPException e) {
             Log.e("NBAR", "Couldn't send message.");
+        } catch (Exception e) {
+            Log.e("NBAR", "Couldn't send message: " + e.getStackTrace()[0]);
         }
     }
 

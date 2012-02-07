@@ -16,6 +16,8 @@ public class XMPPService extends RoboService {
     @Inject
     private XMPPCommunication xmppCommunication;
 
+    private XMPPConnectionTask xmppConnectionTask;
+    
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -33,9 +35,17 @@ public class XMPPService extends RoboService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        xmppConnectionTask = new XMPPConnectionTask(this, xmppCommunication);
+    }
+
+    @Override
     public void onDestroy() {
         Log.v("NBAR", "destroying xmpp");
         super.onDestroy();
+        xmppConnectionTask.cancel(true);
+        xmppConnectionTask = null;
         xmppCommunication.disconnect();
         xmppCommunication = null;
     }
@@ -46,32 +56,6 @@ public class XMPPService extends RoboService {
     }
 
     private void connectToXmppServer() {
-
-        XMPPConnectionTask connectionTask = new XMPPConnectionTask();
-        connectionTask.execute(xmppCommunication);
-    }
-
-    private class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boolean> {
-
-        private String username;
-        private String password;
-
-        @Override
-        protected Boolean doInBackground(XMPPCommunication... xmppCommunications) {
-            retrieveCredentials();
-            xmppCommunication.connect(username, password);
-            return false;
-        }
-
-        private void retrieveCredentials() {
-        SharedPreferences prefs = getSharedPreferences("com.davespanton.nutbar_preferences", Context.MODE_PRIVATE);
-        username = prefs.getString(NutbarPreferenceActivity.USERNAME_KEY, "");
-        password = prefs.getString(NutbarPreferenceActivity.PASSWORD_KEY, "");
-    }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            // TODO update connected status
-        }
+        xmppConnectionTask.execute(xmppCommunication);
     }
 }
