@@ -3,6 +3,7 @@ package com.davespanton.nutbar.service.xmpp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 
 public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boolean> {
@@ -23,11 +24,12 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
     protected Boolean doInBackground(XMPPCommunication... xmppCommunications) {
         retrieveCredentials();
         xmppCommunication.connect(username, password);
-        return false;
+        return xmppCommunication.isConnected();
     }
 
     private void retrieveCredentials() {
-        SharedPreferences prefs = context.getSharedPreferences("com.davespanton.nutbar_preferences", Context.MODE_PRIVATE);
+        String preferenceKey = context.getString(R.string.shared_preferences_package);
+        SharedPreferences prefs = context.getSharedPreferences(preferenceKey, Context.MODE_PRIVATE);
         username = prefs.getString(NutbarPreferenceActivity.USERNAME_KEY, "");
         password = prefs.getString(NutbarPreferenceActivity.PASSWORD_KEY, "");
     }

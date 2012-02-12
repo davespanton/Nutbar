@@ -20,16 +20,22 @@ public class XMPPCommunication {
     private String username;
     private String password;
 
-    public void connect(String username, String password) {
+
+    public synchronized void connect(String username, String password) {
         this.username = username;
         this.password = password;
 
         xmppConn = provider.get();
 
+        if(xmppConn.isConnected())
+            return;
+
+        Log.v("NBAR", "Connecting with username: " + username);
+
         try {
             xmppConn.connect();
         } catch (XMPPException e) {
-            Log.e("NBAR", "Error connecting to xmpp server.");
+            Log.e("NBAR", "Error connecting to xmpp server. " + e.getXMPPError().getMessage());
             return;
         } catch (Exception e) {
             Log.e("NBAR", "Error connecting to xmpp server " + e.getStackTrace()[0]);
@@ -43,11 +49,12 @@ public class XMPPCommunication {
         if(!xmppConn.isConnected())
             return;
 
+        Log.v("NBAR", "Logging in to XMPP server");
+        
         try {
             xmppConn.login(username, password);
         } catch (XMPPException e) {
             Log.e("NBAR", "Error logging in to xmpp server.");
-            Log.e("NBAR", "xmppConn.isConnected:" + Boolean.toString(xmppConn.isConnected()));
             return;
         } catch (Exception e) {
             Log.e("NBAR", "Error logging in to xmpp server: " + e.getStackTrace()[0]);
@@ -70,7 +77,11 @@ public class XMPPCommunication {
     };
 
     public void disconnect() {
-        xmppConn.disconnect();
+        try {
+            xmppConn.disconnect();
+        } catch (Exception e) {
+            Log.e("NBAR", "Error disconnecting from xmpp server: " + e.getStackTrace()[0]);
+        }
     }
 
     public void sendMessage(String message) {
@@ -91,6 +102,6 @@ public class XMPPCommunication {
 
 
     public boolean isConnected() {
-        return xmppConn.isConnected();
+        return xmppConn != null && xmppConn.isConnected();
     }
 }

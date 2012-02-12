@@ -1,13 +1,11 @@
 package com.davespanton.nutbar.service.xmpp;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 import com.davespanton.nutbar.R;
-import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
 import roboguice.service.RoboService;
 
@@ -17,6 +15,14 @@ public class XMPPService extends RoboService {
     private XMPPCommunication xmppCommunication;
 
     private XMPPConnectionTask xmppConnectionTask;
+
+    private BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.v("NBAR", "Connection to network changed");
+            connectToXmppServer();
+        }
+    };
     
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,17 +43,24 @@ public class XMPPService extends RoboService {
     @Override
     public void onCreate() {
         super.onCreate();
+
         xmppConnectionTask = new XMPPConnectionTask(this, xmppCommunication);
+
+        registerReceiver(networkStatusReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
+
 
     @Override
     public void onDestroy() {
         Log.v("NBAR", "destroying xmpp");
-        super.onDestroy();
+
+        unregisterReceiver(networkStatusReceiver);
         xmppConnectionTask.cancel(true);
         xmppConnectionTask = null;
         xmppCommunication.disconnect();
         xmppCommunication = null;
+
+        super.onDestroy();
     }
 
     private void sendXmppMessage(Intent intent) {
@@ -56,6 +69,14 @@ public class XMPPService extends RoboService {
     }
 
     private void connectToXmppServer() {
+
+        if(xmppCommunication.isConnected())
+            return;
+
+        if(xmppConnectionTask.getStatus() == AsyncTask.Status.RUNNING)
+            return;
+
+        xmppConnectionTask = new XMPPConnectionTask(this, xmppCommunication);
         xmppConnectionTask.execute(xmppCommunication);
     }
 }
