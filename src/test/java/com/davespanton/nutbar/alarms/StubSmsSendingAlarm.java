@@ -6,13 +6,10 @@ public class StubSmsSendingAlarm extends SMSSendingAlarm {
 
 	private int tripCount = 0;
 
-    public StubSmsSendingAlarm(Context context) {
-        super(context);
-    }
-
     @Override
 	public void tripAlarm() {
-		tripCount++;
+		super.tripAlarm();
+        tripCount++;
 	}
 
 	public int getTripCount() {

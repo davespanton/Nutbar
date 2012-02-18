@@ -14,6 +14,7 @@ import static junit.framework.Assert.*;
 
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowApplication;
+import com.xtremelabs.robolectric.shadows.ShadowHandler;
 import com.xtremelabs.robolectric.shadows.ShadowService;
 import junit.framework.Assert;
 import org.jivesoftware.smack.XMPPConnection;
@@ -47,6 +48,7 @@ public class XMPPServiceTest {
     @After
     public void tearDown() {
         xmppService = null;
+        xmppConnection.disconnect();
         xmppConnection = null;
         xmppConnectionProvider = null;
     }
@@ -65,10 +67,11 @@ public class XMPPServiceTest {
 
     @Test
     public void shouldSendXMPPMessageWithCorrectIntent() {
+        Robolectric.pauseMainLooper();
         startService();
+        ShadowHandler.runMainLooperOneTask();
 
         sendXmppMessageViaIntent(TEST_MESSAGE);
-
         assertTrue(getShadowChatForXmppRecipient().hasSentMessage(TEST_MESSAGE));
     }
 

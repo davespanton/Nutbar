@@ -4,6 +4,7 @@ import android.content.*;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.google.inject.Inject;
@@ -14,7 +15,8 @@ public class XMPPService extends RoboService {
     @Inject
     private XMPPCommunication xmppCommunication;
 
-    private XMPPConnectionTask xmppConnectionTask;
+    @Inject
+    private XMPPReconnectionHandler xmppReconnectionHandler;
 
     private BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
         @Override
@@ -44,8 +46,6 @@ public class XMPPService extends RoboService {
     public void onCreate() {
         super.onCreate();
 
-        xmppConnectionTask = new XMPPConnectionTask(this, xmppCommunication);
-
         registerReceiver(networkStatusReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
@@ -55,8 +55,11 @@ public class XMPPService extends RoboService {
         Log.v("NBAR", "destroying xmpp");
 
         unregisterReceiver(networkStatusReceiver);
-        xmppConnectionTask.cancel(true);
-        xmppConnectionTask = null;
+
+        // TODO : cancel all pending activity on reconnection handler.
+
+        xmppReconnectionHandler = null;
+
         xmppCommunication.disconnect();
         xmppCommunication = null;
 
@@ -73,10 +76,8 @@ public class XMPPService extends RoboService {
         if(xmppCommunication.isConnected())
             return;
 
-        if(xmppConnectionTask.getStatus() == AsyncTask.Status.RUNNING)
-            return;
+        // TODO : back out if a handler has a message pending
 
-        xmppConnectionTask = new XMPPConnectionTask(this, xmppCommunication);
-        xmppConnectionTask.execute(xmppCommunication);
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
     }
 }

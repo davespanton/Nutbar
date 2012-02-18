@@ -24,12 +24,13 @@ public class NutbarPreferenceActivityTest {
     @Inject
 	private NutbarPreferenceActivity preferencesActivity;
 
+    @Inject
     private SharedPreferences sharedPreferences;
+
     private Bundle createBundle;
 
     @Before
     public void setup() {
-        sharedPreferences = preferencesActivity.getSharedPreferences(preferencesActivity.getString(R.string.shared_preferences_package), Context.MODE_PRIVATE);
         createBundle = new Bundle();
     }
 

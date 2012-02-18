@@ -6,20 +6,19 @@ import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
+import com.google.inject.Inject;
+import roboguice.inject.InjectResource;
 
 public class SMSSendingAlarm {
 
+    @Inject
     private SharedPreferences sharedPreferences;
 
 	private SmsManager smsManager = SmsManager.getDefault();
 
+    @InjectResource(R.string.sms_alarm_body)
     private String bodyText;
 
-    public SMSSendingAlarm(Context context) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        bodyText = context.getString(R.string.sms_alarm_body);
-    }
-	
 	public void tripAlarm() {
         String destinationAddress = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
 

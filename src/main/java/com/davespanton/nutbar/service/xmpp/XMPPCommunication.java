@@ -1,6 +1,8 @@
 package com.davespanton.nutbar.service.xmpp;
 
+import android.content.SharedPreferences;
 import android.util.Log;
+import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.*;
@@ -17,20 +19,14 @@ public class XMPPCommunication {
 
     private Chat chatSession;
 
-    private String username;
-    private String password;
+    @Inject
+    private SharedPreferences preferences;
 
-
-    public synchronized void connect(String username, String password) {
-        this.username = username;
-        this.password = password;
-
+    public synchronized void connect() {
         xmppConn = provider.get();
 
         if(xmppConn.isConnected())
             return;
-
-        Log.v("NBAR", "Connecting with username: " + username);
 
         try {
             xmppConn.connect();
@@ -50,9 +46,11 @@ public class XMPPCommunication {
             return;
 
         Log.v("NBAR", "Logging in to XMPP server");
-        
+
         try {
-            xmppConn.login(username, password);
+            xmppConn.login(
+                    preferences.getString(NutbarPreferenceActivity.USERNAME_KEY, ""),
+                    preferences.getString(NutbarPreferenceActivity.PASSWORD_KEY, ""));
         } catch (XMPPException e) {
             Log.e("NBAR", "Error logging in to xmpp server.");
             return;

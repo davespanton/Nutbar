@@ -1,10 +1,10 @@
 package com.davespanton.nutbar.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import com.davespanton.nutbar.R;
+import com.google.inject.Inject;
 import roboguice.activity.RoboPreferenceActivity;
 
 public class NutbarPreferenceActivity extends RoboPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -13,13 +13,12 @@ public class NutbarPreferenceActivity extends RoboPreferenceActivity implements 
     public static final String USERNAME_KEY = "username_key";
     public static final String PASSWORD_KEY = "password_key";
 
-    private SharedPreferences sharedPreferences = null;
+    @Inject
+    private SharedPreferences sharedPreferences;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-        sharedPreferences = getSharedPreferences(getString(R.string.shared_preferences_package), Context.MODE_PRIVATE);
 
 		addPreferencesFromResource(R.xml.preferences);
 

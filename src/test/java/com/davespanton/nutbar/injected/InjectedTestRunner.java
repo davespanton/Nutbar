@@ -19,7 +19,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
 
     @Override protected Application createApplication() {
         NutbarApplication application = (NutbarApplication) super.createApplication();
-        application.setModule(new NutbarTestModule());
+        application.setModule(new NutbarTestModule(application));
         return application;
     }
 

@@ -1,12 +1,12 @@
 package com.davespanton.nutbar.alarms;
 
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
+import com.davespanton.nutbar.injected.InjectedTestRunner;
+import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.RobolectricTestRunner;
 import com.xtremelabs.robolectric.shadows.ShadowSmsManager;
 import junit.framework.Assert;
 import org.junit.After;
@@ -14,23 +14,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(InjectedTestRunner.class)
 public class SMSSendingAlarmTest {
 
-	private SMSSendingAlarm sut;
+    @Inject
+	private SMSSendingAlarm smsSendingAlarm;
 	
 	private ShadowSmsManager shadowSmsManager;
 
+    @Inject
     private SharedPreferences sharedPreferences;
 
     private final String testDestinationAddress = "01234567";
 	
 	@Before
 	public void setup() {
-		sut = new SMSSendingAlarm(Robolectric.getShadowApplication().getApplicationContext());
 		shadowSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
         shadowSmsManager.clearLastSentTextMessageParams();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Robolectric.getShadowApplication().getApplicationContext());
         setupTestDestinationAddress(testDestinationAddress);
     }
 
@@ -42,13 +42,13 @@ public class SMSSendingAlarmTest {
 
     @After
 	public void tearDown() {
-		sut = null;
+		smsSendingAlarm = null;
 		shadowSmsManager = null;
 	}
 	
 	@Test
 	public void shouldSendSMSOnTrip() {
-		sut.tripAlarm();
+		smsSendingAlarm.tripAlarm();
 
         ShadowSmsManager.TextSmsParams sentTextParams = shadowSmsManager.getLastSentTextMessageParams();
 
@@ -59,7 +59,7 @@ public class SMSSendingAlarmTest {
     @Test
     public void shouldNotSendSMSWhenNoDestinationIsSet() {
         setupTestDestinationAddress("");
-        sut.tripAlarm();
+        smsSendingAlarm.tripAlarm();
         
         Assert.assertNull(shadowSmsManager.getLastSentTextMessageParams());
     }

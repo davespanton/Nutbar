@@ -1,5 +1,7 @@
 package com.davespanton.nutbar.service.xmpp;
 
+import android.content.SharedPreferences;
+import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.shadows.ShadowChat;
 import com.davespanton.nutbar.shadows.ShadowChatManager;
@@ -24,6 +26,7 @@ public class XMPPCommunicationTest {
     private static final String PASSWORD = "password";
 
     private static final String TEST_MESSAGE = "message";
+
     @Inject
     private XMPPCommunication xmppCommunication;
 
@@ -32,19 +35,32 @@ public class XMPPCommunicationTest {
 
     private StubXMPPConnection xmppConnection;
 
+    @Inject
+    private SharedPreferences preferences;
+
     @Before
     public void setup() {
         xmppConnection = (StubXMPPConnection) provider.get();
-        xmppCommunication.connect(USERNAME, PASSWORD);
+        xmppConnection.disconnect();
+        setupSharedPreferencesCredentials();
+        xmppCommunication.connect();
     }
 
+    private void setupSharedPreferencesCredentials() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(NutbarPreferenceActivity.USERNAME_KEY, USERNAME);
+        editor.putString(NutbarPreferenceActivity.PASSWORD_KEY, PASSWORD);
+        editor.commit();
+    }
+    
     @Test
     public void shouldConnectToXmppServer() {
         assertTrue(xmppConnection.isConnected());
     }
 
     @Test
-    public void shouldLoginOnConnectionWhenCredentialsAreFound() {
+    public void shouldLoginOnConnectionWithSharedPreferenceCredentials() {
+
         assertEquals(USERNAME, xmppConnection.getUsername());
         assertEquals(PASSWORD, xmppConnection.getPassword());
     }

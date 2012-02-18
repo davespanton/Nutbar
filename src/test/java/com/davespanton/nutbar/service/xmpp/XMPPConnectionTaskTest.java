@@ -18,7 +18,7 @@ public class XMPPConnectionTaskTest {
 
     @Before
     public void setup() {
-        xmppConnectionTask = new XMPPConnectionTask(Robolectric.getShadowApplication().getApplicationContext(), xmppCommunication);
+        xmppConnectionTask = new XMPPConnectionTask(xmppCommunication);
     }
 
     @Test
