@@ -8,14 +8,9 @@ import com.davespanton.nutbar.shadows.ShadowChat;
 import com.davespanton.nutbar.shadows.ShadowChatManager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import static com.xtremelabs.robolectric.Robolectric.shadowOf;
-import static junit.framework.Assert.*;
-
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowHandler;
-import com.xtremelabs.robolectric.shadows.ShadowService;
 import junit.framework.Assert;
 import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
@@ -24,6 +19,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 @RunWith(InjectedTestRunner.class)
 public class XMPPServiceTest {
@@ -37,6 +35,12 @@ public class XMPPServiceTest {
     private Provider<XMPPConnection> xmppConnectionProvider;
 
     private XMPPConnection xmppConnection;
+
+    @Inject
+    private XMPPReconnectionHandler xmppReconnectionHandler;
+
+    @Inject
+    private XMPPCommunication xmppCommunication;
 
     @Before
     public void setup() {
@@ -129,5 +133,11 @@ public class XMPPServiceTest {
         Intent intent = new Intent(ConnectivityManager.CONNECTIVITY_ACTION);
         Robolectric.getShadowApplication().sendBroadcast(intent);
         assertTrue(xmppConnection.isConnected());
+    }
+
+    @Test
+    public void shouldNotAttemptReconnectionIfHandlerHasQueuedAttempts() {
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 1000);
+        Assert.fail("Unimplemented");
     }
 }

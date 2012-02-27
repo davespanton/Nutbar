@@ -3,21 +3,24 @@ package com.davespanton.nutbar.service.xmpp;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import com.davespanton.nutbar.R;
-import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
-import roboguice.inject.InjectResource;
+
+import java.util.Stack;
 
 public class XMPPReconnectionHandler {
 
     @Inject
     private SharedPreferences preferences;
 
+    private Integer messageWhat = 0;
+    private Stack<Integer> messageWhatStack = new Stack<Integer>();
+
     private Handler.Callback handlerCallback = new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
             XMPPCommunication xmppCommunication = (XMPPCommunication) message.obj;
-            xmppCommunication.connect();
+            XMPPConnectionTask task = new XMPPConnectionTask(xmppCommunication);
+            task.execute();
             return false;
         }
     };
@@ -25,10 +28,27 @@ public class XMPPReconnectionHandler {
     private Handler handler = new Handler(handlerCallback);
 
     public void reconnectAfter(XMPPCommunication xmppCommunication, int delay) {
-        Message message = new Message();
-        message.obj = xmppCommunication;
+        Message message = handler.obtainMessage(getNextMessageWhat(), xmppCommunication);
         handler.sendMessageDelayed(message, delay);
     }
 
+    private int getNextMessageWhat() {
+        return messageWhatStack.push(messageWhat++);
+    }
 
+    private int getLastMessageWhat() {
+        messageWhat--;
+        return messageWhatStack.pop();
+    }
+
+    public void cancelPendingReconnections() {
+        if(messageWhatStack.size() > 0) {
+            handler.removeMessages(getLastMessageWhat());
+        }
+    }
+
+
+    public boolean hasPendingConnections() {
+        return !messageWhatStack.empty();
+    }
 }

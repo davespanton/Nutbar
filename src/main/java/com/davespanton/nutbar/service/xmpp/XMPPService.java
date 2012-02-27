@@ -55,15 +55,19 @@ public class XMPPService extends RoboService {
         Log.v("NBAR", "destroying xmpp");
 
         unregisterReceiver(networkStatusReceiver);
+        destroyXmppReconnectionHandler();
+        destroyXmppCommunication();
+        super.onDestroy();
+    }
 
-        // TODO : cancel all pending activity on reconnection handler.
-
+    private void destroyXmppReconnectionHandler() {
+        xmppReconnectionHandler.cancelPendingReconnections();
         xmppReconnectionHandler = null;
+    }
 
+    private void destroyXmppCommunication() {
         xmppCommunication.disconnect();
         xmppCommunication = null;
-
-        super.onDestroy();
     }
 
     private void sendXmppMessage(Intent intent) {
@@ -77,6 +81,8 @@ public class XMPPService extends RoboService {
             return;
 
         // TODO : back out if a handler has a message pending
+        //xmppReconnectionHandler.hasPendingConnections()
+        //        return;
 
         xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
     }

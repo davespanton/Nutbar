@@ -9,11 +9,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Stack;
+
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(InjectedTestRunner.class)
 public class XMPPReconnectionHandlerTest {
+
+    private static final int ONE_TENTH_SECOND = 100;
+    private static final int ONE_SECOND = 1000; 
 
     private XMPPReconnectionHandler xmppReconnectionHandler;
 
@@ -35,7 +41,7 @@ public class XMPPReconnectionHandlerTest {
 
     @Test
     public void shouldAttemptConnectionAfterDelay() {
-        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 100);
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, ONE_TENTH_SECOND);
         ShadowHandler.runMainLooperOneTask();
 
         assertTrue(xmppCommunication.isConnected());
@@ -43,9 +49,36 @@ public class XMPPReconnectionHandlerTest {
 
     @Test
     public void shouldNotAttemptConnectionBeforeDelay() {
-        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 1000);
-        Robolectric.idleMainLooper(100);
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, ONE_SECOND);
+        Robolectric.idleMainLooper(ONE_TENTH_SECOND);
 
         assertFalse(xmppCommunication.isConnected());
     }
+
+    @Test
+    public void shouldCancelPendingDelayedConnection() {
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, ONE_SECOND);
+        Robolectric.idleMainLooper(ONE_TENTH_SECOND);
+
+        xmppReconnectionHandler.cancelPendingReconnections();
+
+        Robolectric.idleMainLooper(ONE_SECOND);
+
+        assertFalse(xmppCommunication.isConnected());
+    }
+
+    @Test
+    public void shouldIndicateIfHasPendingConnection() {
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
+        Robolectric.idleMainLooper(ONE_TENTH_SECOND);
+
+        assertTrue(xmppReconnectionHandler.hasPendingConnections());
+    }
+
+    @Test
+    public void shouldIndicateIfHasNoPendingConnections() {
+        assertFalse(xmppReconnectionHandler.hasPendingConnections());
+    }
+
+
 }
