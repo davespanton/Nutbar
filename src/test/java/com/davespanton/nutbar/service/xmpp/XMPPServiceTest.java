@@ -137,7 +137,10 @@ public class XMPPServiceTest {
 
     @Test
     public void shouldNotAttemptReconnectionIfHandlerHasQueuedAttempts() {
+        Robolectric.pauseMainLooper();
         xmppReconnectionHandler.reconnectAfter(xmppCommunication, 1000);
-        Assert.fail("Unimplemented");
+        startService();
+        Robolectric.idleMainLooper(500);
+        assertFalse(xmppConnection.isConnected());
     }
 }

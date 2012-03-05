@@ -1,10 +1,11 @@
 package com.davespanton.nutbar.service.xmpp;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.google.inject.Inject;
@@ -80,9 +81,8 @@ public class XMPPService extends RoboService {
         if(xmppCommunication.isConnected())
             return;
 
-        // TODO : back out if a handler has a message pending
-        //xmppReconnectionHandler.hasPendingConnections()
-        //        return;
+        if(xmppReconnectionHandler.hasPendingConnections())
+                return;
 
         xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
     }
