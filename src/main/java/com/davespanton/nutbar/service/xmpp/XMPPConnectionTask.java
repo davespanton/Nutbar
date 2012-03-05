@@ -1,10 +1,16 @@
 package com.davespanton.nutbar.service.xmpp;
 
 import android.os.AsyncTask;
+import android.util.Log;
+import org.jivesoftware.smack.XMPPException;
 
 public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boolean> {
 
     private XMPPCommunication xmppCommunication;
+
+    private XMPPConnectionFailureCallback failureCallback;
+
+    private boolean failed = false;
 
     public XMPPConnectionTask(XMPPCommunication communication) {
         super();
@@ -13,12 +19,23 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
 
     @Override
     protected Boolean doInBackground(XMPPCommunication... xmppCommunications) {
-        xmppCommunication.connect();
+        //TODO - handle errors here
+        try {
+            xmppCommunication.connect();
+        } catch (XMPPException e) {
+            Log.e("NBAR", e.getMessage());
+            return false;
+        }
         return xmppCommunication.isConnected();
     }
 
     @Override
     protected void onPostExecute(Boolean result) {
+        if(!result && failureCallback != null)
+            failureCallback.connectionFailed();
+    }
 
+    public void setFailureCallback(XMPPConnectionFailureCallback xmppConnectionFailureCallback) {
+        failureCallback = xmppConnectionFailureCallback;
     }
 }

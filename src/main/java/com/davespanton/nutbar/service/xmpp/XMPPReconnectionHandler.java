@@ -47,7 +47,6 @@ public class XMPPReconnectionHandler {
         }
     }
 
-
     public boolean hasPendingConnections() {
         return !messageWhatStack.empty();
     }

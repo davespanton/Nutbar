@@ -79,6 +79,4 @@ public class XMPPReconnectionHandlerTest {
     public void shouldIndicateIfHasNoPendingConnections() {
         assertFalse(xmppReconnectionHandler.hasPendingConnections());
     }
-
-
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class StubXMPPConnection extends XMPPConnection {
 
     private boolean isConnected = false;
+    private boolean shouldFail = false;
 
     private String username = "";
     private String password = "";
@@ -24,7 +25,10 @@ public class StubXMPPConnection extends XMPPConnection {
 
     @Override
     public void connect() throws XMPPException {
-        isConnected = true;
+        if(shouldFail)
+            throw new XMPPException("failed!");
+        else
+            isConnected = true;
     }
 
     @Override
@@ -59,5 +63,10 @@ public class StubXMPPConnection extends XMPPConnection {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setShouldFail(boolean shouldFail)
+    {
+        this.shouldFail = shouldFail;
     }
 }

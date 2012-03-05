@@ -22,41 +22,27 @@ public class XMPPCommunication {
     @Inject
     private SharedPreferences preferences;
 
-    public synchronized void connect() {
+    public synchronized void connect() throws XMPPException {
         xmppConn = provider.get();
 
         if(xmppConn.isConnected())
             return;
 
-        try {
-            xmppConn.connect();
-        } catch (XMPPException e) {
-            Log.e("NBAR", "Error connecting to xmpp server. " + e.getXMPPError().getMessage());
-            return;
-        } catch (Exception e) {
-            Log.e("NBAR", "Error connecting to xmpp server " + e.getStackTrace()[0]);
-        }
+        xmppConn.connect();
 
         login();
     }
 
-    private void login() {
+    private void login() throws XMPPException {
 
         if(!xmppConn.isConnected())
             return;
 
         Log.v("NBAR", "Logging in to XMPP server");
 
-        try {
-            xmppConn.login(
-                    preferences.getString(NutbarPreferenceActivity.USERNAME_KEY, ""),
-                    preferences.getString(NutbarPreferenceActivity.PASSWORD_KEY, ""));
-        } catch (XMPPException e) {
-            Log.e("NBAR", "Error logging in to xmpp server.");
-            return;
-        } catch (Exception e) {
-            Log.e("NBAR", "Error logging in to xmpp server: " + e.getStackTrace()[0]);
-        }
+        xmppConn.login(
+            preferences.getString(NutbarPreferenceActivity.USERNAME_KEY, ""),
+            preferences.getString(NutbarPreferenceActivity.PASSWORD_KEY, ""));
 
         createChat();
     }

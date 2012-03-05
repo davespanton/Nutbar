@@ -13,6 +13,7 @@ import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,11 +40,16 @@ public class XMPPCommunicationTest {
     private SharedPreferences preferences;
 
     @Before
-    public void setup() {
+    public void setup() throws XMPPException {
         xmppConnection = (StubXMPPConnection) provider.get();
         xmppConnection.disconnect();
         setupSharedPreferencesCredentials();
         xmppCommunication.connect();
+    }
+
+    @After
+    public void tearDown() {
+        xmppConnection.setShouldFail(false);
     }
 
     private void setupSharedPreferencesCredentials() {
