@@ -126,4 +126,3 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 		}
     };
 }
-

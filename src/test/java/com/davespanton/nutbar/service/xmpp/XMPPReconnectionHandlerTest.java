@@ -2,16 +2,15 @@ package com.davespanton.nutbar.service.xmpp;
 
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.shadows.ShadowHandler;
+import org.jivesoftware.smack.XMPPConnection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Stack;
-
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
@@ -24,7 +23,10 @@ public class XMPPReconnectionHandlerTest {
     private XMPPReconnectionHandler xmppReconnectionHandler;
 
     @Inject
-    XMPPCommunication xmppCommunication;
+    private XMPPCommunication xmppCommunication;
+
+    @Inject
+    private Provider<XMPPConnection> xmppConnectionProvider;
 
     @Before
     public void setup() {
@@ -35,6 +37,9 @@ public class XMPPReconnectionHandlerTest {
 
     @After
     public void tearDown() {
+        xmppCommunication.disconnect();
+        xmppCommunication = null;
+        xmppConnectionProvider = null;
         xmppReconnectionHandler = null;
         Robolectric.unPauseMainLooper();
     }
@@ -69,7 +74,7 @@ public class XMPPReconnectionHandlerTest {
 
     @Test
     public void shouldIndicateIfHasPendingConnection() {
-        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, ONE_SECOND);
         Robolectric.idleMainLooper(ONE_TENTH_SECOND);
 
         assertTrue(xmppReconnectionHandler.hasPendingConnections());
@@ -77,6 +82,21 @@ public class XMPPReconnectionHandlerTest {
 
     @Test
     public void shouldIndicateIfHasNoPendingConnections() {
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, ONE_TENTH_SECOND);
+        Robolectric.idleMainLooper(ONE_SECOND);
+
         assertFalse(xmppReconnectionHandler.hasPendingConnections());
+    }
+
+    @Test
+    public void shouldAttemptToReconnectAfterFailure() {
+        ((StubXMPPConnection) xmppConnectionProvider.get()).setShouldFail(true);
+        xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
+
+        Robolectric.idleMainLooper(ONE_SECOND);
+
+        assertTrue(xmppReconnectionHandler.hasPendingConnections());
+
+        ((StubXMPPConnection) xmppConnectionProvider.get()).setShouldFail(false);
     }
 }

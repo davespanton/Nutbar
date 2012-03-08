@@ -10,8 +10,6 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
 
     private XMPPConnectionFailureCallback failureCallback;
 
-    private boolean failed = false;
-
     public XMPPConnectionTask(XMPPCommunication communication) {
         super();
         xmppCommunication = communication;
@@ -32,7 +30,7 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
     @Override
     protected void onPostExecute(Boolean result) {
         if(!result && failureCallback != null)
-            failureCallback.connectionFailed();
+            failureCallback.connectionFailed(xmppCommunication);
     }
 
     public void setFailureCallback(XMPPConnectionFailureCallback xmppConnectionFailureCallback) {

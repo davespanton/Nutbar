@@ -26,7 +26,7 @@ public class XMPPConnectionTaskTest {
 
     private XMPPConnectionFailureCallback xmppConnectionFailureCallback = new XMPPConnectionFailureCallback() {
         @Override
-        public void connectionFailed() {
+        public void connectionFailed(XMPPCommunication communication) {
             connectionFailureCalled = true;
         }
     };
@@ -57,5 +57,14 @@ public class XMPPConnectionTaskTest {
         xmppConnectionTask.execute();
 
         assertTrue(connectionFailureCalled);
+    }
+
+    @Test
+    public void shouldNotInformIfNoCallbackIsSet() {
+        ((StubXMPPConnection) xmppConnectionProvider.get()).setShouldFail(true);
+
+        xmppConnectionTask.execute();
+
+        assertFalse(connectionFailureCalled);
     }
 }

@@ -9,6 +9,7 @@ import java.util.Stack;
 
 public class XMPPReconnectionHandler {
 
+    public static final int RECONNECTION_MILLISECONDS = 10000;
     @Inject
     private SharedPreferences preferences;
 
@@ -20,8 +21,17 @@ public class XMPPReconnectionHandler {
         public boolean handleMessage(Message message) {
             XMPPCommunication xmppCommunication = (XMPPCommunication) message.obj;
             XMPPConnectionTask task = new XMPPConnectionTask(xmppCommunication);
+            task.setFailureCallback(failureCallback);
             task.execute();
+            getLastMessageWhat(); //consume last message what
             return false;
+        }
+    };
+
+    private XMPPConnectionFailureCallback failureCallback = new XMPPConnectionFailureCallback() {
+        @Override
+        public void connectionFailed(XMPPCommunication communication) {
+            reconnectAfter(communication, RECONNECTION_MILLISECONDS);
         }
     };
 
