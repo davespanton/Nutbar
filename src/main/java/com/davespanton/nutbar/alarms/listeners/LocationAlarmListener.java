@@ -1,4 +1,4 @@
-package com.davespanton.nutbar.alarms;
+package com.davespanton.nutbar.alarms.listeners;
 
 import android.location.Location;
 

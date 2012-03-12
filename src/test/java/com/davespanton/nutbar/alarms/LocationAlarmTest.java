@@ -3,6 +3,7 @@ package com.davespanton.nutbar.alarms;
 import android.app.Application;
 import android.location.Location;
 import android.location.LocationManager;
+import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;

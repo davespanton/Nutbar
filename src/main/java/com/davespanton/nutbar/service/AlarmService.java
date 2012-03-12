@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
-import com.davespanton.nutbar.alarms.LocationAlarmListener;
+import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.google.inject.Inject;
 import roboguice.service.RoboService;

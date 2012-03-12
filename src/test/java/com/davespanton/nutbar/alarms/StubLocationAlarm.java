@@ -1,5 +1,7 @@
 package com.davespanton.nutbar.alarms;
 
+import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
+
 public class StubLocationAlarm extends LocationAlarm {
 
     private LocationAlarmListener locationListener;

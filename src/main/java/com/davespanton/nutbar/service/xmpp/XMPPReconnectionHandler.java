@@ -3,6 +3,7 @@ package com.davespanton.nutbar.service.xmpp;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import com.google.inject.Inject;
 
 import java.util.Stack;
@@ -31,6 +32,7 @@ public class XMPPReconnectionHandler {
     private XMPPConnectionFailureCallback failureCallback = new XMPPConnectionFailureCallback() {
         @Override
         public void connectionFailed(XMPPCommunication communication) {
+            Log.v("NBAR", "Queuing a reconnection attempt.");
             reconnectAfter(communication, RECONNECTION_MILLISECONDS);
         }
     };

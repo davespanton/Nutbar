@@ -1,8 +1,6 @@
 package com.davespanton.nutbar.alarms;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
