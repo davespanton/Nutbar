@@ -3,11 +3,14 @@ package com.davespanton.nutbar.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.PreferenceActivity;
 import com.davespanton.nutbar.R;
 import com.google.inject.Inject;
 import roboguice.activity.RoboPreferenceActivity;
+import roboguice.inject.ContextSingleton;
 
-public class NutbarPreferenceActivity extends RoboPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+public class NutbarPreferenceActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String SMS_ALARM_KEY = "sms_alarm_key";
     public static final String USERNAME_KEY = "username_key";

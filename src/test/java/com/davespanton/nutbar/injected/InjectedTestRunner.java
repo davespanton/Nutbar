@@ -1,15 +1,14 @@
 package com.davespanton.nutbar.injected;
 
-import android.app.Application;
 import com.davespanton.nutbar.NutbarTestModule;
-import com.davespanton.nutbar.application.NutbarApplication;
 import com.davespanton.nutbar.shadows.ShadowChat;
 import com.davespanton.nutbar.shadows.ShadowChatManager;
 import com.google.inject.Injector;
+import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.junit.runners.model.InitializationError;
-import roboguice.inject.ContextScope;
+import roboguice.RoboGuice;
 
 public class InjectedTestRunner extends RobolectricTestRunner {
 
@@ -17,20 +16,11 @@ public class InjectedTestRunner extends RobolectricTestRunner {
         super(testClass);
     }
 
-    @Override protected Application createApplication() {
-        NutbarApplication application = (NutbarApplication) super.createApplication();
-        application.setModule(new NutbarTestModule(application));
-        return application;
-    }
-
     @Override public void prepareTest(Object test) {
-        NutbarApplication application = (NutbarApplication) Robolectric.application;
+        NutbarTestModule module = new NutbarTestModule(Robolectric.application);
+        RoboGuice.setBaseApplicationInjector(Robolectric.application, RoboGuice.DEFAULT_STAGE, Modules.override(RoboGuice.newDefaultRoboModule(Robolectric.application)).with(module));
 
-        //This project's application does not extend GuiceInjectableApplication therefore we need to enter the ContextScope manually.
-        Injector injector = application.getInjector();
-        ContextScope scope = injector.getInstance(ContextScope.class);
-        scope.enter(application);
-
+        Injector injector = RoboGuice.getInjector(Robolectric.application.getApplicationContext());
         injector.injectMembers(test);
     }
 
