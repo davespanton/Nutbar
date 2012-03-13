@@ -1,13 +1,16 @@
 package com.davespanton.nutbar.service.xmpp;
 
 import android.content.SharedPreferences;
+import com.davespanton.nutbar.NutbarTestModule;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.davespanton.nutbar.shadows.ShadowChat;
 import com.davespanton.nutbar.shadows.ShadowChatManager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
@@ -15,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import roboguice.RoboGuice;
 
 import static junit.framework.Assert.*;
 
