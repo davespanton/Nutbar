@@ -9,6 +9,7 @@ import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.alarms.StubLocationAlarm;
 import com.davespanton.nutbar.alarms.StubSmsSendingAlarm;
+import com.davespanton.nutbar.application.NutbarModule;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.binder.StubAccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
@@ -25,12 +26,6 @@ import roboguice.inject.SharedPreferencesName;
 
 public class NutbarTestModule extends AbstractModule {
 
-    private Application application;
-
-    public NutbarTestModule(Application application) {
-        this.application = application;
-    }
-
     @Override
 	protected void configure() {
         bind(AccelerometerBinderBuilder.class).to(StubAccelerometerBinderBuilder.class);
@@ -46,7 +41,7 @@ public class NutbarTestModule extends AbstractModule {
         bind(XMPPConnection.class).toProvider(StubXMPPConnectionProvider.class);
 
         bindConstant().annotatedWith(SharedPreferencesName.class)
-            .to(application.getString(R.string.shared_preferences_package));
+            .to(NutbarModule.SHARED_PREFERENCE_PACKAGE);
 
         bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext()));
 

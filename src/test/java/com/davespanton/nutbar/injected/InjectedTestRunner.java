@@ -17,7 +17,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
     }
 
     @Override public void prepareTest(Object test) {
-        NutbarTestModule module = new NutbarTestModule(Robolectric.application);
+        NutbarTestModule module = new NutbarTestModule();
         RoboGuice.setBaseApplicationInjector(Robolectric.application, RoboGuice.DEFAULT_STAGE, Modules.override(RoboGuice.newDefaultRoboModule(Robolectric.application)).with(module));
 
         Injector injector = RoboGuice.getInjector(Robolectric.application.getApplicationContext());
