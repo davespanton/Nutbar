@@ -1,13 +1,17 @@
 package com.davespanton.nutbar.activity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.application.NutbarModule;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import roboguice.activity.RoboPreferenceActivity;
 import roboguice.inject.ContextSingleton;
+import roboguice.inject.SharedPreferencesProvider;
 
 
 public class NutbarPreferenceActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -16,13 +20,13 @@ public class NutbarPreferenceActivity extends PreferenceActivity implements Shar
     public static final String USERNAME_KEY = "username_key";
     public static final String PASSWORD_KEY = "password_key";
 
-    @Inject
     private SharedPreferences sharedPreferences;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+        sharedPreferences = getSharedPreferences(NutbarModule.SHARED_PREFERENCE_PACKAGE, Context.MODE_PRIVATE);
 		addPreferencesFromResource(R.xml.preferences);
 
         updatePreferenceSummaryToValueWithDefault(SMS_ALARM_KEY, getString(R.string.sms_alarm_no_number));

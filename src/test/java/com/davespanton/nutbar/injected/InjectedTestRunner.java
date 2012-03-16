@@ -31,3 +31,5 @@ public class InjectedTestRunner extends RobolectricTestRunner {
         Robolectric.bindShadowClass(ShadowChat.class);
     }
 }
+
+

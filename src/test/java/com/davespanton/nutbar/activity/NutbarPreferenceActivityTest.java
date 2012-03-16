@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import com.davespanton.nutbar.R;
+import com.davespanton.nutbar.application.NutbarModule;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
@@ -24,13 +25,13 @@ public class NutbarPreferenceActivityTest {
     @Inject
 	private NutbarPreferenceActivity preferencesActivity;
 
-    @Inject
     private SharedPreferences sharedPreferences;
 
     private Bundle createBundle;
 
     @Before
     public void setup() {
+        sharedPreferences = preferencesActivity.getSharedPreferences(NutbarModule.SHARED_PREFERENCE_PACKAGE, Context.MODE_PRIVATE);
         createBundle = new Bundle();
     }
 
