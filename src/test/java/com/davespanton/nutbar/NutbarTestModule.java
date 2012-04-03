@@ -9,6 +9,7 @@ import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.alarms.StubLocationAlarm;
 import com.davespanton.nutbar.alarms.StubSmsSendingAlarm;
+import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.application.NutbarModule;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.binder.StubAccelerometerBinderBuilder;
@@ -20,6 +21,7 @@ import com.davespanton.nutbar.service.xmpp.StubXMPPConnectionProvider;
 import com.davespanton.nutbar.service.xmpp.XMPPCommunication;
 import com.davespanton.nutbar.service.xmpp.XMPPReconnectionHandler;
 import com.google.inject.AbstractModule;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.xtremelabs.robolectric.Robolectric;
 import org.jivesoftware.smack.XMPPConnection;
 import roboguice.inject.SharedPreferencesName;
@@ -32,7 +34,7 @@ public class NutbarTestModule extends AbstractModule {
 
         bind(ListenerServiceConnection.class).toInstance(new StubListenerServiceConnection());
         bind(SensorChangeListener.class).toInstance(new StubSensorChangeMonitor());
-		bind(SMSSendingAlarm.class).toInstance(new StubSmsSendingAlarm());
+	
 		bind(OptionsMenuDelegate.class).toInstance(new StubOptionsMenuDelegate());
         bind(LocationAlarm.class).toInstance(new StubLocationAlarm());
         bind(XMPPReconnectionHandler.class).toInstance(new XMPPReconnectionHandler());
@@ -45,5 +47,7 @@ public class NutbarTestModule extends AbstractModule {
 
         bind(SharedPreferences.class).toInstance(PreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext()));
 
+        install(new FactoryModuleBuilder()
+            .build(SMSSendingAlarmFactory.class));
     }
 }

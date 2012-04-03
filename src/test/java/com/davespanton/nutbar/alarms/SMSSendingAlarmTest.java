@@ -1,14 +1,19 @@
 package com.davespanton.nutbar.alarms;
 
+import static junit.framework.Assert.*;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
+import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
+import com.xtremelabs.robolectric.shadows.ShadowPendingIntent;
 import com.xtremelabs.robolectric.shadows.ShadowSmsManager;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,9 +22,12 @@ import org.junit.runner.RunWith;
 @RunWith(InjectedTestRunner.class)
 public class SMSSendingAlarmTest {
 
+    private SMSSendingAlarm smsSendingAlarm;
+
     @Inject
-	private SMSSendingAlarm smsSendingAlarm;
-	
+    private SMSSendingAlarmFactory smsSendingAlarmFactory;
+
+
 	private ShadowSmsManager shadowSmsManager;
 
     @Inject
@@ -29,7 +37,8 @@ public class SMSSendingAlarmTest {
 	
 	@Before
 	public void setup() {
-		shadowSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
+		smsSendingAlarm = smsSendingAlarmFactory.create(Robolectric.getShadowApplication().getApplicationContext());
+        shadowSmsManager = Robolectric.shadowOf(SmsManager.getDefault());
         shadowSmsManager.clearLastSentTextMessageParams();
         setupTestDestinationAddress(testDestinationAddress);
     }
@@ -45,22 +54,29 @@ public class SMSSendingAlarmTest {
 		smsSendingAlarm = null;
 		shadowSmsManager = null;
 	}
-	
+
 	@Test
 	public void shouldSendSMSOnTrip() {
-		smsSendingAlarm.tripAlarm();
+		PendingIntent pendingIntent = getPendingIntent();
+        smsSendingAlarm.tripAlarm(pendingIntent);
 
         ShadowSmsManager.TextSmsParams sentTextParams = shadowSmsManager.getLastSentTextMessageParams();
 
-        Assert.assertEquals(testDestinationAddress, sentTextParams.getDestinationAddress());
-        Assert.assertEquals(Robolectric.application.getString(R.string.sms_alarm_body), sentTextParams.getText());
+        assertEquals(testDestinationAddress, sentTextParams.getDestinationAddress());
+        assertEquals(Robolectric.application.getString(R.string.sms_alarm_body), sentTextParams.getText());
+        assertEquals(pendingIntent, sentTextParams.getSentIntent());
 	}
+
+    private PendingIntent getPendingIntent() {
+        Context context = Robolectric.application.getApplicationContext();
+        return ShadowPendingIntent.getService(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     @Test
     public void shouldNotSendSMSWhenNoDestinationIsSet() {
         setupTestDestinationAddress("");
-        smsSendingAlarm.tripAlarm();
+        smsSendingAlarm.tripAlarm(getPendingIntent());
         
-        Assert.assertNull(shadowSmsManager.getLastSentTextMessageParams());
+        assertNull(shadowSmsManager.getLastSentTextMessageParams());
     }
 }

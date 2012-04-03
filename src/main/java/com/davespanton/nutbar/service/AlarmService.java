@@ -6,15 +6,18 @@ import android.os.IBinder;
 import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
-import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
+import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
+import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.google.inject.Inject;
 import roboguice.service.RoboService;
 
 public class AlarmService extends RoboService {
 
-	@Inject
-	private SMSSendingAlarm smsAlarm;
+    public SMSSendingAlarm smsAlarm;
+
+    @Inject
+    private SMSSendingAlarmFactory smsAlarmFactory;
 
     @Inject
     private LocationAlarm locationAlarm;
@@ -27,7 +30,8 @@ public class AlarmService extends RoboService {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        
+        smsAlarm = smsAlarmFactory.create(this);
         locationAlarm.setOnLocationChangeListener(locationAlarmListener);
     }
 
@@ -50,7 +54,8 @@ public class AlarmService extends RoboService {
 	}
 
     private void tripAlarms() {
-        smsAlarm.tripAlarm();
+        
+        smsAlarm.tripAlarm(null);
         locationAlarm.tripAlarm();
     }
 

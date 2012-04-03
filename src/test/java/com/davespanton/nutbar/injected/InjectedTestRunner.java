@@ -3,6 +3,7 @@ package com.davespanton.nutbar.injected;
 import com.davespanton.nutbar.NutbarTestModule;
 import com.davespanton.nutbar.shadows.ShadowChat;
 import com.davespanton.nutbar.shadows.ShadowChatManager;
+import com.davespanton.nutbar.shadows.ShadowSMSSendingAlarm;
 import com.google.inject.Injector;
 import com.google.inject.util.Modules;
 import com.xtremelabs.robolectric.Robolectric;
@@ -29,6 +30,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
         super.bindShadowClasses();
         Robolectric.bindShadowClass(ShadowChatManager.class);
         Robolectric.bindShadowClass(ShadowChat.class);
+        Robolectric.bindShadowClass(ShadowSMSSendingAlarm.class);
     }
 }
 

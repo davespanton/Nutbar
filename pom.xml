@@ -53,6 +53,11 @@
         <version>3.0</version>
         <classifier>no_aop</classifier>
     </dependency>
+    <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-assistedinject</artifactId>
+        <version>3.0</version>
+    </dependency>
     <dependency> <!-- local dependency - d/l from http://www.beem-project.com/projects/beem/files -->
         <groupId>com.beem-project</groupId>
         <artifactId>asmack</artifactId>
