@@ -23,6 +23,7 @@ public class InjectedTestRunner extends RobolectricTestRunner {
 
         Injector injector = RoboGuice.getInjector(Robolectric.application.getApplicationContext());
         injector.injectMembers(test);
+
     }
 
     @Override

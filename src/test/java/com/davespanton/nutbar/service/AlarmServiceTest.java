@@ -50,13 +50,11 @@ public class AlarmServiceTest {
 		smsAlarm = null;
 	}
 
-    //TODO - create a way to interrogate alarms
-
-	/*@Test
+    @Test
     public void shouldTripSmsSendingAlarmOnCorrectStartCommand() {
 		startServiceWithAlarmTripAction();
-        assertNotNull(Robolectric.shadowOf(SmsManager.getDefault()).getLastSentTextMessageParams());
-	}*/
+        assertEquals(EXPECTED_TRIP_COUNT, ((StubSmsSendingAlarm) smsAlarm).getTripCount());
+	}
 
     private void startServiceWithAlarmTripAction() {
         Intent i = new Intent(Robolectric.application.getString(R.string.alarm_service_trip));
