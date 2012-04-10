@@ -5,15 +5,15 @@ import android.content.Context;
 import com.google.inject.assistedinject.Assisted;
 import com.xtremelabs.robolectric.Robolectric;
 
-public class StubSmsSendingAlarm extends SMSSendingAlarm {
+public class StubSMSSendingAlarm extends SMSSendingAlarm {
 
 	private int tripCount = 0;
 
-    public StubSmsSendingAlarm() {
+    public StubSMSSendingAlarm() {
         this(Robolectric.application.getApplicationContext());
     }
 
-    public StubSmsSendingAlarm(@Assisted Context context) {
+    public StubSMSSendingAlarm(@Assisted Context context) {
         super(context);
     }
 

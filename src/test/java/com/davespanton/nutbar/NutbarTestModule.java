@@ -42,6 +42,7 @@ public class NutbarTestModule extends AbstractModule {
         bindConstant().annotatedWith(SharedPreferencesName.class)
             .to(NutbarModule.SHARED_PREFERENCE_PACKAGE);
 
+        bind(SMSSendingAlarm.class).toInstance(new StubSMSSendingAlarm());
         bind(SMSSendingAlarmFactory.class).toInstance(new StubSMSSendingAlarmFactory());
     }
 }

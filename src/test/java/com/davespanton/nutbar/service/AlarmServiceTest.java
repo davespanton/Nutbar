@@ -3,18 +3,15 @@ package com.davespanton.nutbar.service;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.alarms.StubLocationAlarm;
-import com.davespanton.nutbar.alarms.StubSmsSendingAlarm;
+import com.davespanton.nutbar.alarms.StubSMSSendingAlarm;
 import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
-import com.davespanton.nutbar.shadows.ShadowSMSSendingAlarm;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
-import com.xtremelabs.robolectric.bytecode.ShadowWrangler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +50,7 @@ public class AlarmServiceTest {
     @Test
     public void shouldTripSmsSendingAlarmOnCorrectStartCommand() {
 		startServiceWithAlarmTripAction();
-        assertEquals(EXPECTED_TRIP_COUNT, ((StubSmsSendingAlarm) smsAlarm).getTripCount());
+        assertEquals(EXPECTED_TRIP_COUNT, ((StubSMSSendingAlarm) smsAlarm).getTripCount());
 	}
 
     private void startServiceWithAlarmTripAction() {
