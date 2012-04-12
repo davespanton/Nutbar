@@ -55,7 +55,7 @@ public class AlarmService extends RoboService {
 
     private void tripAlarms() {
         
-        smsAlarm.tripAlarm(null);
+        smsAlarm.tripAlarm();
         locationAlarm.tripAlarm();
     }
 

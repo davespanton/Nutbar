@@ -11,9 +11,12 @@
     <string name="acc_service_start_listening">com.davespanton.nutbar.ACC_SERVICE_START_LISTENING</string>
     <string name="acc_service_stop_listening">com.davespanton.nutbar.ACC_SERVICE_STOP_LISTENING</string>
 
+    <string name="sms_failed">com.davespanton.nutbar.SMS_FAILED</string>
+    
     <string name="start_xmpp_service">com.davespanton.nutbar.START_XMPP_SERVICE</string>
     <string name="send_xmpp">com.davespanton.nutbar.SEND_XMPP</string>
     <string name="send_xmpp_extra">com.davespanton.nutbar.LOCATION_EXTRA</string>
+
     <string name="send_xmpp_command">\\location</string>
 
     <string name="disarm">Disarm</string>

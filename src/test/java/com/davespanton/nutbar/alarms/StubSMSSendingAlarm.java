@@ -18,8 +18,8 @@ public class StubSMSSendingAlarm extends SMSSendingAlarm {
     }
 
     @Override
-	public void tripAlarm(PendingIntent pendingIntent) {
-		super.tripAlarm(pendingIntent);
+	public void tripAlarm() {
+		super.tripAlarm();
         tripCount++;
 	}
 

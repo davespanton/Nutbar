@@ -12,12 +12,17 @@ import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
 import com.xtremelabs.robolectric.Robolectric;
+import com.xtremelabs.robolectric.shadows.ShadowApplication;
 import com.xtremelabs.robolectric.shadows.ShadowPendingIntent;
 import com.xtremelabs.robolectric.shadows.ShadowSmsManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import roboguice.inject.InjectResource;
+
+import java.sql.Wrapper;
+import java.util.List;
 
 @RunWith(InjectedTestRunner.class)
 public class SMSSendingAlarmTest {
@@ -32,6 +37,9 @@ public class SMSSendingAlarmTest {
 
     @Inject
     private SharedPreferences sharedPreferences;
+
+    @InjectResource(R.string.sms_failed)
+    private String failedSMSAction;
 
     private final String testDestinationAddress = "01234567";
 	
@@ -57,26 +65,35 @@ public class SMSSendingAlarmTest {
 
 	@Test
 	public void shouldSendSMSOnTrip() {
-		PendingIntent pendingIntent = getPendingIntent();
-        smsSendingAlarm.tripAlarm(pendingIntent);
+		smsSendingAlarm.tripAlarm();
 
         ShadowSmsManager.TextSmsParams sentTextParams = shadowSmsManager.getLastSentTextMessageParams();
 
         assertEquals(testDestinationAddress, sentTextParams.getDestinationAddress());
         assertEquals(Robolectric.application.getString(R.string.sms_alarm_body), sentTextParams.getText());
-        assertEquals(pendingIntent, sentTextParams.getSentIntent());
+        assertNotNull(sentTextParams.getSentIntent());
 	}
-
-    private PendingIntent getPendingIntent() {
-        Context context = Robolectric.application.getApplicationContext();
-        return ShadowPendingIntent.getService(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     @Test
     public void shouldNotSendSMSWhenNoDestinationIsSet() {
         setupTestDestinationAddress("");
-        smsSendingAlarm.tripAlarm(getPendingIntent());
+        smsSendingAlarm.tripAlarm();
         
         assertNull(shadowSmsManager.getLastSentTextMessageParams());
+    }
+
+    @Test
+    public void shouldRegisterBroadcastReceiverForFailedSMSOnTrip() {
+        smsSendingAlarm.tripAlarm();
+
+        List<ShadowApplication.Wrapper> receivers = Robolectric.getShadowApplication().getRegisteredReceivers();
+        String action = receivers.get(0).intentFilter.getAction(0);
+
+        assertEquals(failedSMSAction, action);
+    }
+
+    @Test
+    public void shouldResendSMSOnFailure() {
+        fail("unimplemented");
     }
 }
