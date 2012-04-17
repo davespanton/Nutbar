@@ -18,7 +18,7 @@
     <dependency>
     	<groupId>com.pivotallabs</groupId>
     	<artifactId>robolectric</artifactId>
-    	<version>1.1-SNAPSHOT</version>
+    	<version>1.2-SNAPSHOT</version>
     	<type>jar</type>
     	<scope>test</scope>
     </dependency>
@@ -57,6 +57,12 @@
         <groupId>com.google.inject.extensions</groupId>
         <artifactId>guice-assistedinject</artifactId>
         <version>3.0</version>
+        <exclusions>
+            <exclusion>
+                <artifactId>guice</artifactId>
+                <groupId>com.google.inject</groupId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency> <!-- local dependency - d/l from http://www.beem-project.com/projects/beem/files -->
         <groupId>com.beem-project</groupId>
@@ -80,7 +86,7 @@
           </sdk>
           <undeployBeforeDeploy>true</undeployBeforeDeploy>
         </configuration>
-        <version>3.0.0-alpha-13</version>
+        <version>3.1.1</version>
         <extensions>true</extensions>
       </plugin>
 

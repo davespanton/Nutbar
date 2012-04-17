@@ -61,6 +61,7 @@ public class AlarmService extends RoboService {
 
     private void resetAlarms() {
         locationAlarm.resetAlarm();
+        smsAlarm.resetAlarm();
     }
 
     private LocationAlarmListener locationAlarmListener = new LocationAlarmListener() {

@@ -82,7 +82,7 @@ public class XMPPService extends RoboService {
             return;
 
         if(xmppReconnectionHandler.hasPendingConnections())
-                return;
+            return;
 
         xmppReconnectionHandler.reconnectAfter(xmppCommunication, 0);
     }

@@ -59,12 +59,13 @@ public class AlarmServiceTest {
     }
 
     @Test
-    public void shouldResetLocationAlarmOnCorrectStartCommand() {
+    public void shouldResetAlarmsOnCorrectStartCommand() {
         startServiceWithAlarmTripAction();
 
         Intent i = new Intent(Robolectric.application.getString(R.string.alarm_service_reset));
         alarmService.onStartCommand(i, 0, 0);
         assertFalse(locationAlarm.isListening());
+        assertFalse(smsAlarm.isListening());
     }
 
     @Test
