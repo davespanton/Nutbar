@@ -32,7 +32,6 @@ public class SMSSendingAlarmTest {
     @Inject
     private SMSSendingAlarmFactory smsSendingAlarmFactory;
 
-
 	private ShadowSmsManager shadowSmsManager;
 
     @Inject

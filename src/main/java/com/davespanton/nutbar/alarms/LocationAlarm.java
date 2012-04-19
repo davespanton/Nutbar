@@ -8,7 +8,7 @@ import android.util.Log;
 import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.google.inject.Inject;
 
-public class LocationAlarm implements LocationListener {
+public class LocationAlarm implements LocationListener, Trippable {
 
     private static final long MIN_LOCATION_UPDATE_INTERVAL = 10000;
 

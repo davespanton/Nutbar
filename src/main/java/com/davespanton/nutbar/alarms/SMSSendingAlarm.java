@@ -1,6 +1,5 @@
 package com.davespanton.nutbar.alarms;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.*;
 import android.os.Handler;
@@ -8,15 +7,19 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
+import com.davespanton.nutbar.alarms.broadcastreceiver.ReTripReceiver;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
 import roboguice.inject.InjectResource;
 
-public class SMSSendingAlarm {
+public class SMSSendingAlarm implements Trippable{
 
     @Inject
     private SharedPreferences sharedPreferences;
+
+    @Inject
+    private ReTripReceiver receiver;
 
     private Context context;
 
@@ -37,7 +40,9 @@ public class SMSSendingAlarm {
 
     public void tripAlarm() {
         listening = true;
-        
+
+        // TODO test if doing this more than once matters
+        receiver.setTrippable(this);
         context.registerReceiver(receiver, new IntentFilter(failedSMSAction));
 
         String destinationAddress = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
@@ -50,21 +55,6 @@ public class SMSSendingAlarm {
         Intent intent = new Intent(failedSMSAction);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //if(getResultCode() != Activity.RESULT_OK)
-            Log.v("NBAR", "Received SMS intent. " + intent.getAction());
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //tripAlarm();
-                }
-            }, 10000);
-        }
-    };
 
     public boolean isListening() {
         return listening;

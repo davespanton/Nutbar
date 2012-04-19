@@ -1,11 +1,9 @@
 package com.davespanton.nutbar;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
 import com.davespanton.nutbar.activity.menu.StubOptionsMenuDelegate;
 import com.davespanton.nutbar.alarms.*;
+import com.davespanton.nutbar.alarms.broadcastreceiver.ReTripReceiver;
 import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.application.NutbarModule;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
@@ -18,8 +16,6 @@ import com.davespanton.nutbar.service.xmpp.StubXMPPConnectionProvider;
 import com.davespanton.nutbar.service.xmpp.XMPPCommunication;
 import com.davespanton.nutbar.service.xmpp.XMPPReconnectionHandler;
 import com.google.inject.AbstractModule;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.xtremelabs.robolectric.Robolectric;
 import org.jivesoftware.smack.XMPPConnection;
 import roboguice.inject.SharedPreferencesName;
 
@@ -44,5 +40,8 @@ public class NutbarTestModule extends AbstractModule {
 
         bind(SMSSendingAlarm.class).toInstance(new StubSMSSendingAlarm());
         bind(SMSSendingAlarmFactory.class).toInstance(new StubSMSSendingAlarmFactory());
+
+        bind(Trippable.class).toInstance(new StubTrippable());
+        bind(ReTripReceiver.class).toInstance(new ReTripReceiver());
     }
 }
