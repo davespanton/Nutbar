@@ -15,12 +15,12 @@ public class ReTripReceiver extends BroadcastReceiver {
 
     private Trippable trippable;
 
+    @Inject
+    private Handler handler;
+
     public void ReTripReceiver() {
         // for injection
     }
-
-    @Inject
-    private Handler handler;
 
     public void setTrippable(Trippable trippable) {
         this.trippable = trippable;
@@ -31,11 +31,17 @@ public class ReTripReceiver extends BroadcastReceiver {
         if(getResultCode() == Activity.RESULT_OK) // not so easily testable
             return;
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                trippable.tripAlarm();
-            }
-        }, RE_TRIP_DELAY);
+        handler.postDelayed(runnable, RE_TRIP_DELAY);
     }
+
+    public void cancelPendingRetrip() {
+        handler.removeCallbacks(runnable);
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            trippable.tripAlarm();
+        }
+    };
 }

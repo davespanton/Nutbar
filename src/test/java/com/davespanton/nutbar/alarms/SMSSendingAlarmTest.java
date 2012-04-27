@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.telephony.SmsManager;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
+import com.davespanton.nutbar.alarms.broadcastreceiver.ReTripReceiver;
 import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.injected.InjectedTestRunner;
 import com.google.inject.Inject;
@@ -36,6 +37,9 @@ public class SMSSendingAlarmTest {
 
     @Inject
     private SharedPreferences sharedPreferences;
+
+    @Inject
+    private ReTripReceiver reTripReceiver;
 
     @InjectResource(R.string.sms_failed)
     private String failedSMSAction;
@@ -85,14 +89,40 @@ public class SMSSendingAlarmTest {
     public void shouldRegisterBroadcastReceiverForFailedSMSOnTrip() {
         smsSendingAlarm.tripAlarm();
 
-        List<ShadowApplication.Wrapper> receivers = Robolectric.getShadowApplication().getRegisteredReceivers();
-        String action = receivers.get(0).intentFilter.getAction(0);
+        String action = getReceivers().get(0).intentFilter.getAction(0);
 
         assertEquals(failedSMSAction, action);
     }
 
+    private List<ShadowApplication.Wrapper> getReceivers() {
+        return Robolectric.getShadowApplication().getRegisteredReceivers();
+    }
+
     @Test
-    public void shouldResendSMSOnFailure() {
-        
+    public void shouldRegisterRetripReceiverOnTrip() {
+        smsSendingAlarm.tripAlarm();
+
+        assertEquals(reTripReceiver, getReceivers().get(0).broadcastReceiver);
+    }
+
+    @Test
+    public void shouldRemoveRetripReceiverOnReset() {
+        smsSendingAlarm.tripAlarm();
+        smsSendingAlarm.resetAlarm();
+
+        assertTrue(getReceivers().isEmpty());
+    }
+
+    @Test
+    public void shouldCancelRetripWhenReset() {
+        Robolectric.pauseMainLooper();
+
+        smsSendingAlarm.tripAlarm();
+        reTripReceiver.onReceive(Robolectric.getShadowApplication().getApplicationContext(), new Intent());
+        smsSendingAlarm.resetAlarm();
+
+        Robolectric.idleMainLooper(ReTripReceiver.RE_TRIP_DELAY + 1);
+
+        assertFalse(smsSendingAlarm.isListening());
     }
 }

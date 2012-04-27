@@ -32,6 +32,7 @@ public class SMSSendingAlarm implements Trippable{
     private String failedSMSAction;
 
     private boolean listening = false;
+    private boolean registered;
 
     @AssistedInject
     public SMSSendingAlarm(@Assisted Context context) {
@@ -41,15 +42,22 @@ public class SMSSendingAlarm implements Trippable{
     public void tripAlarm() {
         listening = true;
 
-        // TODO test if doing this more than once matters
         receiver.setTrippable(this);
-        context.registerReceiver(receiver, new IntentFilter(failedSMSAction));
+        registerReceiver();
 
         String destinationAddress = sharedPreferences.getString(NutbarPreferenceActivity.SMS_ALARM_KEY, "");
 
         if(!destinationAddress.isEmpty())
             smsManager.sendTextMessage(destinationAddress, null, bodyText, getPendingIntent(), null);
 	}
+
+    private void registerReceiver() {
+        if(!registered)
+        {
+            context.registerReceiver(receiver, new IntentFilter(failedSMSAction));  
+            registered = true;
+        }
+    }
 
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(failedSMSAction);
@@ -61,7 +69,17 @@ public class SMSSendingAlarm implements Trippable{
     }
 
     public void resetAlarm() {
-        // TODO cancel outstanding failed sms pending runnables
+        unregisterReceiver();
+        receiver.cancelPendingRetrip();
+        
         listening = false;
+    }
+
+    private void unregisterReceiver() {
+        if(registered)
+        {
+            context.unregisterReceiver(receiver);
+            registered = false;
+        }
     }
 }

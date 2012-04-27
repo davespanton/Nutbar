@@ -63,4 +63,15 @@ public class ReTripReceiverTest {
 
         Robolectric.idleMainLooper(ReTripReceiver.RE_TRIP_DELAY + 1);
     }
+
+    @Test
+    public void shouldCancelRetrip() {
+        reTripReceiver.setTrippable(trippable);
+        callOnReceive();
+        reTripReceiver.cancelPendingRetrip();
+
+        Robolectric.idleMainLooper(ReTripReceiver.RE_TRIP_DELAY + 1);
+
+        assertFalse(((StubTrippable) trippable).isTripped());
+    }
 }

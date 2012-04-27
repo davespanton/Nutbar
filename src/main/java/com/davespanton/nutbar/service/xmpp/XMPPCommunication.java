@@ -28,6 +28,7 @@ public class XMPPCommunication {
         if(xmppConn.isConnected())
             return;
 
+        // TODO test for null point exception: can occur in XMPPConnection.initConnection line 604
         xmppConn.connect();
 
         login();
