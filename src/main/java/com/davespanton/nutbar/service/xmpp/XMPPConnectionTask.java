@@ -22,6 +22,7 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
             xmppCommunication.connect();
         } catch (XMPPException e) {
             Log.e("NBAR", e.getMessage());
+            xmppCommunication.disconnect();
             return false;
         }
         return xmppCommunication.isConnected();

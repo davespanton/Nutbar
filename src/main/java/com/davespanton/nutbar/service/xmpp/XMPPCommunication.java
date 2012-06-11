@@ -28,10 +28,14 @@ public class XMPPCommunication {
         if(xmppConn.isConnected())
             return;
 
-        // TODO test for null point exception: can occur in XMPPConnection.initConnection line 604
-        xmppConn.connect();
-
-        login();
+        // null point exception: can occur in XMPPConnection.initConnection line 604
+        try {
+            xmppConn.connect();
+            login();
+        } catch(NullPointerException exception) {
+            Log.e("NBAR", "NullPointer in XMPPConnection.");
+            xmppConn.disconnect();
+        }
     }
 
     private void login() throws XMPPException {

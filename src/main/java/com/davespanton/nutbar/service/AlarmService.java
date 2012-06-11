@@ -14,7 +14,7 @@ import roboguice.service.RoboService;
 
 public class AlarmService extends RoboService {
 
-    public SMSSendingAlarm smsAlarm;
+    private SMSSendingAlarm smsAlarm;
 
     @Inject
     private SMSSendingAlarmFactory smsAlarmFactory;
