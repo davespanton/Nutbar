@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.IBinder;
-import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.google.inject.Inject;
 import roboguice.service.RoboService;
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class XMPPService extends RoboService {
 
@@ -22,7 +22,7 @@ public class XMPPService extends RoboService {
     private BroadcastReceiver networkStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.v("NBAR", "Connection to network changed");
+            mog.debug("Connection to network changed");
             connectToXmppServer();
         }
     };
@@ -53,7 +53,7 @@ public class XMPPService extends RoboService {
 
     @Override
     public void onDestroy() {
-        Log.v("NBAR", "destroying xmpp");
+        mog.debug("destroying xmpp");
 
         unregisterReceiver(networkStatusReceiver);
         destroyXmppReconnectionHandler();

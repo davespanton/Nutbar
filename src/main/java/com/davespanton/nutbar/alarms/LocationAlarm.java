@@ -4,9 +4,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
+
 import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.google.inject.Inject;
+
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class LocationAlarm implements LocationListener, Trippable {
 
@@ -56,7 +58,7 @@ public class LocationAlarm implements LocationListener, Trippable {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		Log.d("NBAR", provider + " status changed to " + Integer.toString(status));
+		mog.debug(provider + " status changed to " + Integer.toString(status));
 	}
 
 

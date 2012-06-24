@@ -3,7 +3,6 @@ package com.davespanton.nutbar.service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.IBinder;
-import android.util.Log;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.alarms.LocationAlarm;
 import com.davespanton.nutbar.alarms.SMSSendingAlarm;
@@ -11,6 +10,7 @@ import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.alarms.listeners.LocationAlarmListener;
 import com.google.inject.Inject;
 import roboguice.service.RoboService;
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class AlarmService extends RoboService {
 
@@ -30,7 +30,7 @@ public class AlarmService extends RoboService {
     @Override
     public void onCreate() {
         super.onCreate();
-        
+        mog.debug("AlarmService.onCreate");
         smsAlarm = smsAlarmFactory.create(this);
         locationAlarm.setOnLocationChangeListener(locationAlarmListener);
     }
@@ -38,13 +38,14 @@ public class AlarmService extends RoboService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        mog.debug("AlarmService.onDestroy");
         resetAlarms();
     }
 
     @Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		
+		mog.debug("Alarmservice.onStartCommand: " + intent.getAction());
+
 		if(intent.getAction().equals(getString(R.string.alarm_service_trip)))
 			tripAlarms();
         else if(intent.getAction().equals(getString(R.string.alarm_service_reset)))
@@ -72,9 +73,10 @@ public class AlarmService extends RoboService {
             String message = getString(R.string.send_xmpp_command) + " " +
                     Double.toString(location.getLatitude()) + "," +
                     Double.toString(location.getLongitude()) + "," +
-                    location.getProvider();
+                    location.getProvider() + "," +
+                    Long.toString(location.getTime() / 1000); // send in seconds
 
-            Log.v("NBAR", message);
+            mog.debug(message);
 
             i.putExtra(getString(R.string.send_xmpp_extra), message);
 

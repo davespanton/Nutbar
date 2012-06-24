@@ -1,12 +1,12 @@
 package com.davespanton.nutbar.service.xmpp;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 import com.davespanton.nutbar.activity.NutbarPreferenceActivity;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.packet.Message;
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class XMPPCommunication {
 
@@ -33,7 +33,7 @@ public class XMPPCommunication {
             xmppConn.connect();
             login();
         } catch(NullPointerException exception) {
-            Log.e("NBAR", "NullPointer in XMPPConnection.");
+            mog.error("NullPointer in XMPPConnection.");
             xmppConn.disconnect();
         }
     }
@@ -43,7 +43,7 @@ public class XMPPCommunication {
         if(!xmppConn.isConnected())
             return;
 
-        Log.v("NBAR", "Logging in to XMPP server");
+        mog.debug("Logging in to XMPP server");
 
         xmppConn.login(
             preferences.getString(NutbarPreferenceActivity.USERNAME_KEY, ""),
@@ -61,7 +61,7 @@ public class XMPPCommunication {
     private MessageListener messageListener = new MessageListener() {
         @Override
         public void processMessage(Chat chat, Message message) {
-            Log.v("NBAR", "Received message: " + message.getBody());
+            mog.debug("Received message: " + message.getBody());
         }
     };
 
@@ -69,23 +69,23 @@ public class XMPPCommunication {
         try {
             xmppConn.disconnect();
         } catch (Exception e) {
-            Log.e("NBAR", "Error disconnecting from xmpp server: " + e.getStackTrace()[0]);
+            mog.error("Error disconnecting from xmpp server: " + e.getStackTrace()[0]);
         }
     }
 
     public void sendMessage(String message) {
 
         if(xmppConn == null || !xmppConn.isConnected()) {
-            Log.w("NBAR", "Not connected to xmpp server");
+            mog.warn("Not connected to xmpp server");
             return;
         }
 
         try {
             chatSession.sendMessage(message);
         } catch (XMPPException e) {
-            Log.e("NBAR", "Couldn't send message.");
+            mog.error("Couldn't send message.");
         } catch (Exception e) {
-            Log.e("NBAR", "Couldn't send message: " + e.getStackTrace()[0]);
+            mog.error("Couldn't send message: " + e.getStackTrace()[0]);
         }
     }
 

@@ -2,7 +2,6 @@ package com.davespanton.nutbar.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,9 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
+import com.davespanton.nutbar.logging.LogConfiguration;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
 import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
+
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class NutbarActivity extends RoboActivity implements ListenerServiceView {
 
@@ -24,6 +26,9 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
     
     @Inject
     private OptionsMenuDelegate optionsMenuDelegate;
+
+    @Inject
+    private LogConfiguration logConfiguration;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
 
     @Override
     public void onStart() {
+        mog.debug("Starting main activity");
         super.onStart();
 
         startBindListenerService(getString(R.string.start_acc_listener_service), accServiceConn);
@@ -56,7 +62,7 @@ public class NutbarActivity extends RoboActivity implements ListenerServiceView 
         super.onStop();
 
         if(!accServiceConn.isListening()) {
-            Log.v("NBAR", "Finishing main activity");
+            mog.debug("Finishing main activity");
             destroyServices();
         }
     }

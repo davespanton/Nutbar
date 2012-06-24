@@ -1,9 +1,6 @@
 package com.davespanton.nutbar.application;
 
-import android.app.Application;
-import com.davespanton.nutbar.R;
 import com.davespanton.nutbar.activity.menu.OptionsMenuDelegate;
-import com.davespanton.nutbar.alarms.SMSSendingAlarm;
 import com.davespanton.nutbar.alarms.factory.SMSSendingAlarmFactory;
 import com.davespanton.nutbar.service.binder.AccelerometerBinderBuilder;
 import com.davespanton.nutbar.service.connection.ListenerServiceConnection;
@@ -14,10 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import org.jivesoftware.smack.XMPPConnection;
 import roboguice.inject.SharedPreferencesName;
-
-import javax.inject.Inject;
-
-
+    
 public class NutbarModule extends AbstractModule {
 
     public static final String SHARED_PREFERENCE_PACKAGE = "com.davespanton.nutbar_preferences";

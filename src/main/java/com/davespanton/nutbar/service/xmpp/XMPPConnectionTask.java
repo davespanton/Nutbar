@@ -1,8 +1,8 @@
 package com.davespanton.nutbar.service.xmpp;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import org.jivesoftware.smack.XMPPException;
+import static com.davespanton.nutbar.logging.LogConfiguration.mog;
 
 public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boolean> {
 
@@ -21,7 +21,7 @@ public class XMPPConnectionTask extends AsyncTask<XMPPCommunication, Void, Boole
         try {
             xmppCommunication.connect();
         } catch (XMPPException e) {
-            Log.e("NBAR", e.getMessage());
+            mog.error("Error connecting to xmpp service " + e.getMessage());
             xmppCommunication.disconnect();
             return false;
         }
